@@ -13,12 +13,16 @@ let package = Package(
             targets: ["CounterList"]),
     ],
     dependencies: [
-
+        .package(name: "Altair-MDK", url: "https://github.com/mzapatae/AltairMDK-iOS.git", .branch("feature/required-extensions")),
+        .package(name: "Design", path: "../Design"),
     ],
     targets: [
         .target(
             name: "CounterList",
-            dependencies: [],
+            dependencies: [
+                "Altair-MDK",
+                "Design"
+            ],
             path: "Sources"),
         .testTarget(
             name: "CounterListTests",
