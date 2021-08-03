@@ -4,4 +4,13 @@
    <FileRef
       location = "group:Counters/Counters.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:Modules/Design">
+   </FileRef>
+   <FileRef
+      location = "group:Modules/CounterList">
+   </FileRef>
+   <FileRef
+      location = "group:Modules/NewCounter">
+   </FileRef>
 </Workspace>
