@@ -1,4 +1,5 @@
 import UIKit
+import Design
 
 final class CounterListView: UIView {
     
@@ -16,7 +17,7 @@ final class CounterListView: UIView {
 private extension CounterListView {
     
     func setupView() {
-        backgroundColor = .blue
+        backgroundColor = Palette.main.uiColor
     }
     
 }
