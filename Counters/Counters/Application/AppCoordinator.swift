@@ -1,4 +1,5 @@
 import UIKit
+import CounterList
 import AltairMDKCommon
 
 protocol StartFlow {
@@ -21,8 +22,18 @@ class AppCoordinator: Coordinator {
         window.makeKeyAndVisible()
         
         let presenter = WelcomeViewPresenter()
+        presenter.coordinator = self
         let welcomeViewController = WelcomeViewController(presenter: presenter)
         navigationController.pushViewController(welcomeViewController, animated: true)
+    }
+    
+}
+
+extension AppCoordinator: StartFlow {
+    
+    func coordinateToCounterListScene() {
+        let counterListCoordinator = CounterListCoordinator(navigationController: navigationController)
+        coordinate(to: counterListCoordinator)
     }
     
 }
