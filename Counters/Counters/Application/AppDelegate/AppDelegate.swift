@@ -5,6 +5,7 @@
 //
 
 import UIKit
+import CounterList
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,7 +17,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let window = UIWindow()
         appCoordinator = AppCoordinator(window: window)
         appCoordinator?.start()
+        
+        CounterList.DIComponents.bind()
         return true
     }
 }
-
