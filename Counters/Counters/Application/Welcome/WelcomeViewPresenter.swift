@@ -7,6 +7,8 @@
 import UIKit
 
 internal final class WelcomeViewPresenter {
+    var coordinator: StartFlow?
+    
     private let features: [WelcomeFeatureView.ViewModel] = [
         .init(
             badge: UIImage.badge(sytemIcon: "42.circle.fill",
