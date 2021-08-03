@@ -13,12 +13,12 @@ let package = Package(
             targets: ["APIs"]),
     ],
     dependencies: [
-
+        .package(name: "Altair-MDK", url: "https://github.com/mzapatae/AltairMDK-iOS.git", .branch("feature/required-extensions")),
     ],
     targets: [
         .target(
             name: "APIs",
-            dependencies: [],
+            dependencies: ["Altair-MDK"],
             path: "Sources"),
         .testTarget(
             name: "APIsTests",
