@@ -4,6 +4,7 @@ import PackageDescription
 
 let package = Package(
     name: "CounterList",
+    defaultLocalization: "en",
     platforms: [
         .iOS(.v14)
     ],
@@ -27,7 +28,8 @@ let package = Package(
                 "APIs",
                 "Design"
             ],
-            path: "Sources"),
+            path: "Sources",
+            resources: [.process("Resources")]),
         .testTarget(
             name: "CounterListTests",
             dependencies: ["CounterList"]),

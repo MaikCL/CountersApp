@@ -17,7 +17,7 @@ final class CounterListView: UIView {
 private extension CounterListView {
     
     func setupView() {
-        backgroundColor = Palette.main.uiColor
+        backgroundColor = Palette.background.uiColor
     }
     
 }
