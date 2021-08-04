@@ -19,6 +19,7 @@ final public class DIComponents {
         Resolver.register { DecrementCounterUseCase() }.implements(DecrementCounterUseCaseProtocol.self)
         
         // MARK: Presentation Layer Components
+        Resolver.register { CounterModelMapper.mapEntityToModel }
         Resolver.register { CounterListSideEffects() }
         Resolver.register { CounterListStore() }
     }
