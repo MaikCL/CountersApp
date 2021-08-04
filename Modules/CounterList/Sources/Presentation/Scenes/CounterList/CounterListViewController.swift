@@ -18,4 +18,9 @@ final class CounterListViewController: UIViewController {
         self.view = innerView
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupNavigationBar()
+    }
+    
 }

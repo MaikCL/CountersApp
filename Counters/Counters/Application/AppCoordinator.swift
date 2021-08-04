@@ -1,4 +1,5 @@
 import UIKit
+import Design
 import CounterList
 import AltairMDKCommon
 
@@ -14,6 +15,11 @@ class AppCoordinator: Coordinator {
         self.window = window
         self.navigationController = UINavigationController()
         
+        let navigationBarAppearance = UINavigationBarAppearance()
+        navigationBarAppearance.configureWithOpaqueBackground()
+        navigationBarAppearance.backgroundColor = Palette.main.uiColor
+        navigationController.navigationBar.standardAppearance = navigationBarAppearance
+        navigationController.navigationBar.scrollEdgeAppearance = navigationBarAppearance
         navigationController.navigationBar.prefersLargeTitles = true
     }
     
