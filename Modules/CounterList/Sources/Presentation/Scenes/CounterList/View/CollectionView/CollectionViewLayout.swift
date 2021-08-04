@@ -17,6 +17,7 @@ extension CollectionViewLayout {
         
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = NSDirectionalEdgeInsets(top: 16.0, leading: 12.0, bottom: 16.0, trailing: 12.0)
+        section.interGroupSpacing = 16
         return UICollectionViewCompositionalLayout(section: section)
     }
     
