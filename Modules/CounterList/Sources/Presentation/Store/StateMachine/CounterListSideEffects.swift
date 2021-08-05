@@ -11,6 +11,8 @@ enum SideEffectTask {
 
 final class CounterListSideEffects {
     @Injected private var fetchCountersUseCase: FetchCountersUseCaseProtocol
+    @Injected private var incrementCounterUseCase: IncrementCounterUseCaseProtocol
+    @Injected private var decrementCounterUseCase: DecrementCounterUseCaseProtocol
     
     func whenInput(action: AnyPublisher<CounterListAction, Never>) -> SideEffect<CounterListState, CounterListAction> {
         SideEffect { _ in action }
@@ -22,9 +24,39 @@ final class CounterListSideEffects {
             return self.fetchCountersUseCase
                 .execute()
                 .map { !$0.isEmpty ? .fetchCountersSuccess($0) : .fetchCountersFailed(CounterException.noCountersYet) }
-                .catch { Just(.fetchCountersFailed($0 as? CounterException ?? CounterException.some($0))) }
+                .replaceError(with: .fetchCountersFailed(.cantLoadCounters))
                 .handleEvents(receiveOutput: { input in
                     guard case let .fetchCountersFailed(exception) = input else { return }
+                    self.logException(exception)
+                })
+                .eraseToAnyPublisher()
+        }
+    }
+    
+    func whenIncrementCounter() -> SideEffect<CounterListState, CounterListAction> {
+        SideEffect { state -> AnyPublisher<CounterListAction, Never> in
+            guard case .whenIncrementCounter(let counter) = state.runningSideEffect else { return Empty().eraseToAnyPublisher() }
+            return self.incrementCounterUseCase
+                .execute(id: counter.id)
+                .map { .incrementCounterSuccess($0) }
+                .replaceError(with: .incrementCounterFailed(.cantIncrementCounter, counter: counter))
+                .handleEvents(receiveOutput: { input in
+                    guard case let .incrementCounterFailed(exception, _) = input else { return }
+                    self.logException(exception)
+                })
+                .eraseToAnyPublisher()
+        }
+    }
+    
+    func whenDecrementCounter() -> SideEffect<CounterListState, CounterListAction> {
+        SideEffect { state -> AnyPublisher<CounterListAction, Never> in
+            guard case .whenDecrementCounter(let counter) = state.runningSideEffect else { return Empty().eraseToAnyPublisher() }
+            return self.decrementCounterUseCase
+                .execute(id: counter.id)
+                .map { .decrementCounterSuccess($0) }
+                .replaceError(with: .decrementCounterFailed(.cantDecrementCounter, counter: counter))
+                .handleEvents(receiveOutput: { input in
+                    guard case let .decrementCounterFailed(exception, _) = input else { return }
                     self.logException(exception)
                 })
                 .eraseToAnyPublisher()

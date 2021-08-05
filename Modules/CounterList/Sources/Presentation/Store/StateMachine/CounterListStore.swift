@@ -18,7 +18,9 @@ final class CounterListStore {
             scheduler: DispatchQueue.main,
             sideEffects: [
                 sideEffects.whenInput(action: input.eraseToAnyPublisher()),
-                sideEffects.whenFetchCounters()
+                sideEffects.whenFetchCounters(),
+                sideEffects.whenIncrementCounter(),
+                sideEffects.whenDecrementCounter()
             ]
         )
         .assignNoRetain(to: \.state, on: self)

@@ -7,7 +7,7 @@ protocol CounterCellViewDelegate: AnyObject {
     func didTapCounterDecremented(id: String)
 }
 
-final class CounterCellView: UICollectionViewListCell {
+class CounterCellView: UICollectionViewListCell {
     
     lazy var cellView: UIView = {
        setupCellView()
@@ -45,14 +45,21 @@ final class CounterCellView: UICollectionViewListCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        setupView()
+        setupSubviews()
+        setupConstraint()
+    }
+    
     func configure(with model: CounterModel) {
         counterId = model.id
         titleLabel.text = model.title
         counterLabel.text = model.count
         countValue = Int(model.count)
         counterStepper.value = Double(model.count) ?? 0
-        layoutIfNeeded()
     }
+
     
 }
 
@@ -72,55 +79,55 @@ private extension CounterCellView {
 private extension CounterCellView {
     
     func setupView() {
-        backgroundColor = Palette.background.uiColor
+        contentView.backgroundColor = Palette.background.uiColor
         set(cornerRadius: 8.0)
     }
     
     func setupSubviews() {
-        addSubview(cellView)
-        addSubview(titleLabel)
-        addSubview(counterLabel)
-        addSubview(separatorView)
-        addSubview(counterStepper)
-        setSubviewForAutoLayout(cellView)
-        setSubviewForAutoLayout(titleLabel)
-        setSubviewForAutoLayout(counterLabel)
-        setSubviewForAutoLayout(separatorView)
-        setSubviewForAutoLayout(counterStepper)
-        counterStepper.addTarget(self, action: #selector(stepperValueChanged(_:)), for: .valueChanged)
+        contentView.addSubview(cellView)
+        contentView.setSubviewForAutoLayout(cellView)
+        cellView.addSubview(titleLabel)
+        cellView.addSubview(counterLabel)
+        cellView.addSubview(separatorView)
+        cellView.addSubview(counterStepper)
+        cellView.setSubviewForAutoLayout(titleLabel)
+        cellView.setSubviewForAutoLayout(counterLabel)
+        cellView.setSubviewForAutoLayout(separatorView)
+        cellView.setSubviewForAutoLayout(counterStepper)
+        
     }
     
     func setupConstraint() {
         NSLayoutConstraint.activate([
-            cellView.topAnchor.constraint(equalTo: topAnchor),
-            cellView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            cellView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            cellView.trailingAnchor.constraint(equalTo: trailingAnchor)
+            cellView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            cellView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            cellView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            cellView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
         ])
         
         NSLayoutConstraint.activate([
-            separatorView.topAnchor.constraint(equalTo: topAnchor),
-            separatorView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            separatorView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 59.0),
+            separatorView.topAnchor.constraint(equalTo: cellView.topAnchor),
+            separatorView.bottomAnchor.constraint(equalTo: cellView.bottomAnchor),
+            separatorView.leadingAnchor.constraint(equalTo: cellView.leadingAnchor, constant: 59.0),
             separatorView.widthAnchor.constraint(equalToConstant: 2.0)
         ])
         
         NSLayoutConstraint.activate([
-            counterLabel.topAnchor.constraint(equalTo: topAnchor, constant: 15.0),
-            counterLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10.0),
+            counterLabel.topAnchor.constraint(equalTo: cellView.topAnchor, constant: 15.0),
+            counterLabel.leadingAnchor.constraint(equalTo: cellView.leadingAnchor, constant: 10.0),
             counterLabel.trailingAnchor.constraint(equalTo: separatorView.trailingAnchor, constant: -10.0)
         ])
         
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 16.0),
+            titleLabel.topAnchor.constraint(equalTo: cellView.topAnchor, constant: 16.0),
             titleLabel.leadingAnchor.constraint(equalTo: separatorView.leadingAnchor, constant: 10.0),
-            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -14.0),
+            titleLabel.trailingAnchor.constraint(equalTo: cellView.trailingAnchor, constant: -14.0),
         ])
         
         NSLayoutConstraint.activate([
             counterStepper.topAnchor.constraint(greaterThanOrEqualTo: titleLabel.bottomAnchor, constant: 17.0),
-            counterStepper.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -14.0),
-            counterStepper.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -14.0),
+            counterStepper.bottomAnchor.constraint(equalTo: cellView.bottomAnchor, constant: -14.0),
+            counterStepper.trailingAnchor.constraint(equalTo: cellView.trailingAnchor, constant: -14.0),
         ])
         
     }
@@ -170,6 +177,7 @@ private extension CounterCellView {
         stepper.wraps = false
         stepper.minimumValue = 0
         stepper.maximumValue = 999
+        stepper.addTarget(self, action: #selector(stepperValueChanged(_:)), for: .valueChanged)
         return stepper
     }
     

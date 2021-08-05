@@ -5,7 +5,7 @@ import AltairMDKCommon
 
 struct ViewState {
     var counters: Loadable<[CounterModel]> = .neverLoaded
-    var exception: Exception? = .none
+    var exception: CounterException? = .none
     var titleException: String? = .none
 }
 
@@ -14,6 +14,8 @@ protocol CounterListViewModelProtocol {
     var statePublisher: Published<ViewState>.Publisher { get }
     
     func fetchCounters()
+    func incrementCounter(id: String)
+    func decrementCounter(id: String)
 }
 
 final class CounterListViewModel: CounterListViewModelProtocol {
@@ -31,6 +33,18 @@ final class CounterListViewModel: CounterListViewModelProtocol {
     
     func fetchCounters() {
         counterListStore.trigger(.fetchCounters)
+    }
+    
+    func incrementCounter(id: String) {
+        guard case let .loaded(counters) = counterListStore.state.counters else { return }
+        guard let counter = counters.first(where: { $0.id == id }) else { return }
+        counterListStore.trigger(.incrementCounter(counter))
+    }
+    
+    func decrementCounter(id: String) {
+        guard case let .loaded(counters) = counterListStore.state.counters else { return }
+        guard let counter = counters.first(where: { $0.id == id }) else { return }
+        counterListStore.trigger(.decrementCounter(counter))
     }
     
 }

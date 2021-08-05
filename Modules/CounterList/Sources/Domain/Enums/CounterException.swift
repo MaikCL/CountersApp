@@ -6,9 +6,9 @@ enum CounterException {
     case unknown
     case noCountersYet
     case cantLoadCounters
-    case cantIncrementCounter(_ counter: Counter)
-    case cantDecrementCounter(_ counter: Counter)
-    case cantDeleteCounter(_ counter: Counter)
+    case cantIncrementCounter
+    case cantDecrementCounter
+    case cantDeleteCounter
     case noSearchResults
 }
 
