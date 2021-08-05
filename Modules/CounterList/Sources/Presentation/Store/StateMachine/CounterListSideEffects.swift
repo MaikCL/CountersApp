@@ -5,6 +5,8 @@ import AltairMDKCommon
 enum SideEffectTask {
     case none
     case whenFetchCounters
+    case whenIncrementCounter(Counter)
+    case whenDecrementCounter(Counter)
 }
 
 final class CounterListSideEffects {
