@@ -17,14 +17,16 @@ extension CounterListViewController {
             let accessories: [UICellAccessory] = [.multiselect(displayed: .whenEditing)]
             cell.accessories = accessories
         }
+        
         dataSource = DataSource(collectionView: innerView.collectionView) { collectionView, indexPath, model in
             return collectionView.dequeueConfiguredReusableCell(using: counterCell, for: indexPath, item: model)
         }
+        innerView.collectionView.dataSource = dataSource
     }
     
     func applySnapshot(animate: Bool = true) {
         var snapshot = dataSource?.snapshot() ?? Snapshot()
-        // test delete all items
+        snapshot.deleteAllItems()
         snapshot.appendSections(Section.allCases)
         snapshot.appendItems(counterItems)
         dataSource?.apply(snapshot, animatingDifferences: animate)

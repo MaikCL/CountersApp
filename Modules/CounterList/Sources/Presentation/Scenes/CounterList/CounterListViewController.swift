@@ -62,11 +62,11 @@ final class CounterListViewController: UIViewController {
 extension CounterListViewController: CounterCellViewDelegate {
     
     func didTapCounterIncremented(id: String) {
-        //
+        viewModel?.incrementCounter(id: id)
     }
     
     func didTapCounterDecremented(id: String) {
-        //
+        viewModel?.decrementCounter(id: id)
     }
     
 }

@@ -2,7 +2,7 @@ import AltairMDKCommon
 
 struct CounterListState {
     var counters: Loadable<[Counter]>
-    var exception: Exception?
+    var exception: CounterException?
     var titleException: String?
     var runningSideEffect: SideEffectTask
 }

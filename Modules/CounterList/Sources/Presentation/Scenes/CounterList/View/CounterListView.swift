@@ -48,8 +48,8 @@ private extension CounterListView {
         
         // MARK: CollectionView Constraint
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor), // CAMBIAR POR EL SEARCHBAR DE AHI
-            collectionView.bottomAnchor.constraint(equalTo: bottomToolbar.bottomAnchor),
+            collectionView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor), // TODO: CAMBIAR POR EL SEARCHBAR DE AHI
+            collectionView.bottomAnchor.constraint(equalTo: bottomToolbar.bottomAnchor), // TODO: ?????
             collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
             collectionView.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor)
