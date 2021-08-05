@@ -11,7 +11,6 @@ final class CounterListView: UIView {
        setupBottonToolbar()
     }()
     
-    
     init() {
         super.init(frame: .zero)
         setupView()
