@@ -56,3 +56,17 @@ final class CounterListViewController: UIViewController {
     }
     
 }
+
+// MARK: Delegates
+
+extension CounterListViewController: CounterCellViewDelegate {
+    
+    func didTapCounterIncremented(id: String) {
+        //
+    }
+    
+    func didTapCounterDecremented(id: String) {
+        //
+    }
+    
+}
