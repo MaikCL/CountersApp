@@ -44,6 +44,7 @@ final class CounterListViewController: UIViewController {
                     print("NEVER LOADED")
                     
                 case .loading:
+                    self.innerView.collectionView.backgroundView = LoadingView()
                     print("LOADING")
                     
                 case .loaded(let results):
