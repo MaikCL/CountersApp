@@ -24,6 +24,7 @@ extension CounterListViewController {
         innerView.collectionView.dataSource = dataSource
     }
     
+    // TODO: Improve with especific item reload
     func applySnapshot(animate: Bool = true) {
         var snapshot = dataSource?.snapshot() ?? Snapshot()
         snapshot.deleteAllItems()
