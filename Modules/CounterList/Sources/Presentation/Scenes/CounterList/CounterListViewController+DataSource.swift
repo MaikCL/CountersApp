@@ -12,6 +12,8 @@ extension CounterListViewController {
     
     func configureDataSource() {
         let counterCell = CounterCellRegistration { cell, _, model in
+            cell.configure(with: model)
+            cell.delegate = self
             let accessories: [UICellAccessory] = [.multiselect(displayed: .whenEditing)]
             cell.accessories = accessories
         }
