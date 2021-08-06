@@ -4,12 +4,14 @@ import Combine
 final class CounterListViewController: UIViewController {
     private var viewModel: CounterListViewModelProtocol?
     private var cancellables = Set<AnyCancellable>()
+    private var animateSnapshot = true
 
     lazy var innerView = CounterListView()
     
     private(set) var counterItems: [CounterModel] = [] {
         didSet {
-            applySnapshot()
+            applySnapshot(animate: animateSnapshot)
+            animateSnapshot = false
         }
     }
     
@@ -62,10 +64,12 @@ final class CounterListViewController: UIViewController {
 extension CounterListViewController: CounterCellViewDelegate {
     
     func didTapCounterIncremented(id: String) {
+        animateSnapshot = false
         viewModel?.incrementCounter(id: id)
     }
     
     func didTapCounterDecremented(id: String) {
+        animateSnapshot = false
         viewModel?.decrementCounter(id: id)
     }
     
