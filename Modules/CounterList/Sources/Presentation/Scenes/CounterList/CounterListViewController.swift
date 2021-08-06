@@ -34,6 +34,7 @@ final class CounterListViewController: UIViewController {
         super.viewDidLoad()
         setupNavigationBar()
         configureDataSource()
+        setupDelegates()
         subscribeViewState()
         viewModel?.fetchCounters()
     }
