@@ -134,6 +134,7 @@ private extension CounterCellView {
             counterStepper.topAnchor.constraint(greaterThanOrEqualTo: titleLabel.bottomAnchor, constant: 17.0),
             counterStepper.bottomAnchor.constraint(equalTo: cellView.bottomAnchor, constant: -14.0),
             counterStepper.trailingAnchor.constraint(equalTo: cellView.trailingAnchor, constant: -14.0),
+            counterStepper.heightAnchor.constraint(equalToConstant: 29.0)
         ])
         
     }
@@ -142,20 +143,20 @@ private extension CounterCellView {
 private extension CounterCellView {
     
     func setupCellView() -> UIView {
-        let view = UIView()
+        let view = UIView(frame: .zero)
         view.backgroundColor = Palette.cellBackground.uiColor
         view.set(cornerRadius: 8.0)
         return view
     }
     
     func setupSeparatorView() -> UIView {
-        let view = UIView()
+        let view = UIView(frame: .zero)
         view.backgroundColor = Palette.background.uiColor
         return view
     }
     
     func setupCounterLabel() -> UILabel {
-        let label = UILabel()
+        let label = UILabel(frame: .zero)
         let fontSize: CGFloat = 24.0
         let systemFont = UIFont.systemFont(ofSize: fontSize, weight: .medium)
         let font: UIFont
@@ -171,7 +172,7 @@ private extension CounterCellView {
     }
     
     func setupTitleLabel() -> UILabel {
-        let label = UILabel()
+        let label = UILabel(frame: .zero)
         label.numberOfLines = 0
         label.font = .systemFont(ofSize: 17.0, weight: .regular)
         label.textColor = Palette.primaryText.uiColor
@@ -179,7 +180,7 @@ private extension CounterCellView {
     }
     
     func setupCounterStepper() -> UIStepper {
-        let stepper = UIStepper()
+        let stepper = UIStepper(frame: .zero)
         stepper.autorepeat = false
         stepper.wraps = false
         stepper.minimumValue = 0

@@ -11,6 +11,10 @@ final class CounterListView: UIView {
        setupBottonToolbar()
     }()
     
+    lazy var refreshControl: UIRefreshControl = {
+        setupRefreshControl()
+    }()
+    
     init() {
         super.init(frame: .zero)
         setupView()
@@ -31,8 +35,10 @@ private extension CounterListView {
     }
     
     func setupSubviews() {
+        addSubview(UIView(frame: .zero))
         addSubview(collectionView)
         addSubview(bottomToolbar)
+        collectionView.addSubview(refreshControl)
         setSubviewForAutoLayout(collectionView)
         setSubviewForAutoLayout(bottomToolbar)
     }
@@ -48,7 +54,7 @@ private extension CounterListView {
         
         // MARK: CollectionView Constraint
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor), // TODO: Put searchbar
+            collectionView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
             collectionView.bottomAnchor.constraint(equalTo: bottomToolbar.bottomAnchor, constant: -44),
             collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
@@ -67,10 +73,15 @@ private extension CounterListView {
     }
     
     func setupBottonToolbar() -> UIToolbar {
-        let toolbar = UIToolbar()
+        let toolbar = UIToolbar(frame: .zero)
         toolbar.tintColor = Palette.accent.uiColor
         toolbar.barTintColor = Palette.main.uiColor
         return toolbar
+    }
+    
+    func setupRefreshControl() -> UIRefreshControl {
+        let control = UIRefreshControl(frame: .zero)
+        return control
     }
     
 }
