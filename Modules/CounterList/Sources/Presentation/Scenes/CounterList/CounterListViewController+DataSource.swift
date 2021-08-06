@@ -32,11 +32,11 @@ extension CounterListViewController {
     }
     
     // TODO: Improve with especific item reload
-    func applySnapshot(animate: Bool = true) {
+    func applySnapshot(items: [CounterModel], animate: Bool = true) {
         var snapshot = dataSource?.snapshot() ?? Snapshot()
         snapshot.deleteAllItems()
         snapshot.appendSections(Section.allCases)
-        snapshot.appendItems(counterItems)
+        snapshot.appendItems(items)
         animate ? dataSource?.apply(snapshot) : UIView.performWithoutAnimation { dataSource?.apply(snapshot) }
     }
 

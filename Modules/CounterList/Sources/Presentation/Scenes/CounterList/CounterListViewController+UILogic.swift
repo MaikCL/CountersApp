@@ -13,6 +13,8 @@ extension CounterListViewController {
     
     func setupDelegates() {
         innerView.collectionView.delegate = self
+        navigationItem.searchController?.searchResultsUpdater = self
+        navigationItem.searchController?.searchBar.delegate = self
     }
     
     func setupTargets() {
