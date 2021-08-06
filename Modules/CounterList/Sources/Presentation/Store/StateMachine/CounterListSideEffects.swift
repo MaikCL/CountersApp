@@ -7,10 +7,12 @@ enum SideEffectTask {
     case whenFetchCounters
     case whenIncrementCounter(Counter)
     case whenDecrementCounter(Counter)
+    case whenSearchCounters(term: String, counters: [Counter])
 }
 
 final class CounterListSideEffects {
     @Injected private var fetchCountersUseCase: FetchCountersUseCaseProtocol
+    @Injected private var searchCounterUseCase: SearchCountersUseCaseProtocol
     @Injected private var incrementCounterUseCase: IncrementCounterUseCaseProtocol
     @Injected private var decrementCounterUseCase: DecrementCounterUseCaseProtocol
     
@@ -59,6 +61,16 @@ final class CounterListSideEffects {
                     guard case let .decrementCounterFailed(exception, _) = input else { return }
                     self.logException(exception)
                 })
+                .eraseToAnyPublisher()
+        }
+    }
+    
+    func whenSearchConters() -> SideEffect<CounterListState, CounterListAction> {
+        SideEffect { state -> AnyPublisher<CounterListAction, Never> in
+            guard case .whenSearchCounters(let term, let counters) = state.runningSideEffect else { return Empty().eraseToAnyPublisher() }
+            return self.searchCounterUseCase
+                .execute(term: term, over: counters)
+                .map { $0.isEmpty ? .searchCountersSuccess($0) : .searchCountersFailed(.noSearchResults) }
                 .eraseToAnyPublisher()
         }
     }

@@ -49,6 +49,30 @@ final class CounterListReducer {
                 currentState.titleException = Locale.exceptionCantUpdateTitle.localized(with: counter.count - 1)
                 currentState.runningSideEffect = .none
                 
+            case .searchCounters(let term, let counters):
+                currentState.exception = .none
+                currentState.titleException = .none
+                currentState.searchedCounters = []
+                currentState.runningSideEffect = .whenSearchCounters(term: term, counters: counters)
+                
+            case .searchCountersSuccess(let results):
+                currentState.exception = .none
+                currentState.titleException = .none
+                currentState.searchedCounters = results
+                currentState.runningSideEffect = .none
+                
+            case .searchCountersFailed(let exception):
+                currentState.exception = exception
+                currentState.titleException = .none
+                currentState.searchedCounters = []
+                currentState.runningSideEffect = .none
+                
+            case .finishSearchCounters:
+                currentState.exception = .none
+                currentState.titleException = .none
+                currentState.searchedCounters = []
+                currentState.runningSideEffect = .none
+                
         }
         return currentState
     }

@@ -4,6 +4,7 @@ struct CounterListState {
     var counters: Loadable<[Counter]>
     var exception: CounterException?
     var titleException: String?
+    var searchedCounters: [Counter]
     var runningSideEffect: SideEffectTask
 }
 
@@ -13,6 +14,7 @@ extension CounterListState {
             counters: .neverLoaded,
             exception: .none,
             titleException: .none,
+            searchedCounters: [],
             runningSideEffect: .none
         )
     }

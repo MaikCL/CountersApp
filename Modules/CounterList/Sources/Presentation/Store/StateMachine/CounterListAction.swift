@@ -12,5 +12,10 @@ enum CounterListAction {
     case decrementCounter(_ counter: Counter)
     case decrementCounterSuccess(_ results: [Counter])
     case decrementCounterFailed(_ exception: CounterException, counter: Counter)
+    
+    case searchCounters(term: String, counters: [Counter])
+    case searchCountersSuccess(_ results: [Counter])
+    case searchCountersFailed(_ exception: CounterException)
+    case finishSearchCounters
 }
 
