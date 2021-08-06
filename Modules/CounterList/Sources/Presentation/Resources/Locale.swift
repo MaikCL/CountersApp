@@ -5,6 +5,9 @@ enum Locale: String {
     /// Counters
     case navigationBarTitle = "navigationBar.title"
     
+    /// Search
+    case searchBarPlaceholder = "searchBar.placeholder"
+    
     /// "Could't delete the counter \"%@\""
     case exceptionCantDeleteTitle = "exception.cantDelete.title"
     

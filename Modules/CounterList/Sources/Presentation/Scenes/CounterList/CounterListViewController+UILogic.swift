@@ -14,6 +14,15 @@ extension CounterListViewController {
         innerView.collectionView.delegate = self
     }
     
+    func setupSearchController() {
+        let searchController = UISearchController(searchResultsController: .none)
+        searchController.obscuresBackgroundDuringPresentation = true
+        searchController.hidesNavigationBarDuringPresentation = true
+        searchController.searchBar.placeholder = Locale.searchBarPlaceholder.localized
+        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).clearButtonMode = .never
+        navigationItem.searchController = searchController
+    }
+    
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
         innerView.collectionView.isEditing = editing

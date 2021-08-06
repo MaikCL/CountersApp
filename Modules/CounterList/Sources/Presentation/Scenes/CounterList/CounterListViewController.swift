@@ -33,6 +33,7 @@ final class CounterListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationBar()
+        setupSearchController()
         configureDataSource()
         setupDelegates()
         subscribeViewState()

@@ -1,4 +1,5 @@
 "navigationBar.title" = "Counters";
+"searchBar.placeholder" = "Search";
 "exception.cantDelete.title" = "Could't delete the counter \"%@\"";
 "exception.cantUpdate.title" = "Couldn't update the \"%@\" counter to %i";
 "exception.cantLoad.title" = "Couldn't load the counters";
