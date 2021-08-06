@@ -19,6 +19,7 @@ final class CounterListStore {
             sideEffects: [
                 sideEffects.whenInput(action: input.eraseToAnyPublisher()),
                 sideEffects.whenFetchCounters(),
+                sideEffects.whenSearchConters(),
                 sideEffects.whenIncrementCounter(),
                 sideEffects.whenDecrementCounter()
             ]
