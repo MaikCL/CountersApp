@@ -7,6 +7,7 @@ struct ViewState {
     var counters: Loadable<[CounterModel]> = .neverLoaded
     var exception: CounterException? = .none
     var titleException: String? = .none
+    var searchedCounters: [CounterModel] = []
 }
 
 protocol CounterListViewModelProtocol {
@@ -16,6 +17,8 @@ protocol CounterListViewModelProtocol {
     func fetchCounters()
     func incrementCounter(id: String)
     func decrementCounter(id: String)
+    func searchCounter(term: String)
+    func finishSearch()
 }
 
 final class CounterListViewModel: CounterListViewModelProtocol {
@@ -47,6 +50,14 @@ final class CounterListViewModel: CounterListViewModelProtocol {
         counterListStore.trigger(.decrementCounter(counter))
     }
     
+    func searchCounter(term: String) {
+        guard case let .loaded(counters) = counterListStore.state.counters else { return }
+        counterListStore.trigger(.searchCounters(term: term, counters: counters))
+    }
+    
+    func finishSearch() {
+        counterListStore.trigger(.finishSearchCounters)
+    }
 }
 
 extension CounterListViewModel {
@@ -58,7 +69,12 @@ extension CounterListViewModel {
             let counters = state.counters.map { CounterListViewModel.mapCounterToCounterModel($0) }
             let exception = state.exception
             let titleException = state.titleException
-            self.viewState = ViewState(counters: counters, exception: exception, titleException: titleException)
+            let searchedCounters = CounterListViewModel.mapCounterToCounterModel(state.searchedCounters)
+            self.viewState = ViewState(
+                counters: counters,
+                exception: exception,
+                titleException: titleException,
+                searchedCounters: searchedCounters)
         }
         .store(in: &cancellables)
     }

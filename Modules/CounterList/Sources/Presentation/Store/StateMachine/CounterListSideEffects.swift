@@ -70,7 +70,7 @@ final class CounterListSideEffects {
             guard case .whenSearchCounters(let term, let counters) = state.runningSideEffect else { return Empty().eraseToAnyPublisher() }
             return self.searchCounterUseCase
                 .execute(term: term, over: counters)
-                .map { $0.isEmpty ? .searchCountersSuccess($0) : .searchCountersFailed(.noSearchResults) }
+                .map { !$0.isEmpty ? .searchCountersSuccess($0) : .searchCountersFailed(.noSearchResults) }
                 .eraseToAnyPublisher()
         }
     }
