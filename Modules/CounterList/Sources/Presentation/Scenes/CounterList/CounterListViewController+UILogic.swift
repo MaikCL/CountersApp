@@ -8,10 +8,15 @@ extension CounterListViewController {
         navigationItem.largeTitleDisplayMode = .always
         navigationItem.leftBarButtonItem = editButtonItem
         navigationItem.leftBarButtonItem?.tintColor = Palette.accent.uiColor
+        extendedLayoutIncludesOpaqueBars = true
     }
     
     func setupDelegates() {
         innerView.collectionView.delegate = self
+    }
+    
+    func setupTargets() {
+        innerView.refreshControl.addTarget(self, action: #selector(refreshCounterList(_:)), for: .valueChanged)
     }
     
     func setupSearchController() {

@@ -1,5 +1,6 @@
 import Combine
 import Resolver
+import Foundation
 import AltairMDKCommon
 
 final class CountersRepository: CountersRepositoryProtocol {
@@ -7,7 +8,7 @@ final class CountersRepository: CountersRepositoryProtocol {
     @Injected private var mapCloudModelToEntity: ([CounterCloudModel]) throws -> [Counter]
     
     func fetchCounters() -> AnyPublisher<[Counter], Error> {
-        return cloudSource.fetchCounters().tryMap { try self.mapCloudModelToEntity($0) }.eraseToAnyPublisher()
+        return cloudSource.fetchCounters().tryMap { try self.mapCloudModelToEntity($0) }.delay(for: 0.2, scheduler: RunLoop.main).eraseToAnyPublisher()
     }
     
     func incrementCounter(id: String) -> AnyPublisher<[Counter], Error> {
