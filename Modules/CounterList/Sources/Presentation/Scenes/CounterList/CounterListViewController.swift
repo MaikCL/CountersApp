@@ -35,8 +35,13 @@ final class CounterListViewController: UIViewController {
         setupNavigationBar()
         setupSearchController()
         configureDataSource()
+        setupTargets()
         setupDelegates()
         subscribeViewState()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         viewModel?.fetchCounters()
     }
     
@@ -48,15 +53,26 @@ final class CounterListViewController: UIViewController {
                     print("NEVER LOADED")
                     
                 case .loading:
-                    self.innerView.collectionView.backgroundView = LoadingView()
                     print("LOADING")
+                    if self.counterItems.isEmpty { self.innerView.collectionView.backgroundView = LoadingView() }
                     
                 case .loaded(let results):
+                    print("LOADED")
                     self.counterItems = results
                     self.innerView.collectionView.backgroundView = .none
+                    if self.innerView.refreshControl.isRefreshing { self.innerView.refreshControl.endRefreshing() }
+
             }
         }
         .store(in: &cancellables)
+    }
+    
+}
+
+extension CounterListViewController {
+    
+    @objc func refreshCounterList(_ sender: Any) {
+        self.viewModel?.fetchCounters()
     }
     
 }
