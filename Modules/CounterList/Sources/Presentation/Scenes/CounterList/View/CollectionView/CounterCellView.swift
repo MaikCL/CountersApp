@@ -29,8 +29,18 @@ class CounterCellView: UICollectionViewListCell {
        setupCounterStepper()
     }()
     
+    var isEditing: Bool = false {
+        didSet {
+            cellViewLeadingConstraint.constant = isEditing ? 18.0 : 0.0
+            setNeedsLayout()
+            layoutIfNeeded()
+            
+        }
+    }
+    
     private var countValue: Int?
     private var counterId: String?
+    private var cellViewLeadingConstraint = NSLayoutConstraint()
     
     weak var delegate: CounterCellViewDelegate?
     
@@ -45,13 +55,6 @@ class CounterCellView: UICollectionViewListCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        setupView()
-        setupSubviews()
-        setupConstraint()
-    }
-    
     func configure(with model: CounterModel) {
         counterId = model.id
         titleLabel.text = model.title
@@ -60,7 +63,6 @@ class CounterCellView: UICollectionViewListCell {
         counterStepper.value = Double(model.count) ?? 0
     }
 
-    
 }
 
 private extension CounterCellView {
@@ -79,8 +81,11 @@ private extension CounterCellView {
 private extension CounterCellView {
     
     func setupView() {
+        backgroundView = UIView(frame: .zero)
+        backgroundView?.backgroundColor = Palette.background.uiColor
+        selectedBackgroundView = UIView(frame: .zero)
+        selectedBackgroundView?.backgroundColor = Palette.background.uiColor
         contentView.backgroundColor = Palette.background.uiColor
-        set(cornerRadius: 8.0)
     }
     
     func setupSubviews() {
@@ -98,10 +103,11 @@ private extension CounterCellView {
     }
     
     func setupConstraint() {
+        cellViewLeadingConstraint = cellView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor)
         NSLayoutConstraint.activate([
+            cellViewLeadingConstraint,
             cellView.topAnchor.constraint(equalTo: contentView.topAnchor),
             cellView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            cellView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             cellView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
         ])
         
@@ -138,6 +144,7 @@ private extension CounterCellView {
     func setupCellView() -> UIView {
         let view = UIView()
         view.backgroundColor = Palette.cellBackground.uiColor
+        view.set(cornerRadius: 8.0)
         return view
     }
     

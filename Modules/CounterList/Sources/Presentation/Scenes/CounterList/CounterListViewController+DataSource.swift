@@ -1,4 +1,5 @@
 import UIKit
+import Design
 
 typealias CounterCellRegistration = UICollectionView.CellRegistration<CounterCellView, CounterModel>
 typealias DataSource = UICollectionViewDiffableDataSource<Section, CounterModel>
@@ -11,10 +12,16 @@ enum Section: Int, CaseIterable {
 extension CounterListViewController {
     
     func configureDataSource() {
+        let accessoryOptions = UICellAccessory.MultiselectOptions(
+            isHidden: false,
+            reservedLayoutWidth: .custom(16.0),
+            tintColor: .none,
+            backgroundColor: .none)
+        
         let counterCell = CounterCellRegistration { cell, _, model in
             cell.configure(with: model)
             cell.delegate = self
-            let accessories: [UICellAccessory] = [.multiselect(displayed: .whenEditing)]
+            let accessories: [UICellAccessory] = [.multiselect(displayed: .whenEditing, options: accessoryOptions)]
             cell.accessories = accessories
         }
         
@@ -30,7 +37,7 @@ extension CounterListViewController {
         snapshot.deleteAllItems()
         snapshot.appendSections(Section.allCases)
         snapshot.appendItems(counterItems)
-        dataSource?.apply(snapshot, animatingDifferences: animate)
+        animate ? dataSource?.apply(snapshot) : UIView.performWithoutAnimation { dataSource?.apply(snapshot) }
     }
 
 }
