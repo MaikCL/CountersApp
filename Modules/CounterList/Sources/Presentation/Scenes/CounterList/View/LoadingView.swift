@@ -39,7 +39,6 @@ private extension LoadingView {
         ])
     }
     
-    
 }
 
 private extension LoadingView {

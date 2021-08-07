@@ -62,6 +62,7 @@ final class CounterListViewController: UIViewController {
             }
             
             // TODO: Missing Exception behavior
+            // Specially change update status to cell when update fail
         }
         .store(in: &cancellables)
     }
@@ -69,14 +70,12 @@ final class CounterListViewController: UIViewController {
     func applyListStateBehavior(state: Loadable<[CounterModel]>) {
         switch state {
             case .neverLoaded:
-                print("NEVER LOADED")
+                break
                 
             case .loading:
-                print("LOADING")
                 if counterItems.isEmpty { innerView.collectionView.backgroundView = LoadingView() }
                 
             case .loaded(let results):
-                print("LOADED")
                 counterItems = results
                 innerView.collectionView.backgroundView = .none
                 if innerView.refreshControl.isRefreshing { innerView.refreshControl.endRefreshing() }
