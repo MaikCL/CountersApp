@@ -12,13 +12,9 @@ extension CounterListViewController {
     }
     
     func setupDelegates() {
-        innerView.collectionView.delegate = self
+        innerView.delegate = self
         navigationItem.searchController?.searchResultsUpdater = self
         navigationItem.searchController?.searchBar.delegate = self
-    }
-    
-    func setupTargets() {
-        innerView.refreshControl.addTarget(self, action: #selector(refreshCounterList(_:)), for: .valueChanged)
     }
     
     func setupSearchController() {
@@ -32,23 +28,8 @@ extension CounterListViewController {
     
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
-        innerView.collectionView.isEditing = editing
-        innerView.collectionView.allowsMultipleSelectionDuringEditing = editing
-        innerView.collectionView.indexPathsForVisibleItems.forEach { indexPath in
-            guard let cell = innerView.collectionView.cellForItem(at: indexPath) as? CounterCellView else { return }
-            UIView.animate(withDuration: 0.3) {
-                cell.isEditing = editing
-            }
-        }
-    }
-    
-}
-
-extension CounterListViewController: UICollectionViewDelegate {
-    
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        guard let cell = cell as? CounterCellView else { return }
-        cell.isEditing = isEditing
+        innerView.isEditMode = editing
+        navigationItem.rightBarButtonItem = editing ? innerView.selectAllCounterButtonItem : .none
     }
     
 }

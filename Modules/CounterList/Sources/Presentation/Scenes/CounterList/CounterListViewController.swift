@@ -42,7 +42,6 @@ final class CounterListViewController: UIViewController {
         setupNavigationBar()
         setupSearchController()
         configureDataSource()
-        setupTargets()
         setupDelegates()
         subscribeViewState()
     }
@@ -88,11 +87,24 @@ final class CounterListViewController: UIViewController {
     
 }
 
-extension CounterListViewController {
+extension CounterListViewController: CounterListViewDelegate {
     
-    @objc func refreshCounterList(_ sender: Any) {
+    func didRefreshCounterList() {
         self.viewModel?.fetchCounters()
     }
+    
+    func didTapAddCounterButton() {
+        //
+    }
+    
+    func didTapShareCounterButton(selectedItems: [IndexPath]) {
+        //
+    }
+    
+    func didTapDeleteCounterButton(selectedItems: [IndexPath]) {
+        //
+    }
+    
     
 }
 

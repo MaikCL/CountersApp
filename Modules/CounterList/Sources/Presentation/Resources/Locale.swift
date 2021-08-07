@@ -17,6 +17,9 @@ enum Locale: String {
     /// Couldn't load the counters
     case exceptionCantLoadTitle = "exception.cantLoad.title"
     
+    /// Select All
+    case barButtonItemSelectAll = "barButtonItem.selectAll.title"
+     
 }
 
 extension Locale {

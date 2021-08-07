@@ -3,3 +3,4 @@
 "exception.cantDelete.title" = "Could't delete the counter \"%@\"";
 "exception.cantUpdate.title" = "Couldn't update the \"%@\" counter to %i";
 "exception.cantLoad.title" = "Couldn't load the counters";
+"barButtonItem.selectAll.title" = "Select All";
