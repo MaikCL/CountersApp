@@ -3,12 +3,15 @@ import Design
 
 extension CounterListViewController {
     
-    func setupNavigationBar() {
+    func setupNavigationComponents() {
         self.title = Locale.navigationBarTitle.localized
+        editButtonItem.isEnabled = false
+        extendedLayoutIncludesOpaqueBars = true
         navigationItem.largeTitleDisplayMode = .always
         navigationItem.leftBarButtonItem = editButtonItem
-        navigationItem.leftBarButtonItem?.tintColor = Palette.accent.uiColor
-        extendedLayoutIncludesOpaqueBars = true
+        toolbarItems = setupToolbar()
+        navigationController?.isToolbarHidden = false
+        navigationController?.toolbar.tintColor = Palette.accent.uiColor
     }
     
     func setupDelegates() {
@@ -29,7 +32,58 @@ extension CounterListViewController {
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
         innerView.isEditMode = editing
-        navigationItem.rightBarButtonItem = editing ? innerView.selectAllCounterButtonItem : .none
+        navigationItem.rightBarButtonItem = editing ? setupSelectAllCounterButtonItem() : .none
+        if editing {
+            toolbarItems = setupToolbarEditMode()
+        } else {
+            toolbarItems = setupToolbar()
+            updateCounterResumeToolbar(counters: counterItems)
+        }
+
     }
     
+    func setupSelectAllCounterButtonItem() -> UIBarButtonItem {
+        return UIBarButtonItem(title: Locale.barButtonItemSelectAll.localized, style: .plain, target: self, action: #selector(selectAllButtonAction(_:)))
+    }
+    
+    func setupToolbarEditMode() -> [UIBarButtonItem] {
+        let deleteButtonItem = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(deleteButtonAction(_:)))
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
+        let actionButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(actionButtonAction(_:)))
+        return [deleteButtonItem, flexibleSpace, actionButtonItem]
+    }
+    
+    func setupToolbar() -> [UIBarButtonItem] {
+        let counterResumeLabel = UILabel(frame: .zero)
+        counterResumeLabel.font = .systemFont(ofSize: 15, weight: .regular)
+        counterResumeLabel.textColor = Palette.secondaryText.uiColor
+        counterResumeLabel.backgroundColor = .clear
+        counterResumeLabel.textAlignment = .natural
+        counterResumeLabel.isEnabled = false
+        
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
+        let addButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonAction(_:)))
+        let counterResumeItem = UIBarButtonItem(customView: counterResumeLabel)
+        counterResumeItem.tag = 1
+
+        return [flexibleSpace, counterResumeItem, flexibleSpace, addButtonItem]
+    }
+    
+    func updateCounterResumeToolbar(counters: [CounterModel]) {
+        guard
+            let counterResumeItemIndex = toolbarItems?.firstIndex(where: { $0.tag == 1 }),
+            let toolbarResumeItem = toolbarItems?[counterResumeItemIndex],
+            let resumeLabel = toolbarResumeItem.customView as? UILabel
+        else { return }
+        
+        if !counters.isEmpty {
+            let accumulatedCount = counters.compactMap { Int($0.count) }.reduce(0, +)
+            resumeLabel.text = Locale.toolbarCounterResume.localized(with: counters.count, accumulatedCount)
+            resumeLabel.sizeToFit()
+        } else {
+            resumeLabel.text = ""
+        }
+    }
 }
+
+

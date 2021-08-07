@@ -5,7 +5,6 @@ final class CounterListReducer {
     static func reduce(_ state: CounterListState, _ action: CounterListAction) -> CounterListState {
         let semaphore = DispatchSemaphore(value: 0)
         var currentState = state
-        
         switch action {
             case .fetchCounters:
                 currentState.counters = .loading
@@ -90,6 +89,24 @@ final class CounterListReducer {
                 currentState.runningSideEffect = .none
                 semaphore.signal()
                 
+            case .deleteCounter(let counter):
+                currentState.exception = .none
+                currentState.titleException = .none
+                currentState.runningSideEffect = .whenDeleteCounter(counter)
+                semaphore.signal()
+                
+            case .deleteCounterSuccess(let results):
+                currentState.counters = .loaded(results)
+                currentState.exception = .none
+                currentState.titleException = .none
+                currentState.runningSideEffect = .none
+                semaphore.signal()
+                
+            case .deleteCounterFailed(let exception, let counter):
+                currentState.exception = exception
+                currentState.titleException = Locale.exceptionCantDeleteTitle.localized(with: counter.title)
+                currentState.runningSideEffect = .none
+                semaphore.signal()
         }
         semaphore.wait()
         return currentState

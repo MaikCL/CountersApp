@@ -15,6 +15,7 @@ protocol CounterListViewModelProtocol {
     var statePublisher: Published<ViewState>.Publisher { get }
     
     func fetchCounters()
+    func deleteCounter(id: String)
     func incrementCounter(id: String)
     func decrementCounter(id: String)
     func searchCounter(term: String)
@@ -38,15 +39,18 @@ final class CounterListViewModel: CounterListViewModelProtocol {
         counterListStore.trigger(.fetchCounters)
     }
     
+    func deleteCounter(id: String) {
+        guard let counter = findCounter(by: id) else { return }
+        counterListStore.trigger(.deleteCounter(counter))
+    }
+    
     func incrementCounter(id: String) {
-        guard case let .loaded(counters) = counterListStore.state.counters else { return }
-        guard let counter = counters.first(where: { $0.id == id }) else { return }
+        guard let counter = findCounter(by: id) else { return }
         counterListStore.trigger(.incrementCounter(counter))
     }
     
     func decrementCounter(id: String) {
-        guard case let .loaded(counters) = counterListStore.state.counters else { return }
-        guard let counter = counters.first(where: { $0.id == id }) else { return }
+        guard let counter = findCounter(by: id) else { return }
         counterListStore.trigger(.decrementCounter(counter))
     }
     
@@ -62,6 +66,14 @@ final class CounterListViewModel: CounterListViewModelProtocol {
 
 extension CounterListViewModel {
     @Injected static var mapCounterToCounterModel: ([Counter]) -> [CounterModel]
+    
+    private func findCounter(by id: String) -> Counter? {
+        guard
+            case let .loaded(counters) = counterListStore.state.counters,
+            let counter = counters.first(where: { $0.id == id })
+        else { return nil }
+        return counter
+    }
     
     private func setupViewState() {
         counterListStore.$state.receive(on: DispatchQueue.main).sink { [weak self] state in

@@ -9,13 +9,15 @@ final class CounterListViewController: UIViewController {
 
     lazy var innerView = CounterListView()
     
-    private(set) var counterItems: [CounterModel] = [] {
+    private(set) var counterItems = [CounterModel]() {
         didSet {
+            editButtonItem.isEnabled = counterItems.isEmpty ? false : true
+            updateCounterResumeToolbar(counters: counterItems)
             applySnapshot(items: counterItems, animate: animateUpdate)
         }
     }
     
-    private(set) var searchedItems: [CounterModel] = [] {
+    private(set) var searchedItems = [CounterModel]() {
         didSet {
             applySnapshot(items: searchedItems, animate: animateUpdate)
         }
@@ -39,7 +41,7 @@ final class CounterListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupNavigationBar()
+        setupNavigationComponents()
         setupSearchController()
         configureDataSource()
         setupDelegates()
@@ -93,18 +95,36 @@ extension CounterListViewController: CounterListViewDelegate {
         self.viewModel?.fetchCounters()
     }
     
-    func didTapAddCounterButton() {
-        //
+}
+
+extension CounterListViewController {
+    
+    @objc func addButtonAction(_ sender: Any) {
+        // TODO: Make the AddCounter module
     }
     
-    func didTapShareCounterButton(selectedItems: [IndexPath]) {
-        //
+    @objc func actionButtonAction(_ sender: Any) {
+        var countersSelected = [String]()
+        innerView.collectionView.indexPathsForSelectedItems?.forEach { indexPath in
+            let counter = counterItems[indexPath.row]
+            countersSelected.append("\(counter.count) x \(counter.title)")
+        }
+
+        print("")
+        // TODO: Coordinate to ActivityVC
     }
     
-    func didTapDeleteCounterButton(selectedItems: [IndexPath]) {
-        //
+    @objc func deleteButtonAction(_ sender: Any) {
+        var countersSelected = [String]()
+        innerView.collectionView.indexPathsForSelectedItems?.forEach { countersSelected.append(counterItems[$0.row].id) }
+        countersSelected.forEach { viewModel?.deleteCounter(id: $0) }
     }
     
+    @objc func selectAllButtonAction(_ sender: Any) {
+        for row in 0..<innerView.collectionView.numberOfItems(inSection: Section.main.rawValue) {
+            innerView.collectionView.selectItem(at: IndexPath(row: row, section: Section.main.rawValue), animated: false, scrollPosition: .centeredHorizontally)
+        }
+    }
     
 }
 

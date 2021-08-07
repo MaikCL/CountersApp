@@ -4,3 +4,4 @@
 "exception.cantUpdate.title" = "Couldn't update the \"%@\" counter to %i";
 "exception.cantLoad.title" = "Couldn't load the counters";
 "barButtonItem.selectAll.title" = "Select All";
+"toolbar.counterResume.text" = "%i items \U2022 Counted %i times";
