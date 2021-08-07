@@ -19,6 +19,9 @@ enum Locale: String {
     
     /// Select All
     case barButtonItemSelectAll = "barButtonItem.selectAll.title"
+    
+    /// %i items \{U+2022} Counted %i times
+    case toolbarCounterResume = "toolbar.counterResume.text"
      
 }
 

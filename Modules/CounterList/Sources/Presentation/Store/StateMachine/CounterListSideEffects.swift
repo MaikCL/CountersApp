@@ -5,6 +5,7 @@ import AltairMDKCommon
 enum SideEffectTask {
     case none
     case whenFetchCounters
+    case whenDeleteCounter(Counter)
     case whenIncrementCounter(Counter)
     case whenDecrementCounter(Counter)
     case whenSearchCounters(term: String, counters: [Counter])
@@ -12,6 +13,7 @@ enum SideEffectTask {
 
 final class CounterListSideEffects {
     @Injected private var fetchCountersUseCase: FetchCountersUseCaseProtocol
+    @Injected private var deleteCounterUseCase: DeleteCounterUseCaseProtocol
     @Injected private var searchCounterUseCase: SearchCountersUseCaseProtocol
     @Injected private var incrementCounterUseCase: IncrementCounterUseCaseProtocol
     @Injected private var decrementCounterUseCase: DecrementCounterUseCaseProtocol
@@ -29,6 +31,21 @@ final class CounterListSideEffects {
                 .replaceError(with: .fetchCountersFailed(.cantLoadCounters))
                 .handleEvents(receiveOutput: { input in
                     guard case let .fetchCountersFailed(exception) = input else { return }
+                    self.logException(exception)
+                })
+                .eraseToAnyPublisher()
+        }
+    }
+    
+    func whenDeleteCounter() -> SideEffect<CounterListState, CounterListAction> {
+        SideEffect { state -> AnyPublisher<CounterListAction, Never> in
+            guard case .whenDeleteCounter(let counter) = state.runningSideEffect else { return Empty().eraseToAnyPublisher() }
+            return self.deleteCounterUseCase
+                .execute(id: counter.id)
+                .map { CounterListAction.deleteCounterSuccess($0) }
+                .replaceError(with: CounterListAction.deleteCounterFailed(.cantDeleteCounter, counter: counter))
+                .handleEvents(receiveOutput: { input in
+                    guard case let .deleteCounterFailed(exception, _) = input else { return }
                     self.logException(exception)
                 })
                 .eraseToAnyPublisher()

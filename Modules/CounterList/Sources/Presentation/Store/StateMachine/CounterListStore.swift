@@ -19,9 +19,10 @@ final class CounterListStore {
             sideEffects: [
                 sideEffects.whenInput(action: input.eraseToAnyPublisher()),
                 sideEffects.whenFetchCounters(),
+                sideEffects.whenDeleteCounter(),
                 sideEffects.whenSearchConters(),
                 sideEffects.whenIncrementCounter(),
-                sideEffects.whenDecrementCounter()
+                sideEffects.whenDecrementCounter(),
             ]
         )
         .assignNoRetain(to: \.state, on: self)
