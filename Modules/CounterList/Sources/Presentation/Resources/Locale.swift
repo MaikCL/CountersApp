@@ -7,22 +7,40 @@ enum Locale: String {
     
     /// Search
     case searchBarPlaceholder = "searchBar.placeholder"
-    
-    /// "Could't delete the counter \"%@\""
-    case exceptionCantDeleteTitle = "exception.title.cantDelete"
-    
-    /// Couldn't update the \"%@\" counter to %@
-    case exceptionCantUpdateTitle = "exception.title.cantUpdate"
-    
-    /// Couldn't load the counters
-    case exceptionCantLoadTitle = "exception.title.cantLoad"
-    
+
     /// Select All
     case barButtonItemSelectAll = "buttonItem.title.selectAll"
     
     /// %i items \{U+2022} Counted %i times
     case toolbarCounterResume = "toolbar.counterResume"
-     
+   
+    /// "No counters yet"
+    case exceptionTitleNoCountersYet = "exception.title.noCountersYet"
+    
+    /// "Couldn't load the counters"
+    case exceptionTitleCantLoad = "exception.title.cantLoad"
+    
+    /// "Could't delete the counter \"%@\"";
+    case exceptionTitleCantDelete = "exception.title.cantDelete"
+    
+    /// "Couldn't update the \"%@\" counter to %i"
+    case exceptionTitleCantUpdate = "exception.title.cantUpdate"
+    
+    /// "\"When I started counting my blessings, my whole life turned around.\"\n—Willie Nelson"
+    case exceptionMessageNoCountersYet = "exception.message.noCountersYet"
+    
+    /// "The Internet connection appears to be offline";
+    case exceptionMessageCantLoad = "exception.message.cantLoad"
+    
+    /// "The Internet connection appears to be offline";
+    case exceptionMessageCantDelete = "exception.message.cantDelete"
+    
+    /// "The Internet connection appears to be offline"
+    case exceptionMessageCantUpdate = "exception.message.cantUpdate"
+    
+    /// No Results
+    case exceptionMessageNoSearchResult = "exception.message.noSearchResult"
+    
 }
 
 extension Locale {
