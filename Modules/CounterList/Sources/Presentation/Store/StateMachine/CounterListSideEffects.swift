@@ -5,7 +5,7 @@ import AltairMDKCommon
 enum SideEffectTask {
     case none
     case whenFetchCounters
-    case whenDeleteCounter(Counter)
+    case whenDeleteCounters([Counter])
     case whenIncrementCounter(Counter)
     case whenDecrementCounter(Counter)
     case whenSearchCounters(term: String, counters: [Counter])
@@ -39,15 +39,32 @@ final class CounterListSideEffects {
     
     func whenDeleteCounter() -> SideEffect<CounterListState, CounterListAction> {
         SideEffect { state -> AnyPublisher<CounterListAction, Never> in
-            guard case .whenDeleteCounter(let counter) = state.runningSideEffect else { return Empty().eraseToAnyPublisher() }
-            return self.deleteCounterUseCase
-                .execute(id: counter.id)
-                .map { CounterListAction.deleteCounterSuccess($0) }
-                .replaceError(with: CounterListAction.deleteCounterFailed(.cantDeleteCounter, counter: counter))
-                .handleEvents(receiveOutput: { input in
-                    guard case let .deleteCounterFailed(exception, _) = input else { return }
-                    self.logException(exception)
-                })
+            guard case .whenDeleteCounters(let counters) = state.runningSideEffect else { return Empty().eraseToAnyPublisher() }
+            let publishers = counters.compactMap { counter -> AnyPublisher<Result<[Counter], Error>, Never> in
+                self.deleteCounterUseCase
+                    .execute(id: counter.id)
+                    .map { .success($0) }
+                    .catch { Just(.failure($0)) }
+                    .handleEvents(receiveOutput: { input in
+                        guard case let .failure(error) = input else { return }
+                        self.logException(CounterException.some(error))
+                    })
+                    .eraseToAnyPublisher()
+            }
+            
+            return Publishers.MergeMany(publishers)
+                .collect()
+                .map { publishersResults in
+                    let lastResult = try? publishersResults.last(where: { $0.isSuccess })?.get()
+                    let exception = publishersResults.first(where: { $0.isFailure }) == nil ? nil : CounterException.cantDeleteCounter
+                    var countersNotDeleted = [Counter]()
+                    if let lastResult = lastResult {
+                        let countersToDelete: Set<Counter> = Set(counters)
+                        let countersLastResult: Set<Counter> = Set(lastResult)
+                        countersNotDeleted = Array(countersToDelete.intersection(countersLastResult))
+                    }
+                    return .deleteCountersCompleted(results: lastResult, notDeleted: countersNotDeleted, exception: exception)
+                }
                 .eraseToAnyPublisher()
         }
     }

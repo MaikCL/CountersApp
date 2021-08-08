@@ -88,25 +88,22 @@ final class CounterListReducer {
                 currentState.searchedCounters = []
                 currentState.runningSideEffect = .none
                 semaphore.signal()
-                
-            case .deleteCounter(let counter):
+            
+            case .deleteCounters(let counters):
                 currentState.exception = .none
                 currentState.titleException = .none
-                currentState.runningSideEffect = .whenDeleteCounter(counter)
+                currentState.runningSideEffect = .whenDeleteCounters(counters)
                 semaphore.signal()
                 
-            case .deleteCounterSuccess(let results):
-                currentState.counters = .loaded(results)
-                currentState.exception = .none
-                currentState.titleException = .none
-                currentState.runningSideEffect = .none
-                semaphore.signal()
-                
-            case .deleteCounterFailed(let exception, let counter):
+            case .deleteCountersCompleted(let results, let notDeleted, let exception):
                 currentState.exception = exception
-                currentState.titleException = Locale.exceptionCantDeleteTitle.localized(with: counter.title)
                 currentState.runningSideEffect = .none
+                if let results = results { currentState.counters = .loaded(results) }
+                if exception != nil {
+                    currentState.titleException = Locale.exceptionCantDeleteTitle.localized(with: notDeleted.reduce("") { $0 + ", " + $1.title })
+                }
                 semaphore.signal()
+                
         }
         semaphore.wait()
         return currentState

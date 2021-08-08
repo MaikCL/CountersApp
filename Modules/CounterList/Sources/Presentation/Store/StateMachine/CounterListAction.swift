@@ -18,8 +18,7 @@ enum CounterListAction {
     case searchCountersFailed(_ exception: CounterException)
     case finishSearchCounters
     
-    case deleteCounter(_ counter: Counter)
-    case deleteCounterSuccess(_ results: [Counter])
-    case deleteCounterFailed(_ exception: CounterException, counter: Counter)
+    case deleteCounters(_ counters: [Counter])
+    case deleteCountersCompleted(results: [Counter]?, notDeleted: [Counter], exception: CounterException?)
 }
 

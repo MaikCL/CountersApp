@@ -11,6 +11,7 @@ final class CounterListViewController: UIViewController {
     
     private(set) var counterItems = [CounterModel]() {
         didSet {
+            counterItems.isEmpty { isEditing = false }
             editButtonItem.isEnabled = counterItems.isEmpty ? false : true
             updateCounterResumeToolbar(counters: counterItems)
             applySnapshot(items: counterItems, animate: animateUpdate)
@@ -104,20 +105,18 @@ extension CounterListViewController {
     }
     
     @objc func actionButtonAction(_ sender: Any) {
-        var countersSelected = [String]()
+        var countersInfo = [String]()
         innerView.collectionView.indexPathsForSelectedItems?.forEach { indexPath in
             let counter = counterItems[indexPath.row]
-            countersSelected.append("\(counter.count) x \(counter.title)")
+            countersInfo.append("\(counter.count) x \(counter.title)")
         }
-
-        print("")
         // TODO: Coordinate to ActivityVC
     }
     
     @objc func deleteButtonAction(_ sender: Any) {
-        var countersSelected = [String]()
-        innerView.collectionView.indexPathsForSelectedItems?.forEach { countersSelected.append(counterItems[$0.row].id) }
-        countersSelected.forEach { viewModel?.deleteCounter(id: $0) }
+        var selectedIds = [String]()
+        innerView.collectionView.indexPathsForSelectedItems?.forEach { selectedIds.append(counterItems[$0.row].id) }
+        viewModel?.deleteCounters(ids: selectedIds)
     }
     
     @objc func selectAllButtonAction(_ sender: Any) {
