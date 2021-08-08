@@ -6,7 +6,6 @@ import AltairMDKCommon
 struct ViewState {
     var counters: Loadable<[CounterModel]> = .neverLoaded
     var exception: CounterException? = .none
-    var titleException: String? = .none
     var searchedCounters: [CounterModel] = []
 }
 
@@ -87,12 +86,10 @@ extension CounterListViewModel {
             guard let self = self else { return }
             let counters = state.counters.map { CounterListViewModel.mapCounterToCounterModel($0) }
             let exception = state.exception
-            let titleException = state.titleException
             let searchedCounters = CounterListViewModel.mapCounterToCounterModel(state.searchedCounters)
             self.viewState = ViewState(
                 counters: counters,
                 exception: exception,
-                titleException: titleException,
                 searchedCounters: searchedCounters)
         }
         .store(in: &cancellables)

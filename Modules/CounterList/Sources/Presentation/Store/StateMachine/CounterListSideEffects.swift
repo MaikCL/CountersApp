@@ -46,8 +46,8 @@ final class CounterListSideEffects {
                     .map { .success($0) }
                     .catch { Just(.failure($0)) }
                     .handleEvents(receiveOutput: { input in
-                        guard case let .failure(error) = input else { return }
-                        self.logException(CounterException.some(error))
+                        guard case .failure = input else { return }
+                        self.logException(CounterException.cantDeleteCounters(counters))
                     })
                     .eraseToAnyPublisher()
             }
@@ -56,15 +56,16 @@ final class CounterListSideEffects {
                 .collect()
                 .map { publishersResults in
                     let lastResult = try? publishersResults.last(where: { $0.isSuccess })?.get()
-                    var exception = publishersResults.first(where: { $0.isFailure }) == nil ? nil : CounterException.cantDeleteCounter
-                    var countersNotDeleted = [Counter]()
+                    var exception: CounterException?
+                    var countersNotDeleted = counters
                     if let lastResult = lastResult {
                         if lastResult.isEmpty { exception = .noCountersYet }
                         let countersToDelete: Set<Counter> = Set(counters)
                         let countersLastResult: Set<Counter> = Set(lastResult)
                         countersNotDeleted = Array(countersToDelete.intersection(countersLastResult))
                     }
-                    return .deleteCountersCompleted(results: lastResult, notDeleted: countersNotDeleted, exception: exception)
+                    exception = publishersResults.first(where: { $0.isFailure }) == nil ? nil : CounterException.cantDeleteCounters(countersNotDeleted)
+                    return .deleteCountersCompleted(results: lastResult, exception: exception)
                 }
                 .eraseToAnyPublisher()
         }
@@ -76,9 +77,9 @@ final class CounterListSideEffects {
             return self.incrementCounterUseCase
                 .execute(id: counter.id)
                 .map { .incrementCounterSuccess($0) }
-                .replaceError(with: .incrementCounterFailed(.cantIncrementCounter, counter: counter))
+                .replaceError(with: .incrementCounterFailed(.cantIncrementCounter(counter)))
                 .handleEvents(receiveOutput: { input in
-                    guard case let .incrementCounterFailed(exception, _) = input else { return }
+                    guard case let .incrementCounterFailed(exception) = input else { return }
                     self.logException(exception)
                 })
                 .eraseToAnyPublisher()
@@ -91,9 +92,9 @@ final class CounterListSideEffects {
             return self.decrementCounterUseCase
                 .execute(id: counter.id)
                 .map { .decrementCounterSuccess($0) }
-                .replaceError(with: .decrementCounterFailed(.cantDecrementCounter, counter: counter))
+                .replaceError(with: .decrementCounterFailed(.cantDecrementCounter(counter)))
                 .handleEvents(receiveOutput: { input in
-                    guard case let .decrementCounterFailed(exception, _) = input else { return }
+                    guard case let .decrementCounterFailed(exception) = input else { return }
                     self.logException(exception)
                 })
                 .eraseToAnyPublisher()
@@ -116,6 +117,9 @@ extension CounterListSideEffects {
     
     // TODO: Improve later with LoggerProvider
     private func logException(_ exception: Exception) {
+        // Disclaimer: Eventually the exception can be logged in more detail if the error actions are handled as exceptions type.
+        // In order to make the error handling simpler for this test, all the exceptions are cast to the generic "internet appear offline" message.
+        // But is easly change that behavior ;)
         print("A SideEffect exception occurred: [\(exception.code)] \(exception.localizedDescription)")
     }
 

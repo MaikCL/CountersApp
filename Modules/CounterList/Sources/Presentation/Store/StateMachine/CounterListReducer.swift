@@ -9,21 +9,18 @@ final class CounterListReducer {
             case .fetchCounters:
                 currentState.counters = .loading
                 currentState.exception = .none
-                currentState.titleException = .none
                 currentState.runningSideEffect = .whenFetchCounters
                 semaphore.signal()
                 
             case .fetchCountersSuccess(let results):
                 currentState.counters = .loaded(results)
                 currentState.exception = .none
-                currentState.titleException = .none
                 currentState.runningSideEffect = .none
                 semaphore.signal()
                 
             case .fetchCountersFailed(let exception):
                 currentState.counters = .neverLoaded
                 currentState.exception = exception
-                currentState.titleException = Locale.exceptionCantLoadTitle.localized
                 currentState.runningSideEffect = .none
                 semaphore.signal()
                 
@@ -34,13 +31,11 @@ final class CounterListReducer {
             case .incrementCounterSuccess(let results):
                 currentState.counters = .loaded(results)
                 currentState.exception = .none
-                currentState.titleException = .none
                 currentState.runningSideEffect = .none
                 semaphore.signal()
                 
-            case .incrementCounterFailed(let exception, let counter):
+            case .incrementCounterFailed(let exception):
                 currentState.exception = exception
-                currentState.titleException = Locale.exceptionCantUpdateTitle.localized(with: counter.count + 1)
                 currentState.runningSideEffect = .none
                 semaphore.signal()
                 
@@ -51,57 +46,47 @@ final class CounterListReducer {
             case .decrementCounterSuccess(let results):
                 currentState.counters = .loaded(results)
                 currentState.exception = .none
-                currentState.titleException = .none
                 currentState.runningSideEffect = .none
                 semaphore.signal()
                 
-            case .decrementCounterFailed(let exception, let counter):
+            case .decrementCounterFailed(let exception):
                 currentState.exception = exception
-                currentState.titleException = Locale.exceptionCantUpdateTitle.localized(with: counter.count - 1)
                 currentState.runningSideEffect = .none
                 semaphore.signal()
                 
             case .searchCounters(let term, let counters):
                 currentState.exception = .none
-                currentState.titleException = .none
                 currentState.searchedCounters = []
                 currentState.runningSideEffect = .whenSearchCounters(term: term, counters: counters)
                 semaphore.signal()
                 
             case .searchCountersSuccess(let results):
                 currentState.exception = .none
-                currentState.titleException = .none
                 currentState.searchedCounters = results
                 currentState.runningSideEffect = .none
                 semaphore.signal()
                 
             case .searchCountersFailed(let exception):
                 currentState.exception = exception
-                currentState.titleException = .none
                 currentState.searchedCounters = []
                 currentState.runningSideEffect = .none
                 semaphore.signal()
                 
             case .finishSearchCounters:
                 currentState.exception = .none
-                currentState.titleException = .none
                 currentState.searchedCounters = []
                 currentState.runningSideEffect = .none
                 semaphore.signal()
             
             case .deleteCounters(let counters):
                 currentState.exception = .none
-                currentState.titleException = .none
                 currentState.runningSideEffect = .whenDeleteCounters(counters)
                 semaphore.signal()
                 
-            case .deleteCountersCompleted(let results, let notDeleted, let exception):
+            case .deleteCountersCompleted(let results, let exception):
                 currentState.exception = exception
                 currentState.runningSideEffect = .none
                 if let results = results { currentState.counters = .loaded(results) }
-                if exception != nil {
-                    currentState.titleException = Locale.exceptionCantDeleteTitle.localized(with: notDeleted.reduce("") { $0 + ", " + $1.title })
-                }
                 semaphore.signal()
                 
         }
