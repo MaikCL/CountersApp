@@ -9,19 +9,19 @@ enum Locale: String {
     case searchBarPlaceholder = "searchBar.placeholder"
     
     /// "Could't delete the counter \"%@\""
-    case exceptionCantDeleteTitle = "exception.cantDelete.title"
+    case exceptionCantDeleteTitle = "exception.title.cantDelete"
     
     /// Couldn't update the \"%@\" counter to %@
-    case exceptionCantUpdateTitle = "exception.cantUpdate.title"
+    case exceptionCantUpdateTitle = "exception.title.cantUpdate"
     
     /// Couldn't load the counters
-    case exceptionCantLoadTitle = "exception.cantLoad.title"
+    case exceptionCantLoadTitle = "exception.title.cantLoad"
     
     /// Select All
-    case barButtonItemSelectAll = "barButtonItem.selectAll.title"
+    case barButtonItemSelectAll = "buttonItem.title.selectAll"
     
     /// %i items \{U+2022} Counted %i times
-    case toolbarCounterResume = "toolbar.counterResume.text"
+    case toolbarCounterResume = "toolbar.counterResume"
      
 }
 

@@ -47,7 +47,7 @@ extension CounterException: Exception {
             case .unknown:
                 return "An unknown exception has occurred"
             case .noCountersYet:
-                return "The Internet connection appears to be offline"
+                return "\"When I started counting my blessings, my whole life turned around.\"\n—Willie Nelson"
             case .cantLoadCounters:
                 return "The Internet connection appears to be offline"
             case .cantIncrementCounter:

@@ -1,4 +1,5 @@
 import UIKit
+import Design
 import Combine
 import AltairMDKCommon
 
@@ -11,7 +12,7 @@ final class CounterListViewController: UIViewController {
     
     private(set) var counterItems = [CounterModel]() {
         didSet {
-            counterItems.isEmpty { isEditing = false }
+            if counterItems.isEmpty { isEditing = false }
             editButtonItem.isEnabled = counterItems.isEmpty ? false : true
             updateCounterResumeToolbar(counters: counterItems)
             applySnapshot(items: counterItems, animate: animateUpdate)
