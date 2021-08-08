@@ -56,9 +56,10 @@ final class CounterListSideEffects {
                 .collect()
                 .map { publishersResults in
                     let lastResult = try? publishersResults.last(where: { $0.isSuccess })?.get()
-                    let exception = publishersResults.first(where: { $0.isFailure }) == nil ? nil : CounterException.cantDeleteCounter
+                    var exception = publishersResults.first(where: { $0.isFailure }) == nil ? nil : CounterException.cantDeleteCounter
                     var countersNotDeleted = [Counter]()
                     if let lastResult = lastResult {
+                        if lastResult.isEmpty { exception = .noCountersYet }
                         let countersToDelete: Set<Counter> = Set(counters)
                         let countersLastResult: Set<Counter> = Set(lastResult)
                         countersNotDeleted = Array(countersToDelete.intersection(countersLastResult))

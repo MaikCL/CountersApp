@@ -1,8 +1,7 @@
 import UIKit
-import Design
 import AltairMDKCommon
 
-final class LoadingView: UIView {
+public final class LoadingView: UIView {
     
     lazy var activityIndicator: UIActivityIndicatorView = {
        setupActivityIndicator()

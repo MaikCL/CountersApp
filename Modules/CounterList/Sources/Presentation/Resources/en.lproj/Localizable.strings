@@ -1,7 +1,7 @@
 "navigationBar.title" = "Counters";
 "searchBar.placeholder" = "Search";
-"exception.cantDelete.title" = "Could't delete the counter \"%@\"";
-"exception.cantUpdate.title" = "Couldn't update the \"%@\" counter to %i";
-"exception.cantLoad.title" = "Couldn't load the counters";
-"barButtonItem.selectAll.title" = "Select All";
-"toolbar.counterResume.text" = "%i items \U2022 Counted %i times";
+"exception.title.cantDelete" = "Could't delete the counter \"%@\"";
+"exception.title.cantUpdate" = "Couldn't update the \"%@\" counter to %i";
+"exception.title.cantLoad" = "Couldn't load the counters";
+"buttonItem.title.selectAll" = "Select All";
+"toolbar.counterResume" = "%i items \U2022 Counted %i times";
