@@ -15,7 +15,7 @@ protocol CounterListViewModelProtocol {
     var statePublisher: Published<ViewState>.Publisher { get }
     
     func fetchCounters()
-    func deleteCounter(id: String)
+    func deleteCounters(ids: [String])
     func incrementCounter(id: String)
     func decrementCounter(id: String)
     func searchCounter(term: String)
@@ -39,9 +39,9 @@ final class CounterListViewModel: CounterListViewModelProtocol {
         counterListStore.trigger(.fetchCounters)
     }
     
-    func deleteCounter(id: String) {
-        guard let counter = findCounter(by: id) else { return }
-        counterListStore.trigger(.deleteCounter(counter))
+    func deleteCounters(ids: [String]) {
+        let counters = findCounters(by: ids)
+        counterListStore.trigger(.deleteCounters(counters))
     }
     
     func incrementCounter(id: String) {
@@ -70,9 +70,16 @@ extension CounterListViewModel {
     private func findCounter(by id: String) -> Counter? {
         guard
             case let .loaded(counters) = counterListStore.state.counters,
-            let counter = counters.first(where: { $0.id == id })
+            let counterFinded = counters.first(where: { $0.id == id })
         else { return nil }
-        return counter
+        return counterFinded
+    }
+    
+    private func findCounters(by ids: [String]) -> [Counter] {
+        guard case let .loaded(counters) = counterListStore.state.counters else { return [] }
+        var countersFinded = [Counter]()
+        ids.forEach { id in counters.first { $0.id == id }.flatMap { countersFinded.append($0) } }
+        return countersFinded
     }
     
     private func setupViewState() {
