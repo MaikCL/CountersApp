@@ -85,7 +85,7 @@ extension CounterListViewController {
         }
     }
 
-    func setupAlertViewForUpdateFailed(counter: Counter, exception: CounterException) {
+    func setupAlertViewForUpdateFailed(counter: Counter? = nil, exception: CounterException) {
         if let currentAlert = self.presentedViewController as? UIAlertController {
             currentAlert.title = exception.errorTitle
             currentAlert.message = exception.errorDescription
@@ -93,10 +93,11 @@ extension CounterListViewController {
         }
         
         let retryAction = UIAlertAction(title: Locale.alertButtonRetry.localized, style: .cancel) { _ in
-            self.retryUpdateButtonAction()
+            self.retryButtonAction()
         }
         
         let dismissAction = UIAlertAction(title: Locale.alertButtonDismiss.localized, style: .default) { _ in
+            guard let counter = counter else { return }
             guard let counterIndex = self.counterItems.firstIndex(where: { $0.id == counter.id }) else { return }
             let counterItemRow = IndexPath(row: Int(counterIndex), section: Section.main.rawValue)
             guard let cell = self.innerView.collectionView.cellForItem(at: counterItemRow) as? CounterCellView else { return }

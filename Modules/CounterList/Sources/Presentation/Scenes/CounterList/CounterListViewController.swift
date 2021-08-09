@@ -8,6 +8,7 @@ final class CounterListViewController: UIViewController {
     private enum RetryAction {
         case increment(id: String)
         case decrement(id: String)
+        case delete(ids: [String])
     }
     
     private var viewModel: CounterListViewModelProtocol?
@@ -127,38 +128,34 @@ private extension CounterListViewController {
                 setupAlertViewForUpdateFailed(counter: counter, exception: exception)
 
             case  .cantDecrementCounter(let counter):
-                print("apply decrement")
                 retryActionAlert = .decrement(id: counter.id)
                 setupAlertViewForUpdateFailed(counter: counter, exception: exception)
 
-            case .cantDeleteCounters:
-                print("cant delete")
+            case .cantDeleteCounters(let counters):
+                retryActionAlert = .delete(ids: counters.map { $0.id })
+                setupAlertViewForUpdateFailed(exception: exception)
 
             case .noSearchResults:
-                print("no search")
-
+                let exceptionView = ExceptionView(exception: exception)
+                innerView.collectionView.backgroundView = exceptionView
+                innerView.collectionView.isScrollEnabled = false
+                
         }
-    }
-    
-}
-
-extension CounterListViewController: CounterListViewDelegate {
-    
-    func didRefreshCounterList() {
-        self.viewModel?.fetchCounters()
     }
     
 }
 
 extension CounterListViewController {
     
-    func retryUpdateButtonAction() {
+    func retryButtonAction() {
         guard let retryAction = retryActionAlert else { return }
         switch retryAction {
             case .increment(let id):
                 viewModel?.incrementCounter(id: id)
             case .decrement(let id):
                 viewModel?.decrementCounter(id: id)
+            case .delete(let ids):
+                viewModel?.deleteCounters(ids: ids)
         }
         retryActionAlert = .none
     }
@@ -183,7 +180,15 @@ extension CounterListViewController {
     @objc func deleteButtonAction(_ sender: Any) {
         var selectedIds = [String]()
         innerView.collectionView.indexPathsForSelectedItems?.forEach { selectedIds.append(counterItems[$0.row].id) }
-        viewModel?.deleteCounters(ids: selectedIds)
+        let cancelAction = UIAlertAction(title: Locale.alertButtonCancel.localized, style: .cancel, handler: nil)
+        let deleteAction = UIAlertAction(title: Locale.alertButtonDelete.localized(with: selectedIds.count), style: .destructive) { _ in
+            self.viewModel?.deleteCounters(ids: selectedIds)
+        }
+        let deleteAlert = UIAlertController(title: .none, message: .none, preferredStyle: .actionSheet)
+        deleteAlert.view.tintColor = Palette.accent.uiColor
+        deleteAlert.addAction(deleteAction)
+        deleteAlert.addAction(cancelAction)
+        self.present(deleteAlert, animated: true, completion: nil)
     }
     
     @objc func selectAllButtonAction(_ sender: Any) {
@@ -195,6 +200,14 @@ extension CounterListViewController {
 }
 
 // MARK: Delegates
+
+extension CounterListViewController: CounterListViewDelegate {
+    
+    func didRefreshCounterList() {
+        self.viewModel?.fetchCounters()
+    }
+    
+}
 
 extension CounterListViewController: CounterCellViewDelegate {
     
@@ -215,6 +228,7 @@ extension CounterListViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let term = searchController.searchBar.text, !term.isEmpty, !counterItems.isEmpty else {
             applySnapshot(items: counterItems)
+            innerView.collectionView.backgroundView = .none
             return
         }
         animateUpdate = true
