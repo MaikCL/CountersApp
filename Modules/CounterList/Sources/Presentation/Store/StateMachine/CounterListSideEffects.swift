@@ -27,7 +27,7 @@ final class CounterListSideEffects {
             guard case .whenFetchCounters = state.runningSideEffect else { return Empty().eraseToAnyPublisher() }
             return self.fetchCountersUseCase
                 .execute()
-                .map { !$0.isEmpty ? .fetchCountersSuccess($0) : .fetchCountersFailed(CounterException.noCountersYet) }
+                .map { !$0.isEmpty ? .fetchCountersSuccess($0) : .fetchCountersFailed(.noCountersYet) }
                 .replaceError(with: .fetchCountersFailed(.cantLoadCounters))
                 .handleEvents(receiveOutput: { input in
                     guard case let .fetchCountersFailed(exception) = input else { return }
@@ -64,7 +64,7 @@ final class CounterListSideEffects {
                         let countersLastResult: Set<Counter> = Set(lastResult)
                         countersNotDeleted = Array(countersToDelete.intersection(countersLastResult))
                     }
-                    exception = publishersResults.first(where: { $0.isFailure }) == nil ? nil : CounterException.cantDeleteCounters(countersNotDeleted)
+                    exception = publishersResults.first(where: { $0.isFailure }) == nil ? exception : .cantDeleteCounters(countersNotDeleted)
                     return .deleteCountersCompleted(results: lastResult, exception: exception)
                 }
                 .eraseToAnyPublisher()
@@ -120,7 +120,7 @@ extension CounterListSideEffects {
         // Disclaimer: Eventually the exception can be logged in more detail if the error actions are handled as exceptions type.
         // In order to make the error handling simpler for this test, all the exceptions are cast to the generic "internet appear offline" message.
         // But is easly change that behavior ;)
-        print("A SideEffect exception occurred: [\(exception.code)] \(exception.localizedDescription)")
+        print("A SideEffect exception occurred: [\(exception.code)] \(String(describing: exception.errorTitle))")
     }
 
 }
