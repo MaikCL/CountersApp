@@ -1,0 +1,4 @@
+"alert.button.dismiss" = "Dismiss";
+
+"exception.title.cantCreateCounter" = "Couldn't create the counter";
+"exception.message.cantCreateCounter" = "The internet connection appears to be offline.";
