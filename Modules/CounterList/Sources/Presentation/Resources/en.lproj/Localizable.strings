@@ -8,6 +8,8 @@
 
 "alert.button.retry" = "Retry";
 "alert.button.dismiss" = "Dismiss";
+"alert.button.delete" = "Delete %i counter";
+"alert.button.cancel" = "Cancel";
 
 "exception.title.noCountersYet" = "No counters yet";
 "exception.title.cantLoad" = "Couldn't load the counters";

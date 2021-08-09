@@ -19,7 +19,19 @@ enum Locale: String {
     
     /// Retry
     case buttonTitleRetry = "button.title.retry"
-
+    
+    /// Retry
+    case alertButtonRetry = "alert.button.retry"
+    
+    /// Dismiss
+    case alertButtonDismiss = "alert.button.dismiss"
+    
+    /// Delete %i counter
+    case alertButtonDelete = "alert.button.delete"
+    
+    /// Cancel
+    case alertButtonCancel = "alert.button.cancel"
+    
     /// "No counters yet"
     case exceptionTitleNoCountersYet = "exception.title.noCountersYet"
     
@@ -46,12 +58,6 @@ enum Locale: String {
     
     /// No Results
     case exceptionMessageNoSearchResult = "exception.message.noSearchResult"
-    
-    /// Retry
-    case alertButtonRetry = "alert.button.retry"
-    
-    /// Dismiss
-    case alertButtonDismiss = "alert.button.dismiss"
     
 }
 
