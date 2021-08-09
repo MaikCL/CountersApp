@@ -165,7 +165,7 @@ extension CounterListViewController {
     }
     
     @objc func addButtonAction(_ sender: Any) {
-        // TODO: Make the AddCounter module
+        viewModel?.coordinator?.coordinateToAddCounterScreen()
     }
     
     @objc func actionButtonAction(_ sender: Any) {
