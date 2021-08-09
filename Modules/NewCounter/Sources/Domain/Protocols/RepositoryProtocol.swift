@@ -1,5 +1,5 @@
 import Combine
 
-protocol CountersRepositoryProtocol: AnyObject {
-    func createCounter(title: String) -> AnyPublisher<Void, Error>
+protocol NewCounterRepositoryProtocol: AnyObject {
+    func createCounter(title: String) -> AnyPublisher<[Counter], Error>
 }
