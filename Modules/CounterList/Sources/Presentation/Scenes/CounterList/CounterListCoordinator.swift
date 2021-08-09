@@ -1,4 +1,5 @@
 import UIKit
+import NewCounter
 import AltairMDKCommon
 
 protocol CounterListFlow {
@@ -15,8 +16,23 @@ final public class CounterListCoordinator: Coordinator {
     
     public func start() {
         let counterListViewModel = CounterListViewModel()
+        counterListViewModel.coordinator = self
         let counterListViewController = CounterListViewController(viewModel: counterListViewModel)
         navigationController.setViewControllers([counterListViewController], animated:true)
+    }
+
+}
+
+extension CounterListCoordinator: CounterListFlow {
+    
+    func coordinateToAddCounterScreen() {
+        let createCounterCoordinator = CreateCounterCoordinator(navigationController: navigationController)
+        coordinate(to: createCounterCoordinator)
+    }
+    
+    func coordinateToShareActionScreen(message: [String]) {
+        let shareSheet = UIActivityViewController(activityItems: message, applicationActivities: .none)
+        navigationController.present(shareSheet, animated: true, completion: nil)
     }
     
 }

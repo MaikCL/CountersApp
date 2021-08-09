@@ -4,6 +4,7 @@ import PackageDescription
 
 let package = Package(
     name: "NewCounter",
+    defaultLocalization: "en",
     platforms: [
         .iOS(.v14)
     ],
@@ -13,15 +14,22 @@ let package = Package(
             targets: ["NewCounter"]),
     ],
     dependencies: [
-
+        .package(name: "Altair-MDK", url: "https://github.com/mzapatae/AltairMDK-iOS.git", .branch("feature/required-extensions")),
+        .package(url: "https://github.com/hmlongco/Resolver.git", from: "1.4.1"),
+        .package(name: "APIs", path: "../APIs"),
+        .package(name: "Design", path: "../Design"),
     ],
     targets: [
-        // Targets are the basic building blocks of a package. A target can define a module or a test suite.
-        // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "NewCounter",
-            dependencies: [],
-            path: "Sources"),
+            dependencies: [
+                "Altair-MDK",
+                "Resolver",
+                "APIs",
+                "Design"
+            ],
+            path: "Sources",
+            resources: [.process("Resources")]),
         .testTarget(
             name: "NewCounterTests",
             dependencies: ["NewCounter"]),
