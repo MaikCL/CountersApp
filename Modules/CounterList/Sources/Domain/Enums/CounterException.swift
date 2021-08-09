@@ -29,12 +29,25 @@ extension CounterException: Exception {
     
     public var errorTitle: String? {
         switch self {
-            case .noCountersYet: return Locale.exceptionTitleNoCountersYet.localized
-            case .cantLoadCounters: return Locale.exceptionTitleCantLoad.localized
-            case .cantIncrementCounter(let counter): return Locale.exceptionTitleCantUpdate.localized(with: counter.title ,counter.count + 1)
-            case .cantDecrementCounter(let counter): return Locale.exceptionTitleCantUpdate.localized(with: counter.title, counter.count - 1)
-            case .cantDeleteCounters(let counters): return Locale.exceptionTitleCantDelete.localized(with: counters.reduce("") { $0 + ", " + $1.title })
-            case .noSearchResults: return .none
+            case .noCountersYet:
+                return Locale.exceptionTitleNoCountersYet.localized
+            case .cantLoadCounters:
+                return Locale.exceptionTitleCantLoad.localized
+            case .cantIncrementCounter(let counter):
+                return Locale.exceptionTitleCantUpdate.localized(with: counter.title ,counter.count + 1)
+            case .cantDecrementCounter(let counter):
+                return Locale.exceptionTitleCantUpdate.localized(with: counter.title, counter.count - 1)
+            case .cantDeleteCounters(let counters):
+                var title = ""
+                if counters.count == 1 {
+                    title = counters.first?.title ?? ""
+                } else {
+                    title = counters.reduce("") { $0 + "\($1.title), " }
+                    title.removeLast(2)
+                }
+                return Locale.exceptionTitleCantDelete.localized(with: title)
+            case .noSearchResults:
+                return .none
         }
     }
     

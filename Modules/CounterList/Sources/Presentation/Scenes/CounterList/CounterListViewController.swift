@@ -169,17 +169,18 @@ extension CounterListViewController {
     }
     
     @objc func actionButtonAction(_ sender: Any) {
-        var countersInfo = [String]()
+        var countersInfo = String()
         innerView.collectionView.indexPathsForSelectedItems?.forEach { indexPath in
             let counter = counterItems[indexPath.row]
-            countersInfo.append("\(counter.count) x \(counter.title)")
+            countersInfo.append("\n\(counter.count) x \(counter.title)")
         }
-        // TODO: Coordinate to ActivityVC
+        viewModel?.coordinator?.coordinateToShareActionScreen(message: [countersInfo])
     }
     
     @objc func deleteButtonAction(_ sender: Any) {
         var selectedIds = [String]()
         innerView.collectionView.indexPathsForSelectedItems?.forEach { selectedIds.append(counterItems[$0.row].id) }
+        guard !selectedIds.isEmpty else { return }
         let cancelAction = UIAlertAction(title: Locale.alertButtonCancel.localized, style: .cancel, handler: nil)
         let deleteAction = UIAlertAction(title: Locale.alertButtonDelete.localized(with: selectedIds.count), style: .destructive) { _ in
             self.viewModel?.deleteCounters(ids: selectedIds)
