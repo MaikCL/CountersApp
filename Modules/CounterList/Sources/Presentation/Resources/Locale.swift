@@ -13,7 +13,13 @@ enum Locale: String {
     
     /// %i items \{U+2022} Counted %i times
     case toolbarCounterResume = "toolbar.counterResume"
-   
+    
+    /// "Create a counter"
+    case buttonTitleCreateACounter = "button.title.createACounter"
+    
+    /// Retry
+    case buttonTitleRetry = "button.title.retry"
+
     /// "No counters yet"
     case exceptionTitleNoCountersYet = "exception.title.noCountersYet"
     
@@ -23,7 +29,7 @@ enum Locale: String {
     /// "Could't delete the counter \"%@\"";
     case exceptionTitleCantDelete = "exception.title.cantDelete"
     
-    /// "Couldn't update the \"%@\" counter to %i"
+    /// "Couldn't update the \"%@\" counter to %@"
     case exceptionTitleCantUpdate = "exception.title.cantUpdate"
     
     /// "\"When I started counting my blessings, my whole life turned around.\"\n—Willie Nelson"
@@ -40,6 +46,12 @@ enum Locale: String {
     
     /// No Results
     case exceptionMessageNoSearchResult = "exception.message.noSearchResult"
+    
+    /// Retry
+    case alertButtonRetry = "alert.button.retry"
+    
+    /// Dismiss
+    case alertButtonDismiss = "alert.button.dismiss"
     
 }
 

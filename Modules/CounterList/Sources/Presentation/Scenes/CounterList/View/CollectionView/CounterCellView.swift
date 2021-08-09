@@ -39,8 +39,8 @@ class CounterCellView: UICollectionViewListCell {
     
     private var countValue: Int?
     private var counterId: String?
-    private var isUpdating = false
     private var cellViewLeadingConstraint = NSLayoutConstraint()
+    private var isUpdating = false
     
     weak var delegate: CounterCellViewDelegate?
     
@@ -64,6 +64,12 @@ class CounterCellView: UICollectionViewListCell {
         counterLabel.textColor = countValue == 0 ?  Palette.disabledText.uiColor : Palette.accent.uiColor
         isUpdating = false
     }
+    
+    func notUpdated() {
+        guard let countValue = countValue else { return }
+        isUpdating = false
+        counterStepper.value = Double(countValue)
+    }
 
 }
 
@@ -79,7 +85,6 @@ private extension CounterCellView {
             delegate?.didTapCounterDecremented(id: counterId)
         
         }
-        
         isUpdating = true
     }
     

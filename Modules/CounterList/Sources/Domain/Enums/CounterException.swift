@@ -31,8 +31,8 @@ extension CounterException: Exception {
         switch self {
             case .noCountersYet: return Locale.exceptionTitleNoCountersYet.localized
             case .cantLoadCounters: return Locale.exceptionTitleCantLoad.localized
-            case .cantIncrementCounter(let counter): return Locale.exceptionTitleCantUpdate.localized(with: counter.count + 1)
-            case .cantDecrementCounter(let counter): return Locale.exceptionTitleCantUpdate.localized(with: counter.count - 1)
+            case .cantIncrementCounter(let counter): return Locale.exceptionTitleCantUpdate.localized(with: counter.title ,counter.count + 1)
+            case .cantDecrementCounter(let counter): return Locale.exceptionTitleCantUpdate.localized(with: counter.title, counter.count - 1)
             case .cantDeleteCounters(let counters): return Locale.exceptionTitleCantDelete.localized(with: counters.reduce("") { $0 + ", " + $1.title })
             case .noSearchResults: return .none
         }

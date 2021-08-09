@@ -4,9 +4,16 @@ import Combine
 import AltairMDKCommon
 
 final class CounterListViewController: UIViewController {
+    
+    private enum RetryAction {
+        case increment(id: String)
+        case decrement(id: String)
+    }
+    
     private var viewModel: CounterListViewModelProtocol?
     private var cancellables = Set<AnyCancellable>()
     private var animateUpdate = true
+    private var retryActionAlert: RetryAction?
 
     lazy var innerView = CounterListView()
     
@@ -64,29 +71,73 @@ final class CounterListViewController: UIViewController {
                 self.applyListStateBehavior(state: newState.counters)
             }
             
-            // TODO: Missing Exception behavior
-            // Specially change update status to cell when update fail
+            if let exception = newState.exception {
+                self.applyExceptionStateBehavior(exception: exception)
+            }
         }
         .store(in: &cancellables)
     }
     
+}
+
+// MARK: Handle States
+
+private extension CounterListViewController {
+    
     func applyListStateBehavior(state: Loadable<[CounterModel]>) {
+        innerView.collectionView.isScrollEnabled = true
         switch state {
             case .neverLoaded:
                 break
                 
             case .loading:
-                if counterItems.isEmpty { innerView.collectionView.backgroundView = LoadingView() }
+                if counterItems.isEmpty {
+                    innerView.collectionView.backgroundView = LoadingView()
+                    innerView.collectionView.isScrollEnabled = false
+                }
                 
             case .loaded(let results):
                 counterItems = results
                 innerView.collectionView.backgroundView = .none
+                innerView.collectionView.isScrollEnabled = true
                 if innerView.refreshControl.isRefreshing { innerView.refreshControl.endRefreshing() }
         }
     }
     
     func applySearchStateBehavior(state: [CounterModel]) {
         searchedItems = state
+    }
+    
+    func applyExceptionStateBehavior(exception: CounterException) {
+        switch exception {
+            case .noCountersYet:
+                let exceptionView = ExceptionView(exception: exception, actionButtonTitle: Locale.buttonTitleCreateACounter.localized)
+                exceptionView.setActionButton(selector: #selector(addButtonAction(_:)), sender: self)
+                innerView.collectionView.backgroundView = exceptionView
+                innerView.collectionView.isScrollEnabled = false
+
+            case .cantLoadCounters:
+                let exceptionView = ExceptionView(exception: exception, actionButtonTitle: Locale.buttonTitleRetry.localized)
+                exceptionView.setActionButton(selector: #selector(retryFetchButtonAction(_:)), sender: self)
+                innerView.collectionView.backgroundView = exceptionView
+                innerView.collectionView.isScrollEnabled = false
+
+            case .cantIncrementCounter(let counter):
+                retryActionAlert = .increment(id: counter.id)
+                setupAlertViewForUpdateFailed(counter: counter, exception: exception)
+
+            case  .cantDecrementCounter(let counter):
+                print("apply decrement")
+                retryActionAlert = .decrement(id: counter.id)
+                setupAlertViewForUpdateFailed(counter: counter, exception: exception)
+
+            case .cantDeleteCounters:
+                print("cant delete")
+
+            case .noSearchResults:
+                print("no search")
+
+        }
     }
     
 }
@@ -100,6 +151,21 @@ extension CounterListViewController: CounterListViewDelegate {
 }
 
 extension CounterListViewController {
+    
+    func retryUpdateButtonAction() {
+        guard let retryAction = retryActionAlert else { return }
+        switch retryAction {
+            case .increment(let id):
+                viewModel?.incrementCounter(id: id)
+            case .decrement(let id):
+                viewModel?.decrementCounter(id: id)
+        }
+        retryActionAlert = .none
+    }
+    
+    @objc func retryFetchButtonAction(_ sender: Any) {
+        viewModel?.fetchCounters()
+    }
     
     @objc func addButtonAction(_ sender: Any) {
         // TODO: Make the AddCounter module
