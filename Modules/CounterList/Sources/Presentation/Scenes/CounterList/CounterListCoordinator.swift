@@ -2,7 +2,8 @@ import UIKit
 import AltairMDKCommon
 
 protocol CounterListFlow {
-    
+    func coordinateToAddCounterScreen()
+    func coordinateToShareActionScreen(message: [String])
 }
 
 final public class CounterListCoordinator: Coordinator {
