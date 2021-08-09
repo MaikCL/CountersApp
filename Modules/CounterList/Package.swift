@@ -18,6 +18,7 @@ let package = Package(
         .package(url: "https://github.com/hmlongco/Resolver.git", from: "1.4.1"),
         .package(name: "APIs", path: "../APIs"),
         .package(name: "Design", path: "../Design"),
+        .package(name: "NewCounter", path: "../NewCounter"),
     ],
     targets: [
         .target(
@@ -26,7 +27,8 @@ let package = Package(
                 "Altair-MDK",
                 "Resolver",
                 "APIs",
-                "Design"
+                "Design",
+                "NewCounter"
             ],
             path: "Sources",
             resources: [.process("Resources")]),
