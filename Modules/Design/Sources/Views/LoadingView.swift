@@ -33,8 +33,8 @@ private extension LoadingView {
     
     func setupConstraints() {
         NSLayoutConstraint.activate([
-            activityIndicator.centerYAnchor.constraint(equalTo: centerYAnchor),
-            activityIndicator.centerXAnchor.constraint(equalTo: centerXAnchor)
+            activityIndicator.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor),
+            activityIndicator.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor)
         ])
     }
     
