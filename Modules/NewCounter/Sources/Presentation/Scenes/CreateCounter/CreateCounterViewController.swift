@@ -1,11 +1,10 @@
 import UIKit
+import Combine
 
 final class CreateCounterViewController: UIViewController {
     private(set) var viewModel: CreateCounterViewModelProtocol?
-    
-    private(set) var titleToSave: String = ""
-    
-    lazy var innerView = CreateCounterView()
+    private(set) lazy var innerView = CreateCounterView()
+    private var cancellables = Set<AnyCancellable>()
     
     init(viewModel: CreateCounterViewModelProtocol) {
         self.viewModel = viewModel
@@ -24,6 +23,7 @@ final class CreateCounterViewController: UIViewController {
         super.viewDidLoad()
         setupNavigationController()
         setupDelegates()
+        subscribeViewState()
     }
     
 }
@@ -32,19 +32,25 @@ extension CreateCounterViewController {
     
     @objc func saveNewCounter(_ sender: Any) {
         guard let titleToSave = innerView.titleInserted else { return }
-        print("save")
+        startActivityIndicator()
+        viewModel?.createCouter(title: titleToSave)
     }
     
     @objc func cancelNewCounter(_ sender: Any) {
-        print("cancel")
+        viewModel?.coordinator?.dismissCreateCounterScreen()
     }
     
 }
 
-extension CreateCounterViewController: CreateCounterViewDelegate {
+extension CreateCounterViewController {
     
-    func isTitleValid(_ isValid: Bool) {
-        navigationItem.rightBarButtonItem?.isEnabled = isValid ? true : false
+    private func subscribeViewState() {
+        viewModel?.statePublisher.receive(on: DispatchQueue.main).sink { [weak self] newState in
+            guard let self = self else { return }
+            if newState.isCreated { self.handleCreateSuccess() }
+            self.handleOccuredException(newState.exception)
+        }
+        .store(in: &cancellables)
     }
     
 }

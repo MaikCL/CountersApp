@@ -7,7 +7,8 @@ protocol CreateCounterViewDelegate: AnyObject {
 }
 
 final class CreateCounterView: UIView {
-    
+    var delegate: CreateCounterViewDelegate?
+
     lazy private var activityIndicator: UIActivityIndicatorView = {
         setupActivityIndicator()
     }()
@@ -21,8 +22,6 @@ final class CreateCounterView: UIView {
         return textFieldText.trimmingCharacters(in: .whitespaces)
     }
     
-    var delegate: CreateCounterViewDelegate?
-    
     init() {
         super.init(frame: .zero)
         setupView()
@@ -32,6 +31,16 @@ final class CreateCounterView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func startActivityIndicator() {
+        activityIndicator.startAnimating()
+        activityIndicator.isHidden = false
+    }
+    
+    func stopActivityIndicator() {
+        activityIndicator.stopAnimating()
+        activityIndicator.isHidden = true
     }
     
 }

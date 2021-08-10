@@ -89,7 +89,7 @@ private extension CounterListViewController {
         innerView.collectionView.isScrollEnabled = true
         switch state {
             case .neverLoaded:
-                break
+                counterItems = []
                 
             case .loading:
                 if counterItems.isEmpty {
