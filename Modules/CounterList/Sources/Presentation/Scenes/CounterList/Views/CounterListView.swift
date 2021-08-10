@@ -1,17 +1,19 @@
 import UIKit
 import Design
+import Foundation
 
 protocol CounterListViewDelegate: AnyObject {
-    func didRefreshCounterList()
+    func didPullToRefresh()
 }
 
 final class CounterListView: UIView {
-    
+    var delegate: CounterListViewDelegate?
+
     lazy var collectionView: UICollectionView = {
         setupCollectionView()
     }()
 
-    lazy var refreshControl: UIRefreshControl = {
+    lazy private var refreshControl: UIRefreshControl = {
         setupRefreshControl()
     }()
     
@@ -28,8 +30,6 @@ final class CounterListView: UIView {
         }
     }
     
-    var delegate: CounterListViewDelegate?
-    
     init() {
         super.init(frame: .zero)
         setupView()
@@ -39,6 +39,48 @@ final class CounterListView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setDataSource<Section: Hashable, Model: Hashable>(dataSource: UICollectionViewDiffableDataSource<Section, Model>?) {
+        collectionView.dataSource = dataSource
+    }
+    
+    func showBackgroundView(_ view: UIView) {
+        collectionView.backgroundView = view
+        collectionView.isScrollEnabled = false
+    }
+    
+    func hideExceptionView() {
+        collectionView.backgroundView = nil
+        collectionView.isScrollEnabled = true
+    }
+    
+    func showListLoading() {
+        collectionView.backgroundView = LoadingView()
+        collectionView.isScrollEnabled = false
+    }
+    
+    func hideListLoading() {
+        collectionView.backgroundView = nil
+        collectionView.isScrollEnabled = true
+    }
+    
+    func getCell(at indexPath: IndexPath) -> CounterCellView? {
+        collectionView.cellForItem(at: indexPath) as? CounterCellView
+    }
+    
+    func getSelectedItems() -> [IndexPath]? {
+        return collectionView.indexPathsForSelectedItems
+    }
+    
+    func selectAllItems(in section: Int) {
+        for row in 0..<collectionView.numberOfItems(inSection: section) {
+            collectionView.selectItem(at: IndexPath(row: row, section: section), animated: true, scrollPosition: .centeredHorizontally)
+        }
+    }
+    
+    func hideBackgroundView() {
+        collectionView.backgroundView = .none
     }
     
 }
@@ -57,7 +99,6 @@ private extension CounterListView {
     }
     
     func setupConstraint() {
-        // MARK: CollectionView Constraint
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
             collectionView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
@@ -79,8 +120,8 @@ extension CounterListView: UICollectionViewDelegate {
 
 private extension CounterListView {
 
-    @objc func refreshCounterList(_ sender: Any) {
-        delegate?.didRefreshCounterList()
+    @objc func didPullToRefreshAction(_ sender: Any) {
+        delegate?.didPullToRefresh()
     }
 
 }
@@ -97,7 +138,7 @@ private extension CounterListView {
     
     func setupRefreshControl() -> UIRefreshControl {
         let control = UIRefreshControl(frame: .zero)
-        control.addTarget(self, action: #selector(refreshCounterList(_:)), for: .valueChanged)
+        control.addTarget(self, action: #selector(didPullToRefreshAction(_:)), for: .valueChanged)
         return control
     }
 

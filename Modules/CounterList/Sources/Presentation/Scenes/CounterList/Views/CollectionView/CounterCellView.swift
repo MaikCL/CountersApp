@@ -8,41 +8,40 @@ protocol CounterCellViewDelegate: AnyObject {
 }
 
 class CounterCellView: UICollectionViewListCell {
+    weak var delegate: CounterCellViewDelegate?
     
-    lazy var cellView: UIView = {
+    private var countValue: Int?
+    private var counterId: String?
+    private var isUpdating = false
+    private var cellViewLeadingConstraint = NSLayoutConstraint()
+
+    lazy private var cellView: UIView = {
        setupCellView()
     }()
     
-    lazy var separatorView: UIView = {
+    lazy private var separatorView: UIView = {
         setupSeparatorView()
     }()
     
-    lazy var counterLabel: UILabel = {
+    lazy private var counterLabel: UILabel = {
         setupCounterLabel()
     }()
     
-    lazy var titleLabel: UILabel = {
+    lazy private var titleLabel: UILabel = {
         setupTitleLabel()
     }()
     
-    lazy var counterStepper: UIStepper = {
+    lazy private var counterStepper: UIStepper = {
        setupCounterStepper()
     }()
     
     var isEditing: Bool = false {
         didSet {
-            cellViewLeadingConstraint.constant = isEditing ? 18.0 : 0.0
+            cellViewLeadingConstraint.constant = isEditing ? CellConstant.leadingEditing : CellConstant.leadingNormal
             setNeedsLayout()
             layoutIfNeeded()
         }
     }
-    
-    private var countValue: Int?
-    private var counterId: String?
-    private var cellViewLeadingConstraint = NSLayoutConstraint()
-    private var isUpdating = false
-    
-    weak var delegate: CounterCellViewDelegate?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -65,7 +64,7 @@ class CounterCellView: UICollectionViewListCell {
         isUpdating = false
     }
     
-    func notUpdated() {
+    func setUpdateFinish() {
         guard let countValue = countValue else { return }
         isUpdating = false
         counterStepper.value = Double(countValue)
@@ -126,27 +125,27 @@ private extension CounterCellView {
         NSLayoutConstraint.activate([
             separatorView.topAnchor.constraint(equalTo: cellView.topAnchor),
             separatorView.bottomAnchor.constraint(equalTo: cellView.bottomAnchor),
-            separatorView.leadingAnchor.constraint(equalTo: cellView.leadingAnchor, constant: 59.0),
-            separatorView.widthAnchor.constraint(equalToConstant: 2.0)
+            separatorView.leadingAnchor.constraint(equalTo: cellView.leadingAnchor, constant: SeparatorConstant.leading),
+            separatorView.widthAnchor.constraint(equalToConstant: SeparatorConstant.width)
         ])
         
         NSLayoutConstraint.activate([
-            counterLabel.topAnchor.constraint(equalTo: cellView.topAnchor, constant: 15.0),
-            counterLabel.leadingAnchor.constraint(equalTo: cellView.leadingAnchor, constant: 10.0),
-            counterLabel.trailingAnchor.constraint(equalTo: separatorView.trailingAnchor, constant: -10.0)
+            counterLabel.topAnchor.constraint(equalTo: cellView.topAnchor, constant: CounterConstant.top),
+            counterLabel.leadingAnchor.constraint(equalTo: cellView.leadingAnchor, constant: CounterConstant.leading),
+            counterLabel.trailingAnchor.constraint(equalTo: separatorView.trailingAnchor, constant: -CounterConstant.trailing)
         ])
         
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: cellView.topAnchor, constant: 16.0),
-            titleLabel.leadingAnchor.constraint(equalTo: separatorView.leadingAnchor, constant: 10.0),
-            titleLabel.trailingAnchor.constraint(equalTo: cellView.trailingAnchor, constant: -14.0),
+            titleLabel.topAnchor.constraint(equalTo: cellView.topAnchor, constant: TitleConstant.top),
+            titleLabel.leadingAnchor.constraint(equalTo: separatorView.leadingAnchor, constant: TitleConstant.leading),
+            titleLabel.trailingAnchor.constraint(equalTo: cellView.trailingAnchor, constant: -TitleConstant.trailing),
         ])
         
         NSLayoutConstraint.activate([
-            counterStepper.topAnchor.constraint(greaterThanOrEqualTo: titleLabel.bottomAnchor, constant: 17.0),
-            counterStepper.bottomAnchor.constraint(equalTo: cellView.bottomAnchor, constant: -14.0),
-            counterStepper.trailingAnchor.constraint(equalTo: cellView.trailingAnchor, constant: -14.0),
-            counterStepper.heightAnchor.constraint(equalToConstant: 29.0)
+            counterStepper.topAnchor.constraint(greaterThanOrEqualTo: titleLabel.bottomAnchor, constant: StepperConstant.top),
+            counterStepper.bottomAnchor.constraint(equalTo: cellView.bottomAnchor, constant: -StepperConstant.bottom),
+            counterStepper.trailingAnchor.constraint(equalTo: cellView.trailingAnchor, constant: -StepperConstant.trailing),
+            counterStepper.heightAnchor.constraint(equalToConstant: StepperConstant.height)
         ])
         
     }
@@ -154,10 +153,49 @@ private extension CounterCellView {
 
 private extension CounterCellView {
     
+    enum CellConstant {
+        static let leadingNormal: CGFloat = 0.0
+        static let leadingEditing: CGFloat = 18.0
+    }
+    
+    enum SeparatorConstant {
+        static let leading: CGFloat = 59.0
+        static let width: CGFloat = 2.0
+    }
+    
+    enum CounterConstant {
+        static let top: CGFloat = 15.0
+        static let leading: CGFloat = 10.0
+        static let trailing: CGFloat = 10.0
+    }
+    
+    enum TitleConstant {
+        static let top: CGFloat = 16.0
+        static let leading: CGFloat = 10.0
+        static let trailing: CGFloat = 14.0
+    }
+    
+    enum StepperConstant {
+        static let top: CGFloat = 17.0
+        static let bottom: CGFloat = 14.0
+        static let trailing: CGFloat = 14.0
+        static let height: CGFloat = 29.0
+    }
+    
+    
+    enum Constants {
+        static let radius: CGFloat = 8.0
+    }
+    
+    enum Font {
+        static let counter = UIFont.systemFont(ofSize: 24.0, weight: .medium)
+        static let title = UIFont.systemFont(ofSize: 17.0, weight: .regular)
+    }
+    
     func setupCellView() -> UIView {
         let view = UIView(frame: .zero)
         view.backgroundColor = Palette.cellBackground.uiColor
-        view.set(cornerRadius: 8.0)
+        view.set(cornerRadius: Constants.radius)
         return view
     }
     
@@ -169,13 +207,11 @@ private extension CounterCellView {
     
     func setupCounterLabel() -> UILabel {
         let label = UILabel(frame: .zero)
-        let fontSize: CGFloat = 24.0
-        let systemFont = UIFont.systemFont(ofSize: fontSize, weight: .medium)
         let font: UIFont
-        if let descriptor = systemFont.fontDescriptor.withDesign(.rounded) {
-            font = UIFont(descriptor: descriptor, size: fontSize)
+        if let descriptor = Font.counter.fontDescriptor.withDesign(.rounded) {
+            font = UIFont(descriptor: descriptor, size: 24)
         } else {
-            font = systemFont
+            font = Font.counter
         }
         label.font = font
         label.textAlignment = .right
@@ -186,7 +222,7 @@ private extension CounterCellView {
     func setupTitleLabel() -> UILabel {
         let label = UILabel(frame: .zero)
         label.numberOfLines = 0
-        label.font = .systemFont(ofSize: 17.0, weight: .regular)
+        label.font = Font.title
         label.textColor = Palette.primaryText.uiColor
         return label
     }

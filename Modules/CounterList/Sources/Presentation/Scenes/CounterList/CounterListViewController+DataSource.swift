@@ -28,10 +28,9 @@ extension CounterListViewController {
         dataSource = DataSource(collectionView: innerView.collectionView) { collectionView, indexPath, model in
             return collectionView.dequeueConfiguredReusableCell(using: counterCell, for: indexPath, item: model)
         }
-        innerView.collectionView.dataSource = dataSource
+        innerView.setDataSource(dataSource: dataSource)
     }
     
-    // TODO: Improve with especific item reload
     func applySnapshot(items: [CounterModel], animate: Bool = true) {
         var snapshot = dataSource?.snapshot() ?? Snapshot()
         snapshot.deleteAllItems()

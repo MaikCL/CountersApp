@@ -1,17 +1,24 @@
 import UIKit
 import AltairMDKCommon
 
+public protocol ExceptionViewDelegate: AnyObject {
+    func didTapButtonAction(tag: Int)
+}
+
 public final class ExceptionView: UIView {
+    public var delegate: ExceptionViewDelegate?
     
-    lazy var actionButton: UIButton = {
-       Button()
+    lazy private var actionButton: UIButton = {
+       let button = Button()
+        button.addTarget(self, action: #selector(actionButton(_:)), for: .touchUpInside)
+        return button
     }()
     
-    lazy var titleLabel: UILabel = {
+    lazy private var titleLabel: UILabel = {
        setupTitleLabel()
     }()
     
-    lazy var messageLabel: UILabel = {
+    lazy private var messageLabel: UILabel = {
        setupMessageLabel()
     }()
     
@@ -39,9 +46,14 @@ public final class ExceptionView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func setActionButton(selector: Selector, sender: Any) {
-        actionButton.addTarget(sender, action: selector, for: .touchUpInside)
+    @objc private func actionButton(_ sender: UIButton) {
+        delegate?.didTapButtonAction(tag: sender.tag)
     }
+    
+    public func setTag(_ value: Int) {
+        actionButton.tag = value
+    }
+
 }
 
 private extension ExceptionView {

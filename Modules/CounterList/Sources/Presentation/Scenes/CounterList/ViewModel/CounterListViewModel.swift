@@ -1,17 +1,20 @@
+import Counter
 import Combine
 import Resolver
 import Foundation
 import AltairMDKCommon
 
 struct ViewState {
-    var counters: Loadable<[CounterModel]> = .neverLoaded
-    var exception: CounterException? = .none
-    var searchedCounters: [CounterModel] = []
+    var exception: Exception? = .none
+    var isLoadingList: Bool = false
+    var countersItems: [CounterModel] = []
+    var searchedItems: [CounterModel] = []
+    var updatingCounterId: String? = .none
 }
 
 protocol CounterListViewModelProtocol {
-    var coordinator: CounterListFlow? { get set }
     var statePublisher: Published<ViewState>.Publisher { get }
+    var coordinator: CounterListFlow? { get set }
     
     func fetchCounters()
     func deleteCounters(ids: [String])
@@ -22,76 +25,84 @@ protocol CounterListViewModelProtocol {
 }
 
 final class CounterListViewModel: CounterListViewModelProtocol {
-    @Injected private var counterListStore: CounterListStore
-    
-    private var cancellables = Set<AnyCancellable>()
-    @Published private var viewState = ViewState()
-    
     var statePublisher: Published<ViewState>.Publisher { $viewState }
     var coordinator: CounterListFlow?
-    
+
+    @Injected private var counterStore: CounterStore
+    @Published private var viewState = ViewState()
+
+    private var cancellables = Set<AnyCancellable>()
+
     init() {
         setupViewState()
     }
     
     func fetchCounters() {
-        counterListStore.trigger(.fetchCounters)
+        counterStore.trigger(.fetchCounters)
     }
     
     func deleteCounters(ids: [String]) {
         let counters = findCounters(by: ids)
-        counterListStore.trigger(.deleteCounters(counters))
+        counterStore.trigger(.deleteCounters(counters))
     }
     
     func incrementCounter(id: String) {
         guard let counter = findCounter(by: id) else { return }
-        counterListStore.trigger(.incrementCounter(counter))
+        counterStore.trigger(.incrementCounter(counter))
     }
     
     func decrementCounter(id: String) {
         guard let counter = findCounter(by: id) else { return }
-        counterListStore.trigger(.decrementCounter(counter))
+        counterStore.trigger(.decrementCounter(counter))
     }
     
     func searchCounter(term: String) {
-        guard case let .loaded(counters) = counterListStore.state.counters else { return }
-        counterListStore.trigger(.searchCounters(term: term, counters: counters))
+        guard !counterStore.state.counters.isEmpty else { return }
+        counterStore.trigger(.searchCounters(term: term, counters: counterStore.state.counters))
     }
     
     func finishSearch() {
-        counterListStore.trigger(.finishSearchCounters)
+        counterStore.trigger(.finishSearchCounters)
     }
 }
 
 extension CounterListViewModel {
     @Injected static var mapCounterToCounterModel: ([Counter]) -> [CounterModel]
-    
-    private func findCounter(by id: String) -> Counter? {
-        guard
-            case let .loaded(counters) = counterListStore.state.counters,
-            let counterFinded = counters.first(where: { $0.id == id })
-        else { return nil }
-        return counterFinded
-    }
-    
-    private func findCounters(by ids: [String]) -> [Counter] {
-        guard case let .loaded(counters) = counterListStore.state.counters else { return [] }
-        var countersFinded = [Counter]()
-        ids.forEach { id in counters.first { $0.id == id }.flatMap { countersFinded.append($0) } }
-        return countersFinded
-    }
-    
+
     private func setupViewState() {
-        counterListStore.$state.receive(on: DispatchQueue.main).sink { [weak self] state in
-            guard let self = self else { return }
-            let counters = state.counters.map { CounterListViewModel.mapCounterToCounterModel($0) }
+        counterStore.$state.map { state in
             let exception = state.exception
-            let searchedCounters = CounterListViewModel.mapCounterToCounterModel(state.searchedCounters)
-            self.viewState = ViewState(
-                counters: counters,
+            var isLoadingList = false
+            var updatingCounterId: String? = nil
+            if case .whenFetchCounters = state.runningSideEffect { isLoadingList = true } else { isLoadingList = false }
+            if case .whenIncrementCounter(let counter) = state.runningSideEffect { updatingCounterId = counter.id }
+            if case .whenDecrementCounter(let counter) = state.runningSideEffect { updatingCounterId = counter.id }
+            let countersItems = CounterListViewModel.mapCounterToCounterModel(state.counters)
+            let searchedItems = CounterListViewModel.mapCounterToCounterModel(state.searchedCounters)
+            return ViewState(
                 exception: exception,
-                searchedCounters: searchedCounters)
+                isLoadingList: isLoadingList,
+                countersItems: countersItems,
+                searchedItems: searchedItems,
+                updatingCounterId: updatingCounterId)
         }
+        .assignNoRetain(to: \.viewState, on: self)
         .store(in: &cancellables)
     }
 }
+
+private extension CounterListViewModel {
+    
+    func findCounter(by id: String) -> Counter? {
+        guard let counterFinded = counterStore.state.counters.first(where: { $0.id == id }) else { return nil}
+        return counterFinded
+    }
+    
+    func findCounters(by ids: [String]) -> [Counter] {
+        var countersFinded = [Counter]()
+        ids.forEach { id in counterStore.state.counters.first(where: { $0.id == id }).flatMap { countersFinded.append($0) } }
+        return countersFinded
+    }
+    
+}
+
