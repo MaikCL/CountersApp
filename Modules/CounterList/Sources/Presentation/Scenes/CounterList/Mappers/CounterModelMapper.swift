@@ -1,3 +1,4 @@
+import Counter
 import AltairMDKCommon
 
 final class CounterModelMapper: ModelMapper {
