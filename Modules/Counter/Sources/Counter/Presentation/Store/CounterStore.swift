@@ -3,13 +3,13 @@ import Resolver
 import Foundation
 import AltairMDKCommon
 
-final class CounterStore {
+public final class CounterStore {
     @Injected private var sideEffects: CounterSideEffects
     
     private var cancellables = Set<AnyCancellable>()
     private var input = PassthroughSubject<CounterAction, Never>()
     
-    @Published private(set) var state: CounterState = .initial
+    @Published public var state: CounterState = .initial
     
     init() {
         Publishers.store(
@@ -29,7 +29,7 @@ final class CounterStore {
         .store(in: &cancellables)
     }
     
-    func trigger(_ action: CounterAction) {
+    public func trigger(_ action: CounterAction) {
         input.send(action)
     }
     

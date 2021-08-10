@@ -5,6 +5,7 @@
 //
 
 import UIKit
+import Counter
 import NewCounter
 import CounterList
 
@@ -19,6 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         appCoordinator = AppCoordinator(window: window)
         appCoordinator?.start()
         
+        Counter.DiComponents.bind()
         NewCounter.DIComponents.bind()
         CounterList.DIComponents.bind()
         return true

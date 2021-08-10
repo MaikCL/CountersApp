@@ -3,7 +3,7 @@ import Resolver
 import Foundation
 import AltairMDKCommon
 
-final class CountersRepository: CounterRepositoryProtocol {
+final class CounterRepository: CounterRepositoryProtocol {
     @Injected private var cloudSource: CounterCloudSourceProtocol
     @Injected private var mapCloudModelToEntity: ([CounterCloudModel]) throws -> [Counter]
     

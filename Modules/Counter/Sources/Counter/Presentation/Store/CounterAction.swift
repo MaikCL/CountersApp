@@ -1,6 +1,6 @@
 import AltairMDKCommon
 
-enum CounterAction {
+public enum CounterAction {
     case fetchCounters
     case fetchCountersSuccess(_ results: [Counter])
     case fetchCountersFailed(_ exception: CounterException)

@@ -1,10 +1,10 @@
 public struct CounterState {
-    var counters: [Counter]
-    var exception: CounterException?
-    var runningSideEffect: SideEffectTask
+    public var counters: [Counter]
+    public var exception: CounterException?
+    public var runningSideEffect: CounterSideEffectTask
 }
 
-public enum SideEffectTask {
+public enum CounterSideEffectTask {
     case none
     case whenFetchCounters
     case whenCreateCounter(title: String)

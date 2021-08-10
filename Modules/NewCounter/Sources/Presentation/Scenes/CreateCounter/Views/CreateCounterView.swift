@@ -70,7 +70,6 @@ private extension CreateCounterView {
             activityIndicator.centerYAnchor.constraint(equalTo: titleTextField.centerYAnchor),
             activityIndicator.trailingAnchor.constraint(equalTo: titleTextField.trailingAnchor, constant: -ActivityIndicatorConstant.leading)
         ])
-        
     }
     
 }

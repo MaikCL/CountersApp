@@ -3,7 +3,7 @@ import Resolver
 import Foundation
 import AltairMDKCommon
 
-final class NewCounterRepository: NewCounterRepositoryProtocol {
+final class ExamplesCounterRepository: ExamplesCounterRepositoryProtocol {
 
     
 }

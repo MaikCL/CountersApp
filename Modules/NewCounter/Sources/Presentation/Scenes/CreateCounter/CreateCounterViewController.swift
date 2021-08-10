@@ -32,7 +32,6 @@ extension CreateCounterViewController {
     
     @objc func saveNewCounter(_ sender: Any) {
         guard let titleToSave = innerView.titleInserted else { return }
-        startActivityIndicator()
         viewModel?.createCouter(title: titleToSave)
     }
     
