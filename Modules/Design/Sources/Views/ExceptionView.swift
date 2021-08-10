@@ -62,21 +62,21 @@ private extension ExceptionView {
     
     func setupConstraint() {
         NSLayoutConstraint.activate([
-            messageLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-            messageLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-            messageLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constraint.leading),
-            messageLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constraint.trailing)
+            messageLabel.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor),
+            messageLabel.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
+            messageLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: Constraint.leading),
+            messageLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -Constraint.trailing)
         ])
         
         NSLayoutConstraint.activate([
-            titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            titleLabel.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
             titleLabel.bottomAnchor.constraint(equalTo: messageLabel.topAnchor, constant: -Constraint.top),
-            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constraint.leading),
-            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constraint.trailing)
+            titleLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: Constraint.leading),
+            titleLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -Constraint.trailing)
         ])
         
         NSLayoutConstraint.activate([
-            actionButton.centerXAnchor.constraint(equalTo: centerXAnchor),
+            actionButton.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
             actionButton.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: Constraint.bottom),
         ])
         
