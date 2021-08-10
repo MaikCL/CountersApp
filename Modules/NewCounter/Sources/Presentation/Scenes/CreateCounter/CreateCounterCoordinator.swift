@@ -3,6 +3,7 @@ import AltairMDKCommon
 
 protocol CreateCounterFlow {
     func coordinateToExamplesScreen()
+    func dismissCreateCounterScreen()
 }
 
 final public class CreateCounterCoordinator: Coordinator {
@@ -28,6 +29,10 @@ extension CreateCounterCoordinator: CreateCounterFlow {
     
     func coordinateToExamplesScreen() {
         // TODO
+    }
+    
+    func dismissCreateCounterScreen() {
+        navigationController.dismiss(animated: true)
     }
 
 }
