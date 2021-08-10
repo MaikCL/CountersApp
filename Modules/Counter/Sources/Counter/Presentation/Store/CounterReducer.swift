@@ -80,6 +80,30 @@ final class CounterReducer {
                 currentState.runningSideEffect = .none
                 semaphore.signal()
                 
+            case .searchCounters(let term, let counters):
+                currentState.exception = .none
+                currentState.searchedCounters = []
+                currentState.runningSideEffect = .whenSearchCounters(term: term, counters: counters)
+                semaphore.signal()
+                
+            case .searchCountersSuccess(let results):
+                currentState.exception = .none
+                currentState.searchedCounters = results
+                currentState.runningSideEffect = .none
+                semaphore.signal()
+                
+            case .searchCountersFailed(let exception):
+                currentState.exception = exception
+                currentState.searchedCounters = []
+                currentState.runningSideEffect = .none
+                semaphore.signal()
+                
+            case .finishSearchCounters:
+                currentState.exception = .none
+                currentState.searchedCounters = []
+                currentState.runningSideEffect = .none
+                semaphore.signal()
+                
         }
         semaphore.wait()
         return currentState

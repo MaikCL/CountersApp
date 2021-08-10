@@ -20,6 +20,7 @@ public final class CounterStore {
                 sideEffects.whenFetchCounters(),
                 sideEffects.whenDeleteCounter(),
                 sideEffects.whenCreateCounter(),
+                sideEffects.whenSearchConters(),
                 sideEffects.whenIncrementCounter(),
                 sideEffects.whenDecrementCounter(),
                 sideEffects.whenInput(action: input.eraseToAnyPublisher()),
