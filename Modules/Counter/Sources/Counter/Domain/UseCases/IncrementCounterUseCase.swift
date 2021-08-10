@@ -3,10 +3,10 @@ import Resolver
 import AltairMDKCommon
 
 final class IncrementCounterUseCase: IncrementCounterUseCaseProtocol {
-    @Injected private var countersRepo: CountersRepositoryProtocol
+    @Injected private var counterRepo: CounterRepositoryProtocol
     
     func execute(id: String) -> AnyPublisher<[Counter], Error> {
-        return countersRepo.incrementCounter(id: id)
+        return counterRepo.incrementCounter(id: id)
     }
     
 }

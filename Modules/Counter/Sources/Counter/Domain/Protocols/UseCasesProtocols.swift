@@ -4,15 +4,19 @@ protocol FetchCountersUseCaseProtocol: AnyObject {
     func execute() -> AnyPublisher<[Counter], Error>
 }
 
+protocol DeleteCounterUseCaseProtocol: AnyObject {
+    func execute(id: String) -> AnyPublisher<[Counter], Error>
+}
+
+protocol CreateCounterUseCaseProtocol: AnyObject {
+    func execute(title: String) -> AnyPublisher<[Counter], Error>
+}
+
 protocol IncrementCounterUseCaseProtocol: AnyObject {
     func execute(id: String) -> AnyPublisher<[Counter], Error>
 }
 
 protocol DecrementCounterUseCaseProtocol: AnyObject {
-    func execute(id: String) -> AnyPublisher<[Counter], Error>
-}
-
-protocol DeleteCounterUseCaseProtocol: AnyObject {
     func execute(id: String) -> AnyPublisher<[Counter], Error>
 }
 
