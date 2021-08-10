@@ -10,6 +10,9 @@ enum Locale: String {
     
     /// The internet connection appears to be offline.
     case exceptionMessageCantCreateCounter = "exception.message.cantCreateCounter"
+    
+    /// Cups of coffe
+    case textFieldHintExampleTitle = "textfield.hint.exampleTitle"
 
 }
 

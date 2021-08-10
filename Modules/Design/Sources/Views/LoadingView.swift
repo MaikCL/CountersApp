@@ -43,8 +43,7 @@ private extension LoadingView {
 private extension LoadingView {
     
     func setupActivityIndicator() -> UIActivityIndicatorView {
-        let activityIndicator = UIActivityIndicatorView()
-        activityIndicator.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
+        let activityIndicator = UIActivityIndicatorView(style: .large)
         activityIndicator.startAnimating()
         return activityIndicator
     }

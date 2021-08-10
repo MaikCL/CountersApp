@@ -11,6 +11,7 @@ public enum Palette {
     case primaryText
     case secondaryText
     case subtitleText
+    case textfield
 }
 
 extension Palette {
@@ -37,6 +38,8 @@ extension Palette {
                 return UIColor(named: "SecondaryText", in: Bundle.module, compatibleWith: .current) ?? .clear
             case .subtitleText:
                 return UIColor(named: "SubtitleText", in: Bundle.module, compatibleWith: .current) ?? .clear
+            case .textfield:
+                return UIColor(named: "TextField", in: Bundle.module, compatibleWith: .current) ?? .clear
         }
     }
     
