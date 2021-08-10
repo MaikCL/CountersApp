@@ -15,6 +15,7 @@
 		AEA3A5B426B998C900660740 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA3A5B326B998C900660740 /* AppCoordinator.swift */; };
 		AEA3A5B726B999E400660740 /* Altair-MDK in Frameworks */ = {isa = PBXBuildFile; productRef = AEA3A5B626B999E400660740 /* Altair-MDK */; };
 		AEA3A5BA26B99E2B00660740 /* CounterList in Frameworks */ = {isa = PBXBuildFile; productRef = AEA3A5B926B99E2B00660740 /* CounterList */; };
+		AEB44CD526C22A5800D030F0 /* NewCounter in Frameworks */ = {isa = PBXBuildFile; productRef = AEB44CD426C22A5800D030F0 /* NewCounter */; };
 		AEDD51B926BA206700F8B666 /* Design in Frameworks */ = {isa = PBXBuildFile; productRef = AEDD51B826BA206700F8B666 /* Design */; };
 		DE3EBACC25E048CE00DA1E0D /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3EBACB25E048CE00DA1E0D /* Button.swift */; };
 		DECA256C25CC8D4200851431 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECA256B25CC8D4200851431 /* AppDelegate.swift */; };
@@ -73,6 +74,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AEB44CD526C22A5800D030F0 /* NewCounter in Frameworks */,
 				AEDD51B926BA206700F8B666 /* Design in Frameworks */,
 				AEA3A5B726B999E400660740 /* Altair-MDK in Frameworks */,
 				AEA3A5BA26B99E2B00660740 /* CounterList in Frameworks */,
@@ -272,6 +274,7 @@
 				AEA3A5B626B999E400660740 /* Altair-MDK */,
 				AEA3A5B926B99E2B00660740 /* CounterList */,
 				AEDD51B826BA206700F8B666 /* Design */,
+				AEB44CD426C22A5800D030F0 /* NewCounter */,
 			);
 			productName = Counters;
 			productReference = DECA256825CC8D4200851431 /* Counters.app */;
@@ -754,6 +757,10 @@
 		AEA3A5B926B99E2B00660740 /* CounterList */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = CounterList;
+		};
+		AEB44CD426C22A5800D030F0 /* NewCounter */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = NewCounter;
 		};
 		AEDD51B826BA206700F8B666 /* Design */ = {
 			isa = XCSwiftPackageProductDependency;
