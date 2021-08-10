@@ -43,7 +43,7 @@ extension CounterListViewController {
     }
     
     func setupSelectAllCounterButtonItem() -> UIBarButtonItem {
-        return UIBarButtonItem(title: Locale.barButtonItemSelectAll.localized, style: .plain, target: self, action: #selector(selectAllButtonAction(_:)))
+        return UIBarButtonItem(title: Locale.buttonItemSelectAll.localized, style: .plain, target: self, action: #selector(selectAllButtonAction(_:)))
     }
     
     func setupToolbarEditMode() -> [UIBarButtonItem] {

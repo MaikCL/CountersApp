@@ -41,8 +41,8 @@ private extension CreateCounterView {
     func setupConstraint() {
         NSLayoutConstraint.activate([
             titleTextField.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: TitleTextFieldConstant.top),
-            titleTextField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: TitleTextFieldConstant.leading),
-            titleTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -TitleTextFieldConstant.trailing),
+            titleTextField.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: TitleTextFieldConstant.leading),
+            titleTextField.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -TitleTextFieldConstant.trailing),
             titleTextField.heightAnchor.constraint(equalToConstant: TitleTextFieldConstant.height)
         ])
         
