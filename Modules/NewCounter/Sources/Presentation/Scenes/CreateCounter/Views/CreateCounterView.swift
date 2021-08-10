@@ -2,15 +2,26 @@ import UIKit
 import Design
 import AltairMDKCommon
 
+protocol CreateCounterViewDelegate: AnyObject {
+    func isTitleValid(_ isValid: Bool)
+}
+
 final class CreateCounterView: UIView {
     
-    lazy var activityIndicator: UIActivityIndicatorView = {
+    lazy private var activityIndicator: UIActivityIndicatorView = {
         setupActivityIndicator()
     }()
     
-    lazy var titleTextField: UITextField = {
+    lazy private var titleTextField: UITextField = {
         setupTitleTextField()
     }()
+    
+    var titleInserted: String? {
+        guard let textFieldText = titleTextField.text as NSString? else { return nil }
+        return textFieldText.trimmingCharacters(in: .whitespaces)
+    }
+    
+    var delegate: CreateCounterViewDelegate?
     
     init() {
         super.init(frame: .zero)
@@ -51,7 +62,6 @@ private extension CreateCounterView {
             activityIndicator.trailingAnchor.constraint(equalTo: titleTextField.trailingAnchor, constant: -ActivityIndicatorConstant.leading)
         ])
         
-        
     }
     
 }
@@ -91,6 +101,7 @@ private extension CreateCounterView {
         textField.leftViewMode = .always
         textField.rightViewMode = .always
         textField.clearButtonMode = .never
+        textField.delegate = self
         return textField
     }
     
@@ -100,5 +111,20 @@ private extension CreateCounterView {
         return activityIndicator
     }
     
+}
+
+extension CreateCounterView: UITextFieldDelegate {
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        guard let textFieldText = textField.text as NSString? else { return false }
+        let text = textFieldText.replacingCharacters(in: range, with: string).trimmingCharacters(in: .whitespaces)
+        if !text.isEmpty  {
+            delegate?.isTitleValid(true)
+        } else {
+            delegate?.isTitleValid(false)
+        }
+        return true
+    }
     
 }
+
