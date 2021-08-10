@@ -3,10 +3,10 @@ import Resolver
 import AltairMDKCommon
 
 final class DeleteCounterUseCase: DeleteCounterUseCaseProtocol {
-    @Injected private var countersRepo: CountersRepositoryProtocol
+    @Injected private var counterRepo: CounterRepositoryProtocol
     
     func execute(id: String) -> AnyPublisher<[Counter], Error> {
-        return countersRepo.deleteCounter(id: id)
+        return counterRepo.deleteCounter(id: id)
     }
     
 }

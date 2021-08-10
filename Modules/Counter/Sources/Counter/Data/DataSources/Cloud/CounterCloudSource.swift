@@ -3,7 +3,7 @@ import Combine
 import Resolver
 import AltairMDKProviders
 
-final class CountersCloudSource: CountersCloudSourceProtocol {
+final class CounterCloudSource: CounterCloudSourceProtocol {
     @Injected private var networkProvider: NetworkProviderProtocol
     
     func fetchCounters<T>() -> AnyPublisher<T, NetworkException> where T: Decodable {
@@ -12,6 +12,10 @@ final class CountersCloudSource: CountersCloudSourceProtocol {
     
     func deleteCounter<T>(id: String) -> AnyPublisher<T, NetworkException> where T: Decodable {
         return networkProvider.agent.run(CounterAPI.deleteCounter(id: id))
+    }
+    
+    func createCounter<T>(title: String) -> AnyPublisher<T, NetworkException> where T : Decodable {
+        return networkProvider.agent.run(CounterAPI.createCounter(title: title))
     }
     
     func incrementCounter<T>(id: String) -> AnyPublisher<T, NetworkException> where T: Decodable {

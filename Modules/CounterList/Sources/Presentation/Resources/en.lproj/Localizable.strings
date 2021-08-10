@@ -11,12 +11,3 @@
 "alert.button.delete" = "Delete %i counter";
 "alert.button.cancel" = "Cancel";
 
-"exception.title.noCountersYet" = "No counters yet";
-"exception.title.cantLoad" = "Couldn't load the counters";
-"exception.title.cantDelete" = "Could't delete the counter \"%@\"";
-"exception.title.cantUpdate" = "Couldn't update the \"%@\" counter to %i";
-"exception.message.noCountersYet" = "\"When I started counting my blessings, my whole life turned around.\"\n—Willie Nelson";
-"exception.message.cantLoad" = "The Internet connection appears to be offline.";
-"exception.message.cantDelete" = "The Internet connection appears to be offline.";
-"exception.message.cantUpdate" = "The Internet connection appears to be offline.";
-"exception.message.noSearchResult" = "No results";
