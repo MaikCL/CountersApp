@@ -1,3 +1,4 @@
+import AltairMDKCommon
 import AltairMDKProviders
 
 public enum CounterAPI {
@@ -18,7 +19,7 @@ public enum CounterAPI {
     
     public static func createCounter<APIResponse>(title: String) -> Endpoint<APIResponse> {
         var params = Parameters()
-        params["title"] = [title]
+        params["title"] = AnyCodable(title)
         return Endpoint<APIResponse>(headers: defaultHeaders, method: .post, path: baseUrl + "/counter", parameters: params)
     }
     

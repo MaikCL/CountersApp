@@ -1,6 +1,6 @@
 "navigationBar.title" = "Counters";
 "searchBar.placeholder" = "Search";
-"buttonItem.title.selectAll" = "Select All";
+"button.item.selectAll" = "Select All";
 "toolbar.counterResume" = "%i items · Counted %i times";
 
 "button.title.createACounter" = "Create a counter";

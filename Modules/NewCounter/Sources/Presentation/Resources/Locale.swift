@@ -2,6 +2,18 @@ import Foundation
 
 enum Locale: String {
     
+    /// Create a counter
+    case navigationBarTitle = "navigationBar.title"
+    
+    /// Create
+    case navigationBack = "navigationBar.back"
+    
+    /// Save
+    case buttonItemSave = "button.item.save"
+    
+    /// Cancel
+    case buttonItemCancel = "button.item.cancel"
+
     /// Dismiss
     case alertButtonDismiss = "alert.button.dismiss"
     
@@ -10,6 +22,9 @@ enum Locale: String {
     
     /// The internet connection appears to be offline.
     case exceptionMessageCantCreateCounter = "exception.message.cantCreateCounter"
+    
+    /// Cups of coffe
+    case textFieldHintExampleTitle = "textfield.hint.exampleTitle"
 
 }
 
