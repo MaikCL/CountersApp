@@ -1,6 +1,6 @@
 import AltairMDKCommon
 
-enum CounterException {
+public enum CounterException {
     case noCountersYet
     case cantLoadCounters
     case cantCreateCounter
@@ -11,11 +11,11 @@ enum CounterException {
 
 extension CounterException: Exception {
     
-    var category: ExceptionCategory {
+    public var category: ExceptionCategory {
         .feature
     }
     
-    var code: String {
+    public var code: String {
         switch self {
             case .noCountersYet: return "co.dm.00"
             case .cantLoadCounters: return "co.dm.01"
@@ -50,7 +50,7 @@ extension CounterException: Exception {
         }
     }
     
-    var errorDescription: String? {
+    public var errorDescription: String? {
         switch self {
             case .noCountersYet: return Locale.exceptionMessageNoCountersYet.localized
             case .cantLoadCounters: return Locale.exceptionMessageCantLoad.localized

@@ -1,7 +1,7 @@
 import Foundation
 
-struct Counter {
-    let id: String
-    let title: String
-    let count: Int
+public struct Counter: Hashable {
+    public let id: String
+    public let title: String
+    public let count: Int
 }
