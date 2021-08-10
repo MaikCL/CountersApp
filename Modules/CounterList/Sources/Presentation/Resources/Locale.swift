@@ -9,7 +9,7 @@ enum Locale: String {
     case searchBarPlaceholder = "searchBar.placeholder"
 
     /// Select All
-    case barButtonItemSelectAll = "buttonItem.title.selectAll"
+    case buttonItemSelectAll = "button.item.selectAll"
     
     /// %i items \{U+2022} Counted %i times
     case toolbarCounterResume = "toolbar.counterResume"

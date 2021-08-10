@@ -20,6 +20,7 @@ final class CreateCounterViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupNavigationController()
     }
     
 }
