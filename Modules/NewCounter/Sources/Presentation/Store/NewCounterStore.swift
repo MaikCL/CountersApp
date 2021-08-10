@@ -18,7 +18,6 @@ final class NewCounterStore {
             scheduler: DispatchQueue.main,
             sideEffects: [
                 sideEffects.whenInput(action: input.eraseToAnyPublisher()),
-                sideEffects.whenCreateCounter(),
             ]
         )
         .assignNoRetain(to: \.state, on: self)

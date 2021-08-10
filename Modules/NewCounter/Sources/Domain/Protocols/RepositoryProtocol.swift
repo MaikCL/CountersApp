@@ -1,5 +1,5 @@
 import Combine
 
-protocol NewCounterRepositoryProtocol: AnyObject {
+protocol ExamplesCounterRepositoryProtocol: AnyObject {
     
 }

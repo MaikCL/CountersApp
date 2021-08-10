@@ -1,11 +1,13 @@
+import Counter
 import Combine
 import Resolver
 import Foundation
 import AltairMDKCommon
 
 struct ViewState {
+    var exception: Exception? = .none
     var isCreated: Bool = false
-    var exception: NewCounterException? = .none
+    var isCreating: Bool = false
 }
 
 protocol CreateCounterViewModelProtocol {
@@ -19,7 +21,7 @@ final class CreateCounterViewModel: CreateCounterViewModelProtocol {
     var statePublisher: Published<ViewState>.Publisher { $viewState }
     var coordinator: CreateCounterFlow?
     
-    @Injected private var newCounterStore: NewCounterStore
+    @Injected private var counterStore: CounterStore
     @Published private var viewState = ViewState()
     
     private var cancellables = Set<AnyCancellable>()
@@ -29,7 +31,7 @@ final class CreateCounterViewModel: CreateCounterViewModelProtocol {
     }
     
     func createCouter(title: String) {
-        newCounterStore.trigger(.createCounter(title: title))
+        counterStore.trigger(.createCounter(title: title))
     }
     
 }
@@ -37,10 +39,16 @@ final class CreateCounterViewModel: CreateCounterViewModelProtocol {
 private extension CreateCounterViewModel {
     
     func setupViewState() {
-        newCounterStore.$state.map { state in
-            let isCreated = !state.countersCreated.isEmpty
+        counterStore.$state.map { state in
             let exception = state.exception
-            return ViewState(isCreated: isCreated, exception: exception)
+            var isCreating = false
+            if case .whenCreateCounter = state.runningSideEffect {
+                isCreating = true
+            } else {
+                isCreating = false
+            }
+            let isCreated = !state.counters.isEmpty
+            return ViewState(exception: exception, isCreated: isCreated, isCreating: isCreating)
         }
         .assignNoRetain(to: \.viewState, on: self)
         .store(in: &cancellables)
