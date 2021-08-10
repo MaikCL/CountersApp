@@ -5,18 +5,18 @@
       location = "group:Counters/Counters.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:Modules/APIs">
+      location = "group:Modules/APIsKit">
    </FileRef>
    <FileRef
-      location = "group:Modules/Design">
+      location = "group:Modules/DesignKit">
    </FileRef>
    <FileRef
-      location = "group:Modules/Counter">
+      location = "group:Modules/CounterKit">
    </FileRef>
    <FileRef
-      location = "group:Modules/CounterList">
+      location = "group:Modules/CounterListKit">
    </FileRef>
    <FileRef
-      location = "group:Modules/NewCounter">
+      location = "group:Modules/NewCounterKit">
    </FileRef>
 </Workspace>
