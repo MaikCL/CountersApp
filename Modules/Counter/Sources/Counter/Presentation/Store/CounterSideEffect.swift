@@ -6,6 +6,7 @@ final class CounterSideEffects {
     @Injected private var fetchCountersUseCase: FetchCountersUseCaseProtocol
     @Injected private var deleteCounterUseCase: DeleteCounterUseCaseProtocol
     @Injected private var createCounterUseCase: CreateCounterUseCaseProtocol
+    @Injected private var searchCounterUseCase: SearchCountersUseCaseProtocol
     @Injected private var incrementCounterUseCase: IncrementCounterUseCaseProtocol
     @Injected private var decrementCounterUseCase: DecrementCounterUseCaseProtocol
     
@@ -19,11 +20,50 @@ final class CounterSideEffects {
             return self.fetchCountersUseCase
                 .execute()
                 .map { !$0.isEmpty ? .fetchCountersSuccess($0) : .fetchCountersFailed(.noCountersYet) }
-                .replaceError(with: .fetchCountersFailed(.cantLoadCounters))
-                .handleEvents(receiveOutput: { input in
-                    guard case let .fetchCountersFailed(exception) = input else { return }
-                    self.logException(exception)
-                })
+                .catch { self.log($0, trigger: .fetchCountersFailed(.cantLoadCounters)) }
+                .eraseToAnyPublisher()
+        }
+    }
+    
+    func whenIncrementCounter() -> SideEffect<CounterState, CounterAction> {
+        SideEffect { state -> AnyPublisher<CounterAction, Never> in
+            guard case .whenIncrementCounter(let counter) = state.runningSideEffect else { return Empty().eraseToAnyPublisher() }
+            return self.incrementCounterUseCase
+                .execute(id: counter.id)
+                .map { .incrementCounterSuccess($0) }
+                .catch { self.log($0, trigger: .incrementCounterFailed(.cantIncrementCounter(counter))) }
+                .eraseToAnyPublisher()
+        }
+    }
+    
+    func whenDecrementCounter() -> SideEffect<CounterState, CounterAction> {
+        SideEffect { state -> AnyPublisher<CounterAction, Never> in
+            guard case .whenDecrementCounter(let counter) = state.runningSideEffect else { return Empty().eraseToAnyPublisher() }
+            return self.decrementCounterUseCase
+                .execute(id: counter.id)
+                .map { .decrementCounterSuccess($0) }
+                .catch { self.log($0, trigger: .decrementCounterFailed(.cantDecrementCounter(counter))) }
+                .eraseToAnyPublisher()
+        }
+    }
+    
+    func whenCreateCounter() -> SideEffect<CounterState, CounterAction> {
+        SideEffect { state -> AnyPublisher<CounterAction, Never> in
+            guard case .whenCreateCounter(let title) = state.runningSideEffect else { return Empty().eraseToAnyPublisher() }
+            return self.createCounterUseCase
+                .execute(title: title)
+                .map { .createCounterSuccess($0) }
+                .catch { self.log($0, trigger: .createCounterFailed(.cantCreateCounter)) }
+                .eraseToAnyPublisher()
+        }
+    }
+    
+    func whenSearchConters() -> SideEffect<CounterState, CounterAction> {
+        SideEffect { state -> AnyPublisher<CounterAction, Never> in
+            guard case .whenSearchCounters(let term, let counters) = state.runningSideEffect else { return Empty().eraseToAnyPublisher() }
+            return self.searchCounterUseCase
+                .execute(term: term, over: counters)
+                .map { !$0.isEmpty ? .searchCountersSuccess($0) : .searchCountersFailed(.noSearchResults) }
                 .eraseToAnyPublisher()
         }
     }
@@ -36,10 +76,6 @@ final class CounterSideEffects {
                     .execute(id: counter.id)
                     .map { .success($0) }
                     .catch { Just(.failure($0)) }
-                    .handleEvents(receiveOutput: { input in
-                        guard case .failure = input else { return }
-                        self.logException(CounterException.cantDeleteCounters(counters))
-                    })
                     .eraseToAnyPublisher()
             }
             
@@ -61,62 +97,17 @@ final class CounterSideEffects {
                 .eraseToAnyPublisher()
         }
     }
-    
-    func whenIncrementCounter() -> SideEffect<CounterState, CounterAction> {
-        SideEffect { state -> AnyPublisher<CounterAction, Never> in
-            guard case .whenIncrementCounter(let counter) = state.runningSideEffect else { return Empty().eraseToAnyPublisher() }
-            return self.incrementCounterUseCase
-                .execute(id: counter.id)
-                .map { .incrementCounterSuccess($0) }
-                .replaceError(with: .incrementCounterFailed(.cantIncrementCounter(counter)))
-                .handleEvents(receiveOutput: { input in
-                    guard case let .incrementCounterFailed(exception) = input else { return }
-                    self.logException(exception)
-                })
-                .eraseToAnyPublisher()
-        }
-    }
-    
-    func whenDecrementCounter() -> SideEffect<CounterState, CounterAction> {
-        SideEffect { state -> AnyPublisher<CounterAction, Never> in
-            guard case .whenDecrementCounter(let counter) = state.runningSideEffect else { return Empty().eraseToAnyPublisher() }
-            return self.decrementCounterUseCase
-                .execute(id: counter.id)
-                .map { .decrementCounterSuccess($0) }
-                .replaceError(with: .decrementCounterFailed(.cantDecrementCounter(counter)))
-                .handleEvents(receiveOutput: { input in
-                    guard case let .decrementCounterFailed(exception) = input else { return }
-                    self.logException(exception)
-                })
-                .eraseToAnyPublisher()
-        }
-    }
-    
-    func whenCreateCounter() -> SideEffect<CounterState, CounterAction> {
-        SideEffect { state -> AnyPublisher<CounterAction, Never> in
-            guard case .whenCreateCounter(let title) = state.runningSideEffect else { return Empty().eraseToAnyPublisher() }
-            return self.createCounterUseCase
-                .execute(title: title)
-                .map { .createCounterSuccess($0) }
-                .replaceError(with:  .createCounterFailed(.cantCreateCounter))
-                .handleEvents(receiveOutput: { input in
-                    guard case let .createCounterFailed(exception) = input else { return }
-                    self.logException(exception)
-                })
-                .eraseToAnyPublisher()
-        }
-    }
 
 }
 
 extension CounterSideEffects {
     
     // TODO: Improve later with LoggerProvider
-    private func logException(_ exception: Exception) {
-        // Disclaimer: Eventually the exception can be logged in more detail if the error actions are handled as exceptions type.
-        // In order to make the error handling simpler for this test, all the exceptions are cast to the generic "internet appear offline" message.
-        // But is easly change that behavior ;)
+    private func log(_ error: Error, trigger: CounterAction) -> AnyPublisher<CounterAction, Never> {
+        let exception = error as? Exception ?? GenericException.unknown(error)
         print("A SideEffect exception occurred: [\(exception.code)] \(String(describing: exception.errorTitle))")
+        print("Resolve triggering: \(trigger)")
+        return Just(trigger).setFailureType(to: Never.self).eraseToAnyPublisher()
     }
 
 }

@@ -94,15 +94,7 @@
 //        }
 //    }
 //
-//    func whenSearchConters() -> SideEffect<CounterListState, CounterListAction> {
-//        SideEffect { state -> AnyPublisher<CounterListAction, Never> in
-//            guard case .whenSearchCounters(let term, let counters) = state.runningSideEffect else { return Empty().eraseToAnyPublisher() }
-//            return self.searchCounterUseCase
-//                .execute(term: term, over: counters)
-//                .map { !$0.isEmpty ? .searchCountersSuccess($0) : .searchCountersFailed(.noSearchResults) }
-//                .eraseToAnyPublisher()
-//        }
-//    }
+
 //
 //}
 //

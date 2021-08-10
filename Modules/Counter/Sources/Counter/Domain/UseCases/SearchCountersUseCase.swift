@@ -1,4 +1,3 @@
-import Counter
 import Combine
 import AltairMDKCommon
 

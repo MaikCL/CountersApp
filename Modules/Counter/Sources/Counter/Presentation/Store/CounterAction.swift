@@ -19,4 +19,9 @@ public enum CounterAction {
     
     case deleteCounters(_ counters: [Counter])
     case deleteCountersCompleted(results: [Counter]?, exception: CounterException?)
+    
+    case searchCounters(term: String, counters: [Counter])
+    case searchCountersSuccess(_ results: [Counter])
+    case searchCountersFailed(_ exception: CounterException)
+    case finishSearchCounters
 }
