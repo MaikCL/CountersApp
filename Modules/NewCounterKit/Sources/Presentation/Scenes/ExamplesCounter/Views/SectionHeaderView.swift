@@ -43,7 +43,7 @@ private extension SectionHeaderView {
         headerLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         NSLayoutConstraint.activate([
             headerLabel.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -Constraints.bottom),
-            headerLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor)
+            headerLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
         ])
     }
 
