@@ -2,13 +2,7 @@ import UIKit
 import DesignKit
 import AltairMDKCommon
 
-protocol ExamplesCounterViewDelegate: AnyObject {
-    func didTapCounterExample(title: String)
-}
-
-final class ExamplesCounterView: UIView {
-    var delegate: ExamplesCounterViewDelegate?
-    
+final class ExamplesCounterView: UIView {    
     private lazy var separatorView: UIView = {
         setupSeparatorView()
     }()

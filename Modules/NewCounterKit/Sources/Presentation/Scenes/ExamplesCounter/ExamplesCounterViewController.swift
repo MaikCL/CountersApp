@@ -1,5 +1,6 @@
 import UIKit
 import Combine
+import AltairMDKCommon
 
 final class ExamplesCounterViewController: UIViewController {
     private(set) var viewModel: ExamplesCounterViewModelProtocol?
@@ -7,7 +8,7 @@ final class ExamplesCounterViewController: UIViewController {
     
     var dataSource: DataSource? = nil
     
-    private(set) var examples: [ExampleModel] = [] {
+    var examples: [ExampleModel] = [] {
         didSet {
             setupSnapshot()
         }
@@ -30,38 +31,18 @@ final class ExamplesCounterViewController: UIViewController {
         super.viewDidLoad()
         setupNavigationController()
         setupDataSource()
-        
-        examples = generateExampleData()
+        examples = setupExampleData()
     }
-    
+
 }
 
-// TODO: Can be migrated to Data Layer
-private extension ExamplesCounterViewController {
+// MARK: Main ViewController Operations
+
+extension ExamplesCounterViewController {
     
-    func generateExampleData() -> [ExampleModel] {
-        return [
-            ExampleModel(category: "DRINKS", items: [
-                ExampleModel.ItemModel(title: "Cups on Coffe"),
-                ExampleModel.ItemModel(title: "Glass of water"),
-                ExampleModel.ItemModel(title: "Piscolas"),
-            ]),
-            ExampleModel(category: "FOOD", items: [
-                ExampleModel.ItemModel(title: "Hot dog"),
-                ExampleModel.ItemModel(title: "Cupcackes eaten"),
-                ExampleModel.ItemModel(title: "Chiquen"),
-                ExampleModel.ItemModel(title: "Pizzas"),
-                ExampleModel.ItemModel(title: "Mashmellows"),
-                ExampleModel.ItemModel(title: "Avocados"),
-                ExampleModel.ItemModel(title: "Papitas fritas")
-            ]),
-            ExampleModel(category: "MISC", items: [
-                ExampleModel.ItemModel(title: "Times sneezed"),
-                ExampleModel.ItemModel(title: "Naps"),
-                ExampleModel.ItemModel(title: "Daydreams"),
-                ExampleModel.ItemModel(title: "Days Coding"),
-            ])
-        ]
+    func saveCounter(title: String) {
+        viewModel?.createExampleCounter(title: title)
+        viewModel?.coordinator?.dismissExampleCounterScreen()
     }
     
 }

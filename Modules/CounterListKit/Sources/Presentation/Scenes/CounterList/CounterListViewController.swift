@@ -1,6 +1,4 @@
 import UIKit
-import DesignKit
-import CounterKit
 import Combine
 import AltairMDKCommon
 
@@ -71,6 +69,8 @@ final class CounterListViewController: UIViewController {
     }
     
 }
+
+// MARK: Main ViewController Operations
 
 extension CounterListViewController {
     
