@@ -17,7 +17,7 @@ final class ExamplesCounterView: UIView {
        setupTopMessageLabel()
     }()
     
-    private lazy var collectionView: UICollectionView = {
+    lazy var collectionView: UICollectionView = {
        setupCollectionView()
     }()
     
@@ -50,6 +50,8 @@ extension ExamplesCounterView {
     }
     
     func setupConstraint() {
+        topMessageView.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
+
         NSLayoutConstraint.activate([
             topMessageView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
             topMessageView.leadingAnchor.constraint(equalTo: leadingAnchor),
