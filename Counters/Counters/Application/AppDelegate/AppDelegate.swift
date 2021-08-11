@@ -5,8 +5,9 @@
 //
 
 import UIKit
-import NewCounter
-import CounterList
+import CounterKit
+import NewCounterKit
+import CounterListKit
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -19,8 +20,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         appCoordinator = AppCoordinator(window: window)
         appCoordinator?.start()
         
-        NewCounter.DIComponents.bind()
-        CounterList.DIComponents.bind()
+        CounterKit.DIComponents.bind()
+        NewCounterKit.DIComponents.bind()
+        CounterListKit.DIComponents.bind()
         return true
     }
 }

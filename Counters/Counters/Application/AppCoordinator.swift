@@ -1,6 +1,6 @@
 import UIKit
-import Design
-import CounterList
+import DesignKit
+import CounterListKit
 import AltairMDKCommon
 
 protocol StartFlow {

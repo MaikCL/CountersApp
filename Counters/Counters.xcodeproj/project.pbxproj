@@ -14,9 +14,9 @@
 		35EAFB7925CC9E3B00DCFE10 /* Networking.m in Sources */ = {isa = PBXBuildFile; fileRef = 35EAFB7825CC9E3B00DCFE10 /* Networking.m */; };
 		AEA3A5B426B998C900660740 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA3A5B326B998C900660740 /* AppCoordinator.swift */; };
 		AEA3A5B726B999E400660740 /* Altair-MDK in Frameworks */ = {isa = PBXBuildFile; productRef = AEA3A5B626B999E400660740 /* Altair-MDK */; };
-		AEA3A5BA26B99E2B00660740 /* CounterList in Frameworks */ = {isa = PBXBuildFile; productRef = AEA3A5B926B99E2B00660740 /* CounterList */; };
-		AEB44CD526C22A5800D030F0 /* NewCounter in Frameworks */ = {isa = PBXBuildFile; productRef = AEB44CD426C22A5800D030F0 /* NewCounter */; };
-		AEDD51B926BA206700F8B666 /* Design in Frameworks */ = {isa = PBXBuildFile; productRef = AEDD51B826BA206700F8B666 /* Design */; };
+		AEFAA90726C3240D00350A50 /* CounterKit in Frameworks */ = {isa = PBXBuildFile; productRef = AEFAA90626C3240D00350A50 /* CounterKit */; };
+		AEFAA90926C3240D00350A50 /* CounterListKit in Frameworks */ = {isa = PBXBuildFile; productRef = AEFAA90826C3240D00350A50 /* CounterListKit */; };
+		AEFAA90B26C3240D00350A50 /* NewCounterKit in Frameworks */ = {isa = PBXBuildFile; productRef = AEFAA90A26C3240D00350A50 /* NewCounterKit */; };
 		DE3EBACC25E048CE00DA1E0D /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3EBACB25E048CE00DA1E0D /* Button.swift */; };
 		DECA256C25CC8D4200851431 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECA256B25CC8D4200851431 /* AppDelegate.swift */; };
 		DECA257025CC8D4200851431 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECA256F25CC8D4200851431 /* WelcomeViewController.swift */; };
@@ -74,10 +74,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AEB44CD526C22A5800D030F0 /* NewCounter in Frameworks */,
-				AEDD51B926BA206700F8B666 /* Design in Frameworks */,
+				AEFAA90926C3240D00350A50 /* CounterListKit in Frameworks */,
+				AEFAA90726C3240D00350A50 /* CounterKit in Frameworks */,
 				AEA3A5B726B999E400660740 /* Altair-MDK in Frameworks */,
-				AEA3A5BA26B99E2B00660740 /* CounterList in Frameworks */,
+				AEFAA90B26C3240D00350A50 /* NewCounterKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -272,9 +272,9 @@
 			name = Counters;
 			packageProductDependencies = (
 				AEA3A5B626B999E400660740 /* Altair-MDK */,
-				AEA3A5B926B99E2B00660740 /* CounterList */,
-				AEDD51B826BA206700F8B666 /* Design */,
-				AEB44CD426C22A5800D030F0 /* NewCounter */,
+				AEFAA90626C3240D00350A50 /* CounterKit */,
+				AEFAA90826C3240D00350A50 /* CounterListKit */,
+				AEFAA90A26C3240D00350A50 /* NewCounterKit */,
 			);
 			productName = Counters;
 			productReference = DECA256825CC8D4200851431 /* Counters.app */;
@@ -754,17 +754,17 @@
 			package = AEA3A5B526B999E400660740 /* XCRemoteSwiftPackageReference "AltairMDK-iOS" */;
 			productName = "Altair-MDK";
 		};
-		AEA3A5B926B99E2B00660740 /* CounterList */ = {
+		AEFAA90626C3240D00350A50 /* CounterKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = CounterList;
+			productName = CounterKit;
 		};
-		AEB44CD426C22A5800D030F0 /* NewCounter */ = {
+		AEFAA90826C3240D00350A50 /* CounterListKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = NewCounter;
+			productName = CounterListKit;
 		};
-		AEDD51B826BA206700F8B666 /* Design */ = {
+		AEFAA90A26C3240D00350A50 /* NewCounterKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = Design;
+			productName = NewCounterKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
