@@ -88,6 +88,21 @@ final class CounterListView: UIView {
         collectionView.isScrollEnabled = true
     }
     
+    func dimmCollectionView() {
+        let overlay = UIKit.UIView(frame: CGRect(x: 0, y: 0, width: collectionView.frame.width, height: collectionView.frame.height))
+        overlay.backgroundColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.15)
+        overlay.tag = 300
+        guard collectionView.viewWithTag(300) == nil else { return }
+        collectionView.addSubview(overlay)
+    }
+    
+    func undimmCollectionView() {
+        DispatchQueue.main.async {
+            guard let viewWithTag = self.collectionView.viewWithTag(300) else { return }
+            viewWithTag.removeFromSuperview()
+        }
+    }
+
 }
 
 private extension CounterListView {

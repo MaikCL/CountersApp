@@ -22,7 +22,7 @@ extension CounterListViewController {
     
     func setupSearchController() {
         let searchController = UISearchController(searchResultsController: .none)
-        searchController.obscuresBackgroundDuringPresentation = true
+        searchController.obscuresBackgroundDuringPresentation = false
         searchController.hidesNavigationBarDuringPresentation = true
         searchController.searchBar.placeholder = Locale.searchBarPlaceholder.localized
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).clearButtonMode = .never

@@ -86,6 +86,7 @@ extension CounterListViewController {
         let view = ExceptionView(exception: CounterException.noCountersYet, actionButtonTitle: buttonTitle)
         view.delegate = self
         innerView.showBackgroundView(view)
+        innerView.endRefreshAnimation()
     }
     
     func showCantLoadCountersExceptionView() {
@@ -93,6 +94,7 @@ extension CounterListViewController {
         let view = ExceptionView(exception: CounterException.cantLoadCounters, actionButtonTitle: buttonTitle)
         view.delegate = self
         innerView.showBackgroundView(view)
+        innerView.endRefreshAnimation()
     }
     
     func showSearchNoResultsExceptionView() {
@@ -242,21 +244,30 @@ extension CounterListViewController: UISearchResultsUpdating {
             innerView.hideBackgroundView()
             return
         }
-        animateUpdate = true
-        searchCounter(term: term)
     }
     
 }
 
 extension CounterListViewController: UISearchBarDelegate {
     
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        guard !searchText.isEmpty else {
+            innerView.dimmCollectionView()
+            return
+        }
+        animateUpdate = true
+        searchCounter(term: searchText)
+    }
+    
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        if let text = searchBar.text, text.isEmpty { innerView.dimmCollectionView()  }
         isSearchActive = true
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.text = .none
         isSearchActive = false
+        innerView.undimmCollectionView()
         finishSearch()
     }
     
