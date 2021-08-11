@@ -82,7 +82,6 @@ private extension CreateCounterView {
         NSLayoutConstraint.activate([
             seeExamplesLabel.topAnchor.constraint(equalTo: titleTextField.bottomAnchor, constant: SeeExamplesLabelConstant.top),
             seeExamplesLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: SeeExamplesLabelConstant.leading),
-            seeExamplesLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -SeeExamplesLabelConstant.trailing),
             seeExamplesLabel.heightAnchor.constraint(equalToConstant: SeeExamplesLabelConstant.height)
         ])
     }
@@ -191,6 +190,5 @@ extension CreateCounterView: UITextFieldDelegate {
         }
         return true
     }
-    
-}
 
+}
