@@ -1,6 +1,4 @@
 import UIKit
-import DesignKit
-import CounterKit
 import Combine
 import AltairMDKCommon
 
@@ -20,6 +18,8 @@ final class CounterListViewController: UIViewController {
     
     var searchedItems = [CounterModel]() {
         didSet {
+            if !searchedItems.isEmpty { innerView.hideBackgroundView() }
+            innerView.undimmCollectionView()
             applySnapshot(items: searchedItems, animate: animateUpdate)
         }
     }
@@ -69,6 +69,8 @@ final class CounterListViewController: UIViewController {
     }
     
 }
+
+// MARK: Main ViewController Operations
 
 extension CounterListViewController {
     

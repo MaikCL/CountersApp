@@ -12,6 +12,7 @@ public enum Palette {
     case secondaryText
     case subtitleText
     case textfield
+    case shadow
 }
 
 extension Palette {
@@ -40,6 +41,16 @@ extension Palette {
                 return UIColor(named: "SubtitleText", in: Bundle.module, compatibleWith: .current) ?? .clear
             case .textfield:
                 return UIColor(named: "TextField", in: Bundle.module, compatibleWith: .current) ?? .clear
+            case .shadow:
+                return UIColor(named: "Shadow", in: Bundle.module, compatibleWith: .current) ?? .clear
+        }
+    }
+    
+    public var cgColor: CGColor {
+        switch self {
+            case .shadow:
+                return UIColor(named: "Shadow", in: Bundle.module, compatibleWith: .current)?.cgColor ?? UIColor.clear.cgColor
+            default: return UIColor.clear.cgColor
         }
     }
     

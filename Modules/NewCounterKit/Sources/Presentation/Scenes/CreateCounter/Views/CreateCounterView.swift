@@ -4,6 +4,7 @@ import AltairMDKCommon
 
 protocol CreateCounterViewDelegate: AnyObject {
     func isTitleValid(_ isValid: Bool)
+    func didTapSeeExamplesLabel()
 }
 
 final class CreateCounterView: UIView {
@@ -17,6 +18,10 @@ final class CreateCounterView: UIView {
         setupTitleTextField()
     }()
     
+    lazy private var seeExamplesLabel: UILabel = {
+        setupSeeExamplesLabel()
+    }()
+    
     var titleInserted: String? {
         guard let textFieldText = titleTextField.text as NSString? else { return nil }
         return textFieldText.trimmingCharacters(in: .whitespaces)
@@ -27,6 +32,7 @@ final class CreateCounterView: UIView {
         setupView()
         setupSubviews()
         setupConstraint()
+        setupSeeExamplesLabelGestureRecognizer()
     }
     
     required init?(coder: NSCoder) {
@@ -53,8 +59,10 @@ private extension CreateCounterView {
     
     func setupSubviews() {
         addSubview(titleTextField)
+        addSubview(seeExamplesLabel)
         addSubview(activityIndicator)
         setSubviewForAutoLayout(titleTextField)
+        setSubviewForAutoLayout(seeExamplesLabel)
         setSubviewForAutoLayout(activityIndicator)
     }
     
@@ -70,6 +78,31 @@ private extension CreateCounterView {
             activityIndicator.centerYAnchor.constraint(equalTo: titleTextField.centerYAnchor),
             activityIndicator.trailingAnchor.constraint(equalTo: titleTextField.trailingAnchor, constant: -ActivityIndicatorConstant.leading)
         ])
+        
+        NSLayoutConstraint.activate([
+            seeExamplesLabel.topAnchor.constraint(equalTo: titleTextField.bottomAnchor, constant: SeeExamplesLabelConstant.top),
+            seeExamplesLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: SeeExamplesLabelConstant.leading),
+            seeExamplesLabel.heightAnchor.constraint(equalToConstant: SeeExamplesLabelConstant.height)
+        ])
+    }
+    
+    func setupSeeExamplesLabelGestureRecognizer() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(didTapSeeExampleAttributedTextAction(_:)))
+        tap.buttonMaskRequired = .primary
+        seeExamplesLabel.addGestureRecognizer(tap)
+        seeExamplesLabel.isUserInteractionEnabled = true
+    }
+    
+}
+
+private extension CreateCounterView {
+    
+    @objc func didTapSeeExampleAttributedTextAction(_ sender: UITapGestureRecognizer) {
+        guard let range = seeExamplesLabel.text?.range(of: Locale.labelTextSeeExamples.localized)?.nsRange else { return }
+        if sender.didTapAttributedTextInLabel(label: seeExamplesLabel, inRange: range) {
+            delegate?.didTapSeeExamplesLabel()
+        }
+
     }
     
 }
@@ -84,7 +117,13 @@ private extension CreateCounterView {
         static let cornerRadius: CGFloat = 8.0
         static let paddingLeft: CGRect = CGRect(x: 0, y: 0, width: 17, height: 50)
         static let paddingRight: CGRect = CGRect(x: 0, y: 0, width: 40, height: 50)
-
+    }
+    
+    enum SeeExamplesLabelConstant {
+        static let top: CGFloat = 0.0
+        static let leading: CGFloat = 24.0
+        static let trailing: CGFloat = 24.0
+        static let height: CGFloat = 46.0
     }
     
     enum ActivityIndicatorConstant {
@@ -94,6 +133,7 @@ private extension CreateCounterView {
     enum Font {
         static let hint = UIFont.systemFont(ofSize: 17, weight: .regular)
         static let text = UIFont.systemFont(ofSize: 17, weight: .regular)
+        static let example = UIFont.systemFont(ofSize: 15, weight: .regular)
     }
     
     func setupTitleTextField() -> UITextField {
@@ -119,6 +159,23 @@ private extension CreateCounterView {
         return activityIndicator
     }
     
+    func setupSeeExamplesLabel() -> UILabel {
+        let label = UILabel()
+        let textNormal = Locale.labelTextGiveACreativeName.localized
+        let textUnderlined = Locale.labelTextSeeExamples.localized
+        let attributedTextNormal = NSAttributedString(string: textNormal)
+        let underlineAttribute = [NSAttributedString.Key.underlineStyle: NSUnderlineStyle.thick.rawValue]
+        let attributedTextUnderlined = NSAttributedString(string: textUnderlined, attributes: underlineAttribute)
+        let result = NSMutableAttributedString()
+        result.append(attributedTextNormal)
+        result.append(attributedTextUnderlined)
+        label.attributedText = result
+        label.numberOfLines = 1
+        label.font = Font.example
+        label.textColor = Palette.secondaryText.uiColor
+        return label
+    }
+    
 }
 
 extension CreateCounterView: UITextFieldDelegate {
@@ -133,6 +190,5 @@ extension CreateCounterView: UITextFieldDelegate {
         }
         return true
     }
-    
-}
 
+}
