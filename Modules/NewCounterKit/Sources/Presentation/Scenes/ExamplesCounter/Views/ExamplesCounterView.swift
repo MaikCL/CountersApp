@@ -9,6 +9,10 @@ protocol ExamplesCounterViewDelegate: AnyObject {
 final class ExamplesCounterView: UIView {
     var delegate: ExamplesCounterViewDelegate?
     
+    private lazy var separatorView: UIView = {
+        setupSeparatorView()
+    }()
+    
     private lazy var topMessageView: UIView = {
         setupTopMessageView()
     }()
@@ -43,20 +47,25 @@ extension ExamplesCounterView {
     func setSubViews() {
         addSubview(topMessageView)
         addSubview(topMessageLabel)
+        addSubview(separatorView)
         addSubview(collectionView)
         setSubviewForAutoLayout(topMessageView)
         setSubviewForAutoLayout(topMessageLabel)
+        setSubviewForAutoLayout(separatorView)
         setSubviewForAutoLayout(collectionView)
     }
     
     func setupConstraint() {
-        topMessageView.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
+        let topMessageViewHeightConstraint = topMessageView.heightAnchor.constraint(equalToConstant: TopMessageViewConstants.height)
+        let separatorViewHeightConstraint = separatorView.heightAnchor.constraint(equalToConstant: ViewSeparatorConstants.height)
+        topMessageViewHeightConstraint.priority = .defaultHigh
+        separatorViewHeightConstraint.priority = .defaultHigh
 
         NSLayoutConstraint.activate([
             topMessageView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
             topMessageView.leadingAnchor.constraint(equalTo: leadingAnchor),
             topMessageView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            topMessageView.heightAnchor.constraint(equalToConstant: TopMessageViewConstants.height)
+            topMessageViewHeightConstraint
         ])
         
         NSLayoutConstraint.activate([
@@ -65,7 +74,14 @@ extension ExamplesCounterView {
         ])
         
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: topMessageView.bottomAnchor, constant: 2),
+            separatorView.topAnchor.constraint(equalTo: topMessageView.bottomAnchor),
+            separatorView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            separatorView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            separatorViewHeightConstraint
+        ])
+        
+        NSLayoutConstraint.activate([
+            collectionView.topAnchor.constraint(equalTo: separatorView.bottomAnchor),
             collectionView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
             collectionView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
@@ -78,8 +94,10 @@ private extension ExamplesCounterView {
     
     enum TopMessageViewConstants {
         static let height: CGFloat = 50.0
-        static let shadow: CGFloat = 1
-        static let opaccity: Float = 1
+    }
+    
+    enum ViewSeparatorConstants {
+        static let height: CGFloat = 1.0
     }
     
     enum Font {
@@ -89,11 +107,12 @@ private extension ExamplesCounterView {
     func setupTopMessageView() -> UIView {
         let view = UIView()
         view.backgroundColor = Palette.background.uiColor
-        view.layer.masksToBounds = false
-        view.layer.shadowRadius = TopMessageViewConstants.shadow
-        view.layer.shadowOpacity = TopMessageViewConstants.opaccity
-        view.layer.shadowColor = Palette.shadow.cgColor
-        view.layer.shadowOffset = CGSize(width: 0, height: TopMessageViewConstants.shadow)
+        return view
+    }
+    
+    func setupSeparatorView() -> UIView {
+        let view = UIView()
+        view.backgroundColor = Palette.shadow.uiColor
         return view
     }
     
@@ -157,6 +176,5 @@ private extension ExamplesCounterView {
         section.boundarySupplementaryItems = [headerElement]
         return UICollectionViewCompositionalLayout(section: section)
     }
-    
     
 }

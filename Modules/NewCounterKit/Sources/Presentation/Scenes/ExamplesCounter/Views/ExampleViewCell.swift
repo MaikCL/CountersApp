@@ -39,8 +39,7 @@ private extension ExamplesViewCell {
     }
     
     private func setupConstraints() {
-        itemLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
-        itemLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        itemLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         let itemLabelWidthConstraint = widthAnchor.constraint(equalToConstant: itemLabel.intrinsicContentSize.width + Constants.extraWidth)
         itemLabelWidthConstraint.priority = .defaultHigh
         
