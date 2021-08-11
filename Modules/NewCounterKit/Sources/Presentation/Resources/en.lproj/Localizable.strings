@@ -6,3 +6,5 @@
 "textfield.hint.exampleTitle" = "Cups of coffe";
 "alert.button.dismiss" = "Dismiss";
 
+"label.text.giveACreativeName" = "Give it a name. Creative block? ";
+"label.text.seeExamples" = "See examples.";

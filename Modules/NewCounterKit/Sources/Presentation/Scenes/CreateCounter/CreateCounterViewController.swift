@@ -34,10 +34,14 @@ extension CreateCounterViewController {
         viewModel?.createCouter(title: title)
     }
     
+    func openExamplesCounterScreen() {
+        viewModel?.coordinator?.coordinateToExamplesScreen()
+    }
+    
     func dismissScreen() {
         viewModel?.coordinator?.dismissCreateCounterScreen()
     }
-
+    
 }
 
 extension CreateCounterViewController {

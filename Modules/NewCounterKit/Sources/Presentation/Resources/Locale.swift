@@ -20,6 +20,11 @@ enum Locale: String {
     /// Cups of coffe
     case textFieldHintExampleTitle = "textfield.hint.exampleTitle"
 
+    /// Give it a name. Creative block?
+    case labelTextGiveACreativeName = "label.text.giveACreativeName"
+    
+    /// See Examples
+    case labelTextSeeExamples = "label.text.seeExamples"
 }
 
 extension Locale {
