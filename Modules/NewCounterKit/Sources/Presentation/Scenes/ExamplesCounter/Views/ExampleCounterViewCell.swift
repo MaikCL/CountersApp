@@ -1,8 +1,12 @@
 import UIKit
 import DesignKit
-import AltairMDKCommon
 
-final class ExamplesViewCell: UICollectionViewCell {
+protocol ExamplesCounterViewCellDelegate: AnyObject {
+    func didTapExampleCounter(title: String)
+}
+
+final class ExampleCounterViewCell: UICollectionViewCell {
+    var delegate: ExamplesCounterViewCellDelegate?
     
     private lazy var itemLabel: UILabel = {
        setupItemLabel()
@@ -26,11 +30,13 @@ final class ExamplesViewCell: UICollectionViewCell {
     
 }
 
-private extension ExamplesViewCell {
+private extension ExampleCounterViewCell {
     
     private func setupView() {
         backgroundColor = Palette.cellBackground.uiColor
         set(cornerRadius: Constants.radius)
+        let tap = UITapGestureRecognizer(target: self, action: #selector(didTapCellAction(_:)))
+        addGestureRecognizer(tap)
     }
     
     private func setupSubViews() {
@@ -53,7 +59,15 @@ private extension ExamplesViewCell {
     
 }
 
-private extension ExamplesViewCell {
+private extension ExampleCounterViewCell {
+    
+    @objc func didTapCellAction(_ sender: UITapGestureRecognizer?) {
+        delegate?.didTapExampleCounter(title: itemLabel.text ?? "")
+    }
+    
+}
+
+private extension ExampleCounterViewCell {
     
     enum Constants {
         static let radius: CGFloat = 8.0
@@ -71,6 +85,5 @@ private extension ExamplesViewCell {
         label.textColor = Palette.primaryText.uiColor
         return label
     }
-    
     
 }

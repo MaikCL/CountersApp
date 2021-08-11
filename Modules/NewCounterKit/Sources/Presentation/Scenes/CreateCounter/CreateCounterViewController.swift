@@ -29,6 +29,8 @@ final class CreateCounterViewController: UIViewController {
     
 }
 
+// MARK: Main ViewController Operations
+
 extension CreateCounterViewController {
     
     func saveCounter(title: String) {
