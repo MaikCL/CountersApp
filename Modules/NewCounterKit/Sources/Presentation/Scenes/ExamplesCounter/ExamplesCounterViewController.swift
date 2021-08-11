@@ -18,4 +18,9 @@ final class ExamplesCounterViewController: UIViewController {
         self.view = innerView
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupNavigationController()
+    }
+    
 }

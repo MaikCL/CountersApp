@@ -10,7 +10,9 @@ extension CounterListViewController {
         navigationItem.largeTitleDisplayMode = .always
         navigationItem.leftBarButtonItem = editButtonItem
         navigationController?.isToolbarHidden = false
+        navigationController?.toolbar.isTranslucent = false
         navigationController?.toolbar.tintColor = Palette.accent.uiColor
+        navigationController?.toolbar.barTintColor = Palette.main.uiColor
         toolbarItems = setupToolbar()
     }
     
