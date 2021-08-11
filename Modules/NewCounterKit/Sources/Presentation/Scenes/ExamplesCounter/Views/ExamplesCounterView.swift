@@ -144,11 +144,7 @@ private extension ExamplesCounterView {
             static let headerHeight: CGFloat = 60
             static let height: CGFloat = 55
             static let width: CGFloat = 150
-            static let insetTop: CGFloat = 5
-            static let insetBottom: CGFloat = 5
-            static let insetLeading: CGFloat = 5
-            static let insetTrailing: CGFloat = 5
-            static let groupSpacing: CGFloat = 5
+            static let groupSpacing: CGFloat = 0
             static let edgeSpacing: CGFloat = 16
         }
         let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(Constants.headerWidth), heightDimension: .estimated(Constants.headerHeight))
@@ -166,10 +162,6 @@ private extension ExamplesCounterView {
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: Constants.insetTop,
-                                                        leading: Constants.insetLeading,
-                                                        bottom: Constants.insetBottom,
-                                                        trailing: Constants.insetBottom)
         
         section.orthogonalScrollingBehavior = .continuous
         section.interGroupSpacing = Constants.groupSpacing

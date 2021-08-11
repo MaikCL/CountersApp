@@ -43,7 +43,7 @@ private extension SectionHeaderView {
         headerLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         NSLayoutConstraint.activate([
             headerLabel.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -Constraints.bottom),
-            headerLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+            headerLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: Constraints.leading),
         ])
     }
 
@@ -52,7 +52,8 @@ private extension SectionHeaderView {
 extension SectionHeaderView {
     
     enum Constraints {
-        static let bottom: CGFloat = 5.0
+        static let bottom: CGFloat = 10.0
+        static let leading: CGFloat = 23.0
     }
     
     enum Font {
@@ -63,7 +64,7 @@ extension SectionHeaderView {
         let label = UILabel()
         label.font = Font.header
         label.adjustsFontForContentSizeCategory = true
-        label.textColor = Palette.secondaryText.uiColor
+        label.textColor = Palette.subtitleText.uiColor
         label.textAlignment = .left
         label.numberOfLines = 1
         return label
