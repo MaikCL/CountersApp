@@ -61,7 +61,7 @@ private extension ExamplesViewCell {
     }
     
     enum Font {
-        static let item = UIFont.systemFont(ofSize: 17, weight: .medium)
+        static let item = UIFont.systemFont(ofSize: 17, weight: .regular)
     }
     
     

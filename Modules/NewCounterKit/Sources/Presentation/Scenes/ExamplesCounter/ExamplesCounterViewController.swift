@@ -41,12 +41,12 @@ private extension ExamplesCounterViewController {
     
     func generateExampleData() -> [ExampleModel] {
         return [
-            ExampleModel(category: "Drink Stuffs", items: [
+            ExampleModel(category: "DRINKS", items: [
                 ExampleModel.ItemModel(title: "Cups on Coffe"),
                 ExampleModel.ItemModel(title: "Glass of water"),
                 ExampleModel.ItemModel(title: "Piscolas"),
             ]),
-            ExampleModel(category: "Food Stuffs", items: [
+            ExampleModel(category: "FOOD", items: [
                 ExampleModel.ItemModel(title: "Hot dog"),
                 ExampleModel.ItemModel(title: "Cupcackes eaten"),
                 ExampleModel.ItemModel(title: "Chiquen"),
@@ -55,7 +55,7 @@ private extension ExamplesCounterViewController {
                 ExampleModel.ItemModel(title: "Avocados"),
                 ExampleModel.ItemModel(title: "Papitas fritas")
             ]),
-            ExampleModel(category: "Misc Stuffs", items: [
+            ExampleModel(category: "MISC", items: [
                 ExampleModel.ItemModel(title: "Times sneezed"),
                 ExampleModel.ItemModel(title: "Naps"),
                 ExampleModel.ItemModel(title: "Daydreams"),
