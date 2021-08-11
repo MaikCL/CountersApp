@@ -28,7 +28,9 @@ final public class CreateCounterCoordinator: Coordinator {
 extension CreateCounterCoordinator: CreateCounterFlow {
     
     func coordinateToExamplesScreen() {
-        // TODO
+        guard let createCounterNavigationController = createCounterNavigationController else { return }
+        let examplesCounterCoordinator = ExamplesCounterCoordinator(navigationController: createCounterNavigationController)
+        coordinate(to: examplesCounterCoordinator)
     }
     
     func dismissCreateCounterScreen() {
