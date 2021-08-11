@@ -105,7 +105,7 @@ extension CounterSideEffects {
     // TODO: Improve later with LoggerProvider
     private func log(_ error: Error, trigger: CounterAction) -> AnyPublisher<CounterAction, Never> {
         let exception = error as? Exception ?? GenericException.unknown(error)
-        print("A SideEffect exception occurred: [\(exception.code)] \(String(describing: exception.errorTitle))")
+        print("A SideEffect exception occurred: [\(exception.code)] - \(exception.errorDescription ?? "")")
         print("Resolve triggering: \(trigger)")
         return Just(trigger).setFailureType(to: Never.self).eraseToAnyPublisher()
     }

@@ -22,11 +22,14 @@ final class CreateCounterViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationController()
+        setupNavigationBar()
         setupDelegates()
         subscribeViewState()
     }
     
 }
+
+// MARK: Main ViewController Operations
 
 extension CreateCounterViewController {
     
@@ -34,10 +37,14 @@ extension CreateCounterViewController {
         viewModel?.createCouter(title: title)
     }
     
+    func openExamplesCounterScreen() {
+        viewModel?.coordinator?.coordinateToExamplesScreen()
+    }
+    
     func dismissScreen() {
         viewModel?.coordinator?.dismissCreateCounterScreen()
     }
-
+    
 }
 
 extension CreateCounterViewController {

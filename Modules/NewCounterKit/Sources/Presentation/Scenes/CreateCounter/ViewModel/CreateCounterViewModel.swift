@@ -4,25 +4,25 @@ import Foundation
 import CounterKit
 import AltairMDKCommon
 
-struct ViewState {
+struct CreateCounterViewState {
     var exception: Exception? = .none
     var isCreated: Bool = false
     var isCreating: Bool = false
 }
 
 protocol CreateCounterViewModelProtocol {
-    var statePublisher: Published<ViewState>.Publisher { get }
+    var statePublisher: Published<CreateCounterViewState>.Publisher { get }
     var coordinator: CreateCounterFlow? { get set }
     
     func createCouter(title: String)
 }
 
 final class CreateCounterViewModel: CreateCounterViewModelProtocol {
-    var statePublisher: Published<ViewState>.Publisher { $viewState }
+    var statePublisher: Published<CreateCounterViewState>.Publisher { $viewState }
     var coordinator: CreateCounterFlow?
     
     @Injected private var counterStore: CounterStore
-    @Published private var viewState = ViewState()
+    @Published private var viewState = CreateCounterViewState()
     
     private var cancellables = Set<AnyCancellable>()
     
@@ -45,7 +45,7 @@ private extension CreateCounterViewModel {
             if case .loaded(let results) = state.counters, !results.isEmpty { isCreated = true }
             if case .whenCreateCounter = state.runningSideEffect { isCreating = true }
             let exception = state.exception
-            return ViewState(exception: exception, isCreated: isCreated, isCreating: isCreating)
+            return CreateCounterViewState(exception: exception, isCreated: isCreated, isCreating: isCreating)
         }
         .assignNoRetain(to: \.viewState, on: self)
         .store(in: &cancellables)

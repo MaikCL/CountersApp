@@ -3,7 +3,10 @@ import Foundation
 enum Locale: String {
     
     /// Create a counter
-    case navigationBarTitle = "navigationBar.title"
+    case navigationBarCreateCounter = "navigationBar.title.createCounter"
+    
+    /// Examples
+    case navigationBarExamples = "navigationBar.title.examples"
     
     /// Create
     case navigationBack = "navigationBar.back"
@@ -20,6 +23,14 @@ enum Locale: String {
     /// Cups of coffe
     case textFieldHintExampleTitle = "textfield.hint.exampleTitle"
 
+    /// Give it a name. Creative block?
+    case labelTextGiveACreativeName = "label.text.giveACreativeName"
+    
+    /// See Examples
+    case labelTextSeeExamples = "label.text.seeExamples"
+    
+    /// "Select an example to add it to your counters."
+    case labelTextSelectExampleToAdd = "label.text.selectExampleToAdd"
 }
 
 extension Locale {

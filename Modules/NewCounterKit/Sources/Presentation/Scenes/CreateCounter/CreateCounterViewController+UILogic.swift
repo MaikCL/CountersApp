@@ -71,6 +71,10 @@ extension CreateCounterViewController {
 
 extension CreateCounterViewController: CreateCounterViewDelegate {
     
+    func didTapSeeExamplesLabel() {
+        openExamplesCounterScreen()
+    }
+    
     func isTitleValid(_ isValid: Bool) {
         navigationItem.rightBarButtonItem?.isEnabled = isValid ? true : false
     }
