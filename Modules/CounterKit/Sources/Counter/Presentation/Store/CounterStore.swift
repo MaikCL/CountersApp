@@ -33,5 +33,5 @@ public final class CounterStore {
     public func trigger(_ action: CounterAction) {
         input.send(action)
     }
-    
+
 }

@@ -5,7 +5,7 @@ class CounterLocalMapper: EntityFailableMapper {
     typealias Entity = [Counter]
     
     static var mapModelToEntity: ([CounterLocalModel]) throws -> [Counter] = { counterModel in
-        return counterModel.map { Counter(id: $0.id, title: $0.id, count: Int($0.count)) }
+        return counterModel.map { Counter(id: $0.id, title: $0.title, count: Int($0.count)) }.sorted(by: { $0.id < $1.id })
     }
     
 }

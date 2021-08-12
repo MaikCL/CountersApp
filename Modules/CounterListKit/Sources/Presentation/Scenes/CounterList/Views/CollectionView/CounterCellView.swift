@@ -12,7 +12,7 @@ class CounterCellView: UICollectionViewListCell {
     
     private var countValue: Int?
     private var counterId: String?
-    private var isUpdating = false
+
     private var cellViewLeadingConstraint = NSLayoutConstraint()
 
     lazy private var cellView: UIView = {
@@ -61,12 +61,11 @@ class CounterCellView: UICollectionViewListCell {
         countValue = Int(model.count)
         counterStepper.value = Double(model.count) ?? 0
         counterLabel.textColor = countValue == 0 ?  Palette.disabledText.uiColor : Palette.accent.uiColor
-        isUpdating = false
     }
     
     func setUpdateFinish() {
         guard let countValue = countValue else { return }
-        isUpdating = false
+        counterStepper.isUserInteractionEnabled = true
         counterStepper.value = Double(countValue)
     }
 
@@ -76,15 +75,11 @@ private extension CounterCellView {
     
     @objc func stepperValueChanged(_ stepper: UIStepper) {
         guard let countValue = countValue, let counterId = counterId else { return }
-        guard !isUpdating else { stepper.value = Double(countValue); return }
-        
         if Int(stepper.value) > countValue {
             delegate?.didTapCounterIncremented(id: counterId)
         } else if Int(stepper.value) < countValue {
             delegate?.didTapCounterDecremented(id: counterId)
-        
         }
-        isUpdating = true
     }
     
 }
@@ -216,6 +211,8 @@ private extension CounterCellView {
         label.font = font
         label.textAlignment = .right
         label.textColor = Palette.accent.uiColor
+        label.minimumScaleFactor = 0.5
+        label.adjustsFontSizeToFitWidth = true
         return label
     }
     

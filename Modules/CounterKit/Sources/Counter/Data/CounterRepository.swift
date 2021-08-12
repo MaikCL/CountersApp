@@ -7,35 +7,60 @@ final class CounterRepository: CounterRepositoryProtocol {
     @Injected private var cloudSource: CounterCloudSourceProtocol
     @Injected private var localSource: CounterLocalSourceProtocol
     
-    @Injected private var mapCloudModelToEntity: ([CounterCloudModel]) throws -> [Counter]
+    private var cancellables = Set<AnyCancellable>()
     
     func fetchCounters() -> AnyPublisher<[Counter], Error> {
-//        return cloudSource.fetchCounters().tryMap { try self.mapCloudModelToEntity($0) }.delay(for: 0.1, scheduler: RunLoop.main).eraseToAnyPublisher()
-        return localSource.fetchCounters()
+        return cloudSource.fetchCounters()
+            .delay(for: 0.1, scheduler: RunLoop.main)
+            .catch { _ in self.localSource.fetchCounters() }
+            .handleEvents(receiveOutput: { counters in
+                self.localSource.saveCounters(counters: counters)
+                    .receive(on: DispatchQueue.global(qos: .background))
+                    .sink(receiveCompletion: { _ in }, receiveValue: { _ in })
+                    .store(in: &self.cancellables)
+            })
+            .eraseToAnyPublisher()
     }
     
     func deleteCounter(id: String) -> AnyPublisher<[Counter], Error> {
-        return cloudSource.deleteCounter(id: id).tryMap { try self.mapCloudModelToEntity($0) }.eraseToAnyPublisher()
+        return cloudSource.deleteCounter(id: id).handleEvents(receiveOutput: { counters in
+            self.localSource.saveCounters(counters: counters)
+                .receive(on: DispatchQueue.global(qos: .background))
+                .sink(receiveCompletion: { _ in }, receiveValue: { _ in })
+                .store(in: &self.cancellables)
+        })
+        .eraseToAnyPublisher()
     }
     
     func createCounter(title: String) -> AnyPublisher<[Counter], Error> {
-//        return cloudSource.createCounter(title: title).tryMap { try self.mapCloudModelToEntity($0) }.eraseToAnyPublisher()
-        
-        let asdf1 = Counter(id: "asd", title: "testeando 11", count: 4)
-        let asdf2 = Counter(id: "qwe", title: "testeando 22", count: 2)
-        let asdf3 = Counter(id: "xcv", title: "testeando 33", count: 8)
-        let asdf4 = Counter(id: "dgf", title: "testeando 41", count: 1)
-
-        
-        return localSource.saveCounters(counters: [asdf1, asdf2, asdf3, asdf4]).tryMap { [] }.eraseToAnyPublisher()
+        return cloudSource.createCounter(title: title).handleEvents(receiveOutput: { counters in
+            self.localSource.saveCounters(counters: counters)
+                .receive(on: DispatchQueue.global(qos: .background))
+                .sink(receiveCompletion: { _ in }, receiveValue: { _ in })
+                .store(in: &self.cancellables)
+        })
+        .eraseToAnyPublisher()
     }
     
     func incrementCounter(id: String) -> AnyPublisher<[Counter], Error> {
-        return cloudSource.incrementCounter(id: id).tryMap { try self.mapCloudModelToEntity($0) }.eraseToAnyPublisher()
+        return cloudSource.incrementCounter(id: id)
+            .handleEvents(receiveOutput: { counters in
+            self.localSource.saveCounters(counters: counters)
+                .receive(on: DispatchQueue.global(qos: .background))
+                .sink(receiveCompletion: { _ in }, receiveValue: { _ in })
+                .store(in: &self.cancellables)
+        })
+        .eraseToAnyPublisher()
     }
     
     func decrementCounter(id: String) -> AnyPublisher<[Counter], Error> {
-        return cloudSource.decrementCounter(id: id).tryMap { try self.mapCloudModelToEntity($0) }.eraseToAnyPublisher()
+        return cloudSource.decrementCounter(id: id).handleEvents(receiveOutput: { counters in
+            self.localSource.saveCounters(counters: counters)
+                .receive(on: DispatchQueue.global(qos: .background))
+                .sink(receiveCompletion: { _ in }, receiveValue: { _ in })
+                .store(in: &self.cancellables)
+        })
+        .eraseToAnyPublisher()
     }
-    
+
 }
