@@ -13,4 +13,5 @@ protocol CounterCloudSourceProtocol: AnyObject {
 protocol CounterLocalSourceProtocol: AnyObject {
     func saveCounters(counters: [Counter]) -> AnyPublisher<Void, Error>
     func fetchCounters() -> AnyPublisher<[Counter], Error>
+    func deleteCounter(id: String) -> AnyPublisher<Void, Error>
 }

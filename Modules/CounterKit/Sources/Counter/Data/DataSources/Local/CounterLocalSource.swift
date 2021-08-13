@@ -22,4 +22,12 @@ final class CounterLocalSource: CounterLocalSourceProtocol {
         return storageProvider.agent.readAll(CounterLocalModel.self, predicate: .none).tryMap { try self.mapLocalModelToEntity($0) }.eraseToAnyPublisher()
     }
     
+    func deleteCounter(id: String) -> AnyPublisher<Void, Error> {
+        return storageProvider.agent.readFirst(CounterLocalModel.self, predicate: NSPredicate(format: "id==%@", id))
+            .flatMap { model -> AnyPublisher<Void, Error> in
+                guard let localModel = model else { return Just(()).setFailureType(to: Error.self).eraseToAnyPublisher() }
+                return self.storageProvider.agent.delete(object: localModel).eraseToAnyPublisher()
+            }
+            .eraseToAnyPublisher()
+    }
 }
