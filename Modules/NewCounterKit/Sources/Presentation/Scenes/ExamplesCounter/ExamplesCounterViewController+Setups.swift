@@ -54,7 +54,7 @@ extension ExamplesCounterViewController {
             ExampleModel(category: "FOOD", items: [
                 ExampleModel.ItemModel(title: "Hot dog"),
                 ExampleModel.ItemModel(title: "Cupcackes eaten"),
-                ExampleModel.ItemModel(title: "Chiquen"),
+                ExampleModel.ItemModel(title: "Chicken"),
                 ExampleModel.ItemModel(title: "Pizzas"),
                 ExampleModel.ItemModel(title: "Mashmellows"),
                 ExampleModel.ItemModel(title: "Avocados"),
