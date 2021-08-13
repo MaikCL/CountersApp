@@ -55,8 +55,7 @@ extension CounterListViewController {
                 retryAction = .decrement(id: counter.id)
                 showCantUpdateCounterExceptionAlert(exception, counter: counter)
                 
-            case .cantDeleteCounters(let counters):
-                retryAction = .delete(ids: counters.map { $0.id })
+            case .cantDeleteCounters:
                 showCantDeleteCounterExceptionAlert(exception)
                 
             default: return
@@ -108,11 +107,13 @@ extension CounterListViewController {
     }
     
     func showCantDeleteCounterExceptionAlert(_ exception: Exception) {
-        let retryAction = UIAlertAction(title: Locale.alertButtonRetry.localized, style: .cancel) { _ in
-            self.executeRetryAction()
+        let dismissAction = UIAlertAction(title: Locale.alertButtonDismiss.localized, style: .default) { _ in
+            self.dismissDialog()
         }
-        let dismissAction = UIAlertAction(title: Locale.alertButtonDismiss.localized, style: .default)
-        presentAlertDialog(title: exception.errorTitle, message: exception.localizedDescription, retryAction, dismissAction)
+        let alert = UIAlertController(title: exception.errorTitle, message: exception.errorDescription, preferredStyle: .alert)
+        alert.view.tintColor = Palette.accent.uiColor
+        alert.addAction(dismissAction)
+        present(alert, animated: true)
     }
     
     func showCantUpdateCounterExceptionAlert(_ exception: Exception, counter: Counter) {
@@ -123,8 +124,13 @@ extension CounterListViewController {
             guard let counterIndex = self.counterItems.firstIndex(where: { $0.id == counter.id }) else { return }
             let counterItemRow = IndexPath(row: Int(counterIndex), section: Section.main.rawValue)
             self.innerView.getCell(at: counterItemRow)?.setUpdateFinish()
+            self.dismissDialog()
         }
-        presentAlertDialog(title: exception.errorTitle, message: exception.localizedDescription, retryAction, dismissAction)
+        let alert = UIAlertController(title: exception.errorTitle, message: exception.errorDescription, preferredStyle: .alert)
+        alert.view.tintColor = Palette.accent.uiColor
+        alert.addAction(retryAction)
+        alert.addAction(dismissAction)
+        present(alert, animated: true)
     }
     
     func updateCounterResumeInToolbar(counters: [CounterModel]) {
@@ -152,7 +158,6 @@ extension CounterListViewController {
     enum RetryAction {
         case fetch
         case create
-        case delete(ids: [String])
         case increment(id: String)
         case decrement(id: String)
     }
@@ -163,7 +168,6 @@ extension CounterListViewController {
         switch action {
             case .fetch: fetchCounters()
             case .create: createCounter()
-            case .delete(let ids): deleteCounters(ids: ids)
             case .increment(let id): incrementCounter(id: id)
             case .decrement(let id): decrementCounter(id: id)
         }
@@ -271,25 +275,6 @@ extension CounterListViewController: UISearchBarDelegate {
         searchBar.text = .none
         isSearchActive = false
         finishSearch()
-    }
-    
-}
-
-// MARK: Helpers
-
-private extension CounterListViewController {
-    
-    func presentAlertDialog(title: String?, message: String?, _ retryAction: UIAlertAction, _ dismissAction: UIAlertAction) {
-        if let currentAlert = self.presentedViewController as? UIAlertController {
-            currentAlert.title = title
-            currentAlert.message = message
-            return
-        }
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.view.tintColor = Palette.accent.uiColor
-        alert.addAction(retryAction)
-        alert.addAction(dismissAction)
-        present(alert, animated: true)
     }
     
 }

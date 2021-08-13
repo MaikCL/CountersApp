@@ -20,6 +20,7 @@ protocol CounterListViewModelProtocol {
     func decrementCounter(id: String)
     func searchCounter(term: String)
     func finishSearch()
+    func dismissDialog()
 }
 
 final class CounterListViewModel: CounterListViewModelProtocol {
@@ -61,6 +62,10 @@ final class CounterListViewModel: CounterListViewModelProtocol {
     
     func finishSearch() {
         counterStore.trigger(.finishSearchCounters)
+    }
+    
+    func dismissDialog() {
+        counterStore.trigger(.resetException)
     }
 }
 
