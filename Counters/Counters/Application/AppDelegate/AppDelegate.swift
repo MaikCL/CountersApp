@@ -21,7 +21,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         appCoordinator?.start()
         
         CounterKit.DIComponents.bind()
-        NewCounterKit.DIComponents.bind()
         CounterListKit.DIComponents.bind()
         return true
     }
