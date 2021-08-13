@@ -78,12 +78,12 @@ private extension CounterCellView {
     @objc func stepperValueChanged(_ stepper: UIStepper) {
         guard let countValue = countValue, let counterId = counterId else { return }
         guard !isUpdating else { stepper.value = Double(countValue); return }
+        isUpdating = true
         if Int(stepper.value) > countValue {
             delegate?.didTapCounterIncremented(id: counterId)
         } else if Int(stepper.value) < countValue {
             delegate?.didTapCounterDecremented(id: counterId)
         }
-        isUpdating = true
     }
     
 }
@@ -144,7 +144,6 @@ private extension CounterCellView {
             counterStepper.topAnchor.constraint(greaterThanOrEqualTo: titleLabel.bottomAnchor, constant: StepperConstant.top),
             counterStepper.bottomAnchor.constraint(equalTo: cellView.bottomAnchor, constant: -StepperConstant.bottom),
             counterStepper.trailingAnchor.constraint(equalTo: cellView.trailingAnchor, constant: -StepperConstant.trailing),
-            counterStepper.heightAnchor.constraint(equalToConstant: StepperConstant.height)
         ])
         
     }
@@ -178,7 +177,6 @@ private extension CounterCellView {
         static let top: CGFloat = 17.0
         static let bottom: CGFloat = 14.0
         static let trailing: CGFloat = 14.0
-        static let height: CGFloat = 29.0
     }
     
     

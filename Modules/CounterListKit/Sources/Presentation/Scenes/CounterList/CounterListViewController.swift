@@ -105,6 +105,10 @@ extension CounterListViewController {
         viewModel?.finishSearch()
     }
     
+    func dismissDialog() {
+        viewModel?.dismissDialog()
+    }
+    
 }
 
 // MARK: Handle States
