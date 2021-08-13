@@ -43,7 +43,9 @@ extension CreateCounterViewController {
             currentAlert.message = exception.errorDescription
             return
         }
-        let dismissAction = UIAlertAction(title: Locale.alertButtonDismiss.localized, style: .cancel)
+        let dismissAction = UIAlertAction(title: Locale.alertButtonDismiss.localized, style: .cancel) { _ in
+            self.dismissDialog()
+        }
         let alert = UIAlertController(title: exception.errorTitle, message: exception.errorDescription, preferredStyle: .alert)
         alert.view.tintColor = Palette.accent.uiColor
         alert.addAction(dismissAction)

@@ -24,4 +24,6 @@ public enum CounterAction {
     case searchCountersSuccess(_ results: [Counter])
     case searchCountersFailed(_ exception: CounterException)
     case finishSearchCounters
+    
+    case resetException
 }

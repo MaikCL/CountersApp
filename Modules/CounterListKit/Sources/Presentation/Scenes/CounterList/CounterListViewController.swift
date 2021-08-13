@@ -9,8 +9,14 @@ final class CounterListViewController: UIViewController {
     
     var counterItems = [CounterModel]() {
         didSet {
-            if counterItems.isEmpty { isEditing = false }
-            editButtonItem.isEnabled = counterItems.isEmpty ? false : true
+            if counterItems.isEmpty {
+                isEditing = false
+                navigationItem.searchController?.searchBar.disable()
+                editButtonItem.isEnabled = false
+            } else {
+                navigationItem.searchController?.searchBar.enable()
+                editButtonItem.isEnabled = true
+            }
             updateCounterResumeInToolbar(counters: counterItems)
             applySnapshot(items: counterItems, animate: animateUpdate)
         }
@@ -19,7 +25,6 @@ final class CounterListViewController: UIViewController {
     var searchedItems = [CounterModel]() {
         didSet {
             if !searchedItems.isEmpty { innerView.hideBackgroundView() }
-            innerView.undimmCollectionView()
             applySnapshot(items: searchedItems, animate: animateUpdate)
         }
     }
@@ -104,6 +109,10 @@ extension CounterListViewController {
     
     func finishSearch() {
         viewModel?.finishSearch()
+    }
+    
+    func dismissDialog() {
+        viewModel?.dismissDialog()
     }
     
 }

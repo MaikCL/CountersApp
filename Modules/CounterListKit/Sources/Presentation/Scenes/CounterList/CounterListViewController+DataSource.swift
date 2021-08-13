@@ -21,7 +21,6 @@ extension CounterListViewController {
         let counterCell = CounterCellRegistration { cell, _, model in
             cell.configure(with: model)
             cell.delegate = self
-            cell.setUpdateFinish()
             let accessories: [UICellAccessory] = [.multiselect(displayed: .whenEditing, options: accessoryOptions)]
             cell.accessories = accessories
         }
