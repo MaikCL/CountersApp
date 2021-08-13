@@ -1,5 +1,0 @@
-import AltairMDKCommon
-
-enum NewCounterAction {
-
-}
