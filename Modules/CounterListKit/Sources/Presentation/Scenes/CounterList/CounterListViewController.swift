@@ -113,17 +113,18 @@ extension CounterListViewController {
 extension CounterListViewController {
     
     private func subscribeViewState() {
-        viewModel?.statePublisher.receive(on: DispatchQueue.main).sink { [weak self] newState in
-            guard let self = self else { return }
-            if self.isSearchActive {
-                self.applySearchStateBehavior(state: newState.searchedCounters)
-            } else {
-                self.applyListStateBehavior(state: newState.counters)
+        viewModel?.statePublisher
+            .receive(on: DispatchQueue.main).sink { [weak self] newState in
+                guard let self = self else { return }
+                if self.isSearchActive {
+                    self.applySearchStateBehavior(state: newState.searchedCounters)
+                } else {
+                    self.applyListStateBehavior(state: newState.counters)
+                }
+                guard let exception = newState.exception else { return }
+                self.handleException(exception)
             }
-            guard let exception = newState.exception else { return }
-            self.handleException(exception)
-        }
-        .store(in: &cancellables)
+            .store(in: &cancellables)
     }
     
 }
