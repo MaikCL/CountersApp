@@ -45,6 +45,10 @@ extension CreateCounterViewController {
         viewModel?.coordinator?.dismissCreateCounterScreen()
     }
     
+    func dismissDialog() {
+        viewModel?.dismissDialog()
+    }
+    
 }
 
 extension CreateCounterViewController {

@@ -15,6 +15,7 @@ protocol CreateCounterViewModelProtocol {
     var coordinator: CreateCounterFlow? { get set }
     
     func createCouter(title: String)
+    func dismissDialog()
 }
 
 final class CreateCounterViewModel: CreateCounterViewModelProtocol {
@@ -32,6 +33,10 @@ final class CreateCounterViewModel: CreateCounterViewModelProtocol {
     
     func createCouter(title: String) {
         counterStore.trigger(.createCounter(title: title))
+    }
+    
+    func dismissDialog() {
+        counterStore.trigger(.resetException)
     }
     
 }

@@ -1,7 +1,6 @@
-import CounterKit
 import Combine
 import Resolver
-import Foundation
+import CounterKit
 import AltairMDKCommon
 
 struct ViewState {

@@ -118,6 +118,7 @@ extension CounterListViewController {
     
     func showCantUpdateCounterExceptionAlert(_ exception: Exception, counter: Counter) {
         let retryAction = UIAlertAction(title: Locale.alertButtonRetry.localized, style: .cancel) { _ in
+            self.dismissDialog()
             self.executeRetryAction()
         }
         let dismissAction = UIAlertAction(title: Locale.alertButtonDismiss.localized, style: .default) { _ in
