@@ -11,56 +11,38 @@ final class CounterRepository: CounterRepositoryProtocol {
     
     func fetchCounters() -> AnyPublisher<[Counter], Error> {
         return cloudSource.fetchCounters()
-            .delay(for: 0.1, scheduler: RunLoop.main)
-            .catch { _ in self.localSource.fetchCounters() }
-            .handleEvents(receiveOutput: { counters in
-                self.localSource.saveCounters(counters: counters)
-                    .receive(on: DispatchQueue.global(qos: .background))
-                    .sink(receiveCompletion: { _ in }, receiveValue: { _ in })
-                    .store(in: &self.cancellables)
-            })
+            .delay(for: 0.2, scheduler: RunLoop.main)
+            .catch { _ in
+                self.localSource.fetchCounters().tryMap {
+                    if $0.isEmpty { throw CounterException.cantLoadCounters } else { return $0 }
+                }
+            }
+            .flatMap { self.localSource.saveCounters(counters: $0) }
             .eraseToAnyPublisher()
     }
     
     func deleteCounter(id: String) -> AnyPublisher<[Counter], Error> {
-        return cloudSource.deleteCounter(id: id).handleEvents(receiveOutput: { counters in
-            self.localSource.saveCounters(counters: counters)
-                .receive(on: DispatchQueue.global(qos: .background))
-                .sink(receiveCompletion: { _ in }, receiveValue: { _ in })
-                .store(in: &self.cancellables)
-        })
+        return cloudSource.deleteCounter(id: id)
+            .flatMap { self.localSource.saveCounters(counters: $0) }
         .eraseToAnyPublisher()
     }
     
     func createCounter(title: String) -> AnyPublisher<[Counter], Error> {
-        return cloudSource.createCounter(title: title).handleEvents(receiveOutput: { counters in
-            self.localSource.saveCounters(counters: counters)
-                .receive(on: DispatchQueue.global(qos: .background))
-                .sink(receiveCompletion: { _ in }, receiveValue: { _ in })
-                .store(in: &self.cancellables)
-        })
+        return cloudSource.createCounter(title: title)
+            .flatMap { self.localSource.saveCounters(counters: $0) }
         .eraseToAnyPublisher()
     }
     
     func incrementCounter(id: String) -> AnyPublisher<[Counter], Error> {
         return cloudSource.incrementCounter(id: id)
-            .handleEvents(receiveOutput: { counters in
-            self.localSource.saveCounters(counters: counters)
-                .receive(on: DispatchQueue.global(qos: .background))
-                .sink(receiveCompletion: { _ in }, receiveValue: { _ in })
-                .store(in: &self.cancellables)
-        })
-        .eraseToAnyPublisher()
+            .flatMap { self.localSource.saveCounters(counters: $0) }
+            .eraseToAnyPublisher()
     }
     
     func decrementCounter(id: String) -> AnyPublisher<[Counter], Error> {
-        return cloudSource.decrementCounter(id: id).handleEvents(receiveOutput: { counters in
-            self.localSource.saveCounters(counters: counters)
-                .receive(on: DispatchQueue.global(qos: .background))
-                .sink(receiveCompletion: { _ in }, receiveValue: { _ in })
-                .store(in: &self.cancellables)
-        })
-        .eraseToAnyPublisher()
+        return cloudSource.decrementCounter(id: id)
+            .flatMap { self.localSource.saveCounters(counters: $0) }
+            .eraseToAnyPublisher()
     }
 
 }

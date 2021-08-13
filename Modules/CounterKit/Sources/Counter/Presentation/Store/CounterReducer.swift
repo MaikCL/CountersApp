@@ -117,6 +117,10 @@ final class CounterReducer {
                 currentState.runningSideEffect = .none
                 semaphore.signal()
                 
+            case .resetException:
+                currentState.exception = .none
+                semaphore.signal()
+                
         }
         semaphore.wait()
         return currentState

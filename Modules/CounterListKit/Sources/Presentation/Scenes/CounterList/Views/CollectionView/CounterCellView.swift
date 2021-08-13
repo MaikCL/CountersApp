@@ -12,7 +12,8 @@ class CounterCellView: UICollectionViewListCell {
     
     private var countValue: Int?
     private var counterId: String?
-
+    private var isUpdating = false
+    
     private var cellViewLeadingConstraint = NSLayoutConstraint()
 
     lazy private var cellView: UIView = {
@@ -61,11 +62,12 @@ class CounterCellView: UICollectionViewListCell {
         countValue = Int(model.count)
         counterStepper.value = Double(model.count) ?? 0
         counterLabel.textColor = countValue == 0 ?  Palette.disabledText.uiColor : Palette.accent.uiColor
+        isUpdating = false
     }
     
     func setUpdateFinish() {
         guard let countValue = countValue else { return }
-        counterStepper.isUserInteractionEnabled = true
+        isUpdating = false
         counterStepper.value = Double(countValue)
     }
 
@@ -75,6 +77,8 @@ private extension CounterCellView {
     
     @objc func stepperValueChanged(_ stepper: UIStepper) {
         guard let countValue = countValue, let counterId = counterId else { return }
+        guard !isUpdating else { stepper.value = Double(countValue); return }
+        isUpdating = true
         if Int(stepper.value) > countValue {
             delegate?.didTapCounterIncremented(id: counterId)
         } else if Int(stepper.value) < countValue {
@@ -140,7 +144,6 @@ private extension CounterCellView {
             counterStepper.topAnchor.constraint(greaterThanOrEqualTo: titleLabel.bottomAnchor, constant: StepperConstant.top),
             counterStepper.bottomAnchor.constraint(equalTo: cellView.bottomAnchor, constant: -StepperConstant.bottom),
             counterStepper.trailingAnchor.constraint(equalTo: cellView.trailingAnchor, constant: -StepperConstant.trailing),
-            counterStepper.heightAnchor.constraint(equalToConstant: StepperConstant.height)
         ])
         
     }
@@ -174,7 +177,6 @@ private extension CounterCellView {
         static let top: CGFloat = 17.0
         static let bottom: CGFloat = 14.0
         static let trailing: CGFloat = 14.0
-        static let height: CGFloat = 29.0
     }
     
     
