@@ -7,7 +7,7 @@ final class CounterLocalSource: CounterLocalSourceProtocol {
     @Injected private var storageProvider: StorageProviderProtocol
     @Injected private var mapLocalModelToEntity: ([CounterLocalModel]) throws -> [Counter]
     
-    func saveCounters(counters: [Counter]) -> AnyPublisher<Void, Error> {
+    func saveCounters(counters: [Counter]) -> AnyPublisher<[Counter], Error> {
         let localModels = try? counters.map { counter -> Storable in
             guard let localModel = storageProvider.agent.create(CounterLocalModel.self) else { throw StorageException.objectNotSupported }
             localModel.id = counter.id
@@ -15,7 +15,7 @@ final class CounterLocalSource: CounterLocalSourceProtocol {
             localModel.count = Int32(counter.count)
             return localModel
         }.compactMap { $0 }
-        return storageProvider.agent.insertAll(objects: localModels ?? []).eraseToAnyPublisher()
+        return deleteAllCounter().flatMap { self.storageProvider.agent.insertAll(objects: localModels ?? []) }.map { counters }.eraseToAnyPublisher()
     }
     
     func fetchCounters() -> AnyPublisher<[Counter], Error> {
@@ -29,5 +29,9 @@ final class CounterLocalSource: CounterLocalSourceProtocol {
                 return self.storageProvider.agent.delete(object: localModel).eraseToAnyPublisher()
             }
             .eraseToAnyPublisher()
+    }
+    
+    private func deleteAllCounter() -> AnyPublisher<Void, Error> {
+        return storageProvider.agent.deleteAll(CounterLocalModel.self, predicate: .none).eraseToAnyPublisher()
     }
 }
