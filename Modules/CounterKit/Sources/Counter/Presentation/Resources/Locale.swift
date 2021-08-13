@@ -27,7 +27,7 @@ enum Locale: String {
     case exceptionMessageCantDelete = "exception.message.cantDelete"
     
     /// The internet connection appears to be offline.
-    case exceptionMessageCantCreate = "exception.message.cantCreateCounter"
+    case exceptionMessageCantCreate = "exception.message.cantCreate"
 
     /// "The Internet connection appears to be offline"
     case exceptionMessageCantUpdate = "exception.message.cantUpdate"
