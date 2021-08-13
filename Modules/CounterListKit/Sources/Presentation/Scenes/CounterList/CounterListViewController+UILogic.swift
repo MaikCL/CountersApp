@@ -259,23 +259,17 @@ extension CounterListViewController: UISearchResultsUpdating {
 extension CounterListViewController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        guard !searchText.isEmpty else {
-            innerView.dimmCollectionView()
-            return
-        }
         animateUpdate = true
         searchCounter(term: searchText)
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        if let text = searchBar.text, text.isEmpty { innerView.dimmCollectionView()  }
         isSearchActive = true
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.text = .none
         isSearchActive = false
-        innerView.undimmCollectionView()
         finishSearch()
     }
     

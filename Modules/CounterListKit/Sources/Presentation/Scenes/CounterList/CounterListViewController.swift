@@ -19,7 +19,6 @@ final class CounterListViewController: UIViewController {
     var searchedItems = [CounterModel]() {
         didSet {
             if !searchedItems.isEmpty { innerView.hideBackgroundView() }
-            innerView.undimmCollectionView()
             applySnapshot(items: searchedItems, animate: animateUpdate)
         }
     }
