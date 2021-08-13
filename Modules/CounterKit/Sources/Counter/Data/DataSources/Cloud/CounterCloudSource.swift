@@ -5,25 +5,26 @@ import AltairMDKProviders
 
 final class CounterCloudSource: CounterCloudSourceProtocol {
     @Injected private var networkProvider: NetworkProviderProtocol
+    @Injected private var mapCloudModelToEntity: ([CounterCloudModel]) throws -> [Counter]
     
-    func fetchCounters<T>() -> AnyPublisher<T, NetworkException> where T: Decodable {
-        return networkProvider.agent.run(CounterAPI.getCounters())
+    func fetchCounters() -> AnyPublisher<[Counter], Error> {
+        return networkProvider.agent.run(CounterAPI.getCounters()).tryMap { try self.mapCloudModelToEntity($0) }.eraseToAnyPublisher()
     }
     
-    func deleteCounter<T>(id: String) -> AnyPublisher<T, NetworkException> where T: Decodable {
-        return networkProvider.agent.run(CounterAPI.deleteCounter(id: id))
+    func deleteCounter(id: String) -> AnyPublisher<[Counter], Error> {
+        return networkProvider.agent.run(CounterAPI.deleteCounter(id: id)).tryMap { try self.mapCloudModelToEntity($0) }.eraseToAnyPublisher()
     }
     
-    func createCounter<T>(title: String) -> AnyPublisher<T, NetworkException> where T: Decodable {
-        return networkProvider.agent.run(CounterAPI.createCounter(title: title))
+    func createCounter(title: String) -> AnyPublisher<[Counter], Error> {
+        return networkProvider.agent.run(CounterAPI.createCounter(title: title)).tryMap { try self.mapCloudModelToEntity($0) }.eraseToAnyPublisher()
     }
     
-    func incrementCounter<T>(id: String) -> AnyPublisher<T, NetworkException> where T: Decodable {
-        return networkProvider.agent.run(CounterAPI.incrementCounter(id: id))
+    func incrementCounter(id: String) -> AnyPublisher<[Counter], Error>  {
+        return networkProvider.agent.run(CounterAPI.incrementCounter(id: id)).tryMap { try self.mapCloudModelToEntity($0) }.eraseToAnyPublisher()
     }
     
-    func decrementCounter<T>(id: String) -> AnyPublisher<T, NetworkException> where T: Decodable {
-        return networkProvider.agent.run(CounterAPI.decrementCounter(id: id))
+    func decrementCounter(id: String) -> AnyPublisher<[Counter], Error>  {
+        return networkProvider.agent.run(CounterAPI.decrementCounter(id: id)).tryMap { try self.mapCloudModelToEntity($0) }.eraseToAnyPublisher()
     }
     
 }

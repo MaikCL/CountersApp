@@ -45,6 +45,12 @@ final class CounterReducer {
                 semaphore.signal()
                 
             case .incrementCounterSuccess(let results):
+                let idsInSearch = Set(currentState.searchedCounters.map { $0.id })
+                let resultsIds = Set(results.map { $0.id })
+                let idToReplace = idsInSearch.intersection(resultsIds)
+                currentState.searchedCounters.removeAll()
+                idToReplace.forEach { id in currentState.searchedCounters.append(contentsOf: results.filter({ $0.id == id })) }
+                currentState.searchedCounters.sort(by: { $0.id < $1.id })
                 currentState.counters = .loaded(results)
                 currentState.exception = .none
                 currentState.runningSideEffect = .none
@@ -60,6 +66,12 @@ final class CounterReducer {
                 semaphore.signal()
                 
             case .decrementCounterSuccess(let results):
+                let idsInSearch = Set(currentState.searchedCounters.map { $0.id })
+                let resultsIds = Set(results.map { $0.id })
+                let idToReplace = idsInSearch.intersection(resultsIds)
+                currentState.searchedCounters.removeAll()
+                idToReplace.forEach { id in currentState.searchedCounters.append(contentsOf: results.filter({ $0.id == id })) }
+                currentState.searchedCounters.sort(by: { $0.id < $1.id })
                 currentState.counters = .loaded(results)
                 currentState.exception = .none
                 currentState.runningSideEffect = .none
