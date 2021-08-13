@@ -253,7 +253,7 @@ extension CounterListViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let term = searchController.searchBar.text, !term.isEmpty, !counterItems.isEmpty else {
             applySnapshot(items: counterItems)
-            innerView.hideBackgroundView()
+            if !counterItems.isEmpty { innerView.hideBackgroundView() }
             return
         }
     }
@@ -263,6 +263,7 @@ extension CounterListViewController: UISearchResultsUpdating {
 extension CounterListViewController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        guard !searchText.isEmpty, !counterItems.isEmpty else { return }
         animateUpdate = true
         searchCounter(term: searchText)
     }
