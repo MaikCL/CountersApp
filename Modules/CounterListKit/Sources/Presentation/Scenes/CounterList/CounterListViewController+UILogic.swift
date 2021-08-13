@@ -190,7 +190,7 @@ extension CounterListViewController {
         var selectedIds = [String]()
         innerView.getSelectedItems()?.forEach { selectedIds.append(counterItems[$0.row].id) }
         guard !selectedIds.isEmpty else { return }
-        let cancelAction = UIAlertAction(title: Locale.alertButtonCancel.localized, style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: Locale.alertButtonCancel.localized, style: .default, handler: nil)
         let deleteAction = UIAlertAction(title: Locale.alertButtonDelete.localized(with: selectedIds.count), style: .destructive) { _ in
             self.deleteCounters(ids: selectedIds)
         }
@@ -198,6 +198,14 @@ extension CounterListViewController {
         deleteAlert.view.tintColor = Palette.accent.uiColor
         deleteAlert.addAction(deleteAction)
         deleteAlert.addAction(cancelAction)
+        
+        if let popoverController = deleteAlert.popoverPresentationController {
+            popoverController.sourceView = innerView
+            popoverController.sourceRect = CGRect(x: innerView.bounds.midX, y: innerView.bounds.midY, width: 0, height: 0)
+            popoverController.permittedArrowDirections = []
+            popoverController.barButtonItem = toolbarItems?.first
+        }
+
         self.present(deleteAlert, animated: true, completion: nil)
     }
     
