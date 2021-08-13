@@ -24,7 +24,7 @@ final class CounterRepository: CounterRepositoryProtocol {
     
     func deleteCounter(id: String) -> AnyPublisher<[Counter], Error> {
         return cloudSource.deleteCounter(id: id).handleEvents(receiveOutput: { counters in
-            self.localSource.saveCounters(counters: counters)
+            self.localSource.deleteCounter(id: id)
                 .receive(on: DispatchQueue.global(qos: .background))
                 .sink(receiveCompletion: { _ in }, receiveValue: { _ in })
                 .store(in: &self.cancellables)
