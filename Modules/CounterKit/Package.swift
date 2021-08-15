@@ -30,6 +30,6 @@ let package = Package(
             resources: [.process("Resources")]),
         .testTarget(
             name: "CounterTests",
-            dependencies: ["CounterKit"]),
+            dependencies: ["CounterKit", "Altair-MDK", "Resolver"]),
     ]
 )
