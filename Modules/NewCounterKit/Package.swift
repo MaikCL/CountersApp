@@ -14,7 +14,7 @@ let package = Package(
             targets: ["NewCounterKit"]),
     ],
     dependencies: [
-        .package(name: "Altair-MDK", url: "https://github.com/mzapatae/AltairMDK-iOS.git", .branch("feature/required-extensions")),
+        .package(name: "Altair-MDK", url: "https://github.com/mzapatae/AltairMDK-iOS.git", from: "1.0.0"),
         .package(url: "https://github.com/hmlongco/Resolver.git", from: "1.4.1"),
         .package(name: "APIsKit", path: "../APIsKit"),
         .package(name: "DesignKit", path: "../DesignKit"),
