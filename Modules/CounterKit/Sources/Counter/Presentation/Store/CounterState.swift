@@ -18,7 +18,7 @@ extension CounterState {
     }
 }
 
-public enum SideEffectTask {
+public enum SideEffectTask: Equatable {
     case none
     case whenFetchCounters
     case whenCreateCounter(title: String)
