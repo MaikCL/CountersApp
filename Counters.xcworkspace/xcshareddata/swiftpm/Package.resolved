@@ -1,0 +1,25 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Altair-MDK",
+        "repositoryURL": "https://github.com/mzapatae/AltairMDK-iOS.git",
+        "state": {
+          "branch": null,
+          "revision": "03f002db592591df951d437813557d4b78006d25",
+          "version": "1.0.0"
+        }
+      },
+      {
+        "package": "Resolver",
+        "repositoryURL": "https://github.com/hmlongco/Resolver.git",
+        "state": {
+          "branch": null,
+          "revision": "48e26b8fdf22877cd89b4a1f3927a56cc9f34d46",
+          "version": "1.4.3"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

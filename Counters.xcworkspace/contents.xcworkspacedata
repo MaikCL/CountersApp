@@ -1,4 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Workspace
    version = "1.0">
+   <FileRef
+      location = "group:Counters/Counters.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Modules/APIsKit">
+   </FileRef>
+   <FileRef
+      location = "group:Modules/DesignKit">
+   </FileRef>
+   <FileRef
+      location = "group:Modules/CounterKit">
+   </FileRef>
+   <FileRef
+      location = "group:Modules/CounterListKit">
+   </FileRef>
+   <FileRef
+      location = "group:Modules/NewCounterKit">
+   </FileRef>
 </Workspace>

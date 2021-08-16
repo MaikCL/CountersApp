@@ -6,9 +6,17 @@
 
 import UIKit
 
-internal final class WelcomeView: UIView {
-    // MARK: - View Model
+protocol WelcomeViewDelegate: AnyObject {
+    func didTapContinueButton()
+}
 
+internal final class WelcomeView: UIView {
+    // MARK: - Delegate
+    
+    var delegate: WelcomeViewDelegate?
+    
+    // MARK: - View Model
+    
     struct ViewModel {
         let title: NSAttributedString
         let description: String
@@ -169,6 +177,6 @@ private extension WelcomeView {
 
 private extension WelcomeView {
     @objc func didPressContinue() {
-        
+        delegate?.didTapContinueButton()
     }
 }

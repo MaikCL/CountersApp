@@ -1,0 +1,13 @@
+"navigationBar.title.createCounter" = "Create a counter";
+"navigationBar.title.examples" = "Examples";
+"navigationBar.back" = "Create";
+"button.item.save" = "Save";
+"button.item.cancel" = "Cancel";
+
+"textfield.hint.exampleTitle" = "Cups of coffe";
+"alert.button.dismiss" = "Dismiss";
+
+"label.text.giveACreativeName" = "Give it a name. Creative block? ";
+"label.text.seeExamples" = "See examples.";
+
+"label.text.selectExampleToAdd" = "Select an example to add it to your counters.";
