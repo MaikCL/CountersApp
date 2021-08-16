@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -12,6 +12,10 @@
 		350AF6ED25E0365A0000F698 /* UIImage+Badge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350AF6EC25E0365A0000F698 /* UIImage+Badge.swift */; };
 		35868D2825E03F090028AF1D /* WelcomeViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35868D2725E03F090028AF1D /* WelcomeViewPresenter.swift */; };
 		35EAFB7925CC9E3B00DCFE10 /* Networking.m in Sources */ = {isa = PBXBuildFile; fileRef = 35EAFB7825CC9E3B00DCFE10 /* Networking.m */; };
+		AEA3A5B426B998C900660740 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA3A5B326B998C900660740 /* AppCoordinator.swift */; };
+		AEFAA90726C3240D00350A50 /* CounterKit in Frameworks */ = {isa = PBXBuildFile; productRef = AEFAA90626C3240D00350A50 /* CounterKit */; };
+		AEFAA90926C3240D00350A50 /* CounterListKit in Frameworks */ = {isa = PBXBuildFile; productRef = AEFAA90826C3240D00350A50 /* CounterListKit */; };
+		AEFAA90B26C3240D00350A50 /* NewCounterKit in Frameworks */ = {isa = PBXBuildFile; productRef = AEFAA90A26C3240D00350A50 /* NewCounterKit */; };
 		DE3EBACC25E048CE00DA1E0D /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3EBACB25E048CE00DA1E0D /* Button.swift */; };
 		DECA256C25CC8D4200851431 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECA256B25CC8D4200851431 /* AppDelegate.swift */; };
 		DECA257025CC8D4200851431 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECA256F25CC8D4200851431 /* WelcomeViewController.swift */; };
@@ -47,6 +51,7 @@
 		35EAFB7625CC9E3A00DCFE10 /* Counters-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Counters-Bridging-Header.h"; sourceTree = "<group>"; };
 		35EAFB7725CC9E3B00DCFE10 /* Networking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Networking.h; sourceTree = "<group>"; };
 		35EAFB7825CC9E3B00DCFE10 /* Networking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Networking.m; sourceTree = "<group>"; };
+		AEA3A5B326B998C900660740 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		DE3EBACB25E048CE00DA1E0D /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
 		DECA256825CC8D4200851431 /* Counters.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Counters.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DECA256B25CC8D4200851431 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -68,6 +73,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AEFAA90926C3240D00350A50 /* CounterListKit in Frameworks */,
+				AEFAA90726C3240D00350A50 /* CounterKit in Frameworks */,
+				AEFAA90B26C3240D00350A50 /* NewCounterKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -121,6 +129,13 @@
 			path = Networking;
 			sourceTree = "<group>";
 		};
+		AEA3A5B826B99E2B00660740 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		DE3EBACA25E048C200DA1E0D /* UIComponents */ = {
 			isa = PBXGroup;
 			children = (
@@ -136,6 +151,7 @@
 				DECA258125CC8D4300851431 /* CountersTests */,
 				DECA258C25CC8D4300851431 /* CountersUITests */,
 				DECA256925CC8D4200851431 /* Products */,
+				AEA3A5B826B99E2B00660740 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -186,6 +202,7 @@
 				DECA25AE25CC908800851431 /* AppDelegate */,
 				DECA25AD25CC906700851431 /* Launch */,
 				DECA25B225CC910100851431 /* Welcome */,
+				AEA3A5B326B998C900660740 /* AppCoordinator.swift */,
 			);
 			path = Application;
 			sourceTree = "<group>";
@@ -251,6 +268,11 @@
 			dependencies = (
 			);
 			name = Counters;
+			packageProductDependencies = (
+				AEFAA90626C3240D00350A50 /* CounterKit */,
+				AEFAA90826C3240D00350A50 /* CounterListKit */,
+				AEFAA90A26C3240D00350A50 /* NewCounterKit */,
+			);
 			productName = Counters;
 			productReference = DECA256825CC8D4200851431 /* Counters.app */;
 			productType = "com.apple.product-type.application";
@@ -323,6 +345,8 @@
 				Base,
 			);
 			mainGroup = DECA255F25CC8D4200851431;
+			packageReferences = (
+			);
 			productRefGroup = DECA256925CC8D4200851431 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -372,6 +396,7 @@
 				DECA256C25CC8D4200851431 /* AppDelegate.swift in Sources */,
 				DE3EBACC25E048CE00DA1E0D /* Button.swift in Sources */,
 				35EAFB7925CC9E3B00DCFE10 /* Networking.m in Sources */,
+				AEA3A5B426B998C900660740 /* AppCoordinator.swift in Sources */,
 				350AF6D925E02D5E0000F698 /* WelcomeView.swift in Sources */,
 				350AF6E425E035840000F698 /* WelcomeFeatureView.swift in Sources */,
 			);
@@ -479,7 +504,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -534,7 +559,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -551,12 +576,13 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = SWYA59BA6P;
 				INFOPLIST_FILE = Counters/Config/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.cornershop.Counters;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mzapatae.Counters;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Counters/Config/Counters-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -572,12 +598,13 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = SWYA59BA6P;
 				INFOPLIST_FILE = Counters/Config/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.cornershop.Counters;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mzapatae.Counters;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Counters/Config/Counters-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -705,6 +732,21 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		AEFAA90626C3240D00350A50 /* CounterKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CounterKit;
+		};
+		AEFAA90826C3240D00350A50 /* CounterListKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CounterListKit;
+		};
+		AEFAA90A26C3240D00350A50 /* NewCounterKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = NewCounterKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = DECA256025CC8D4200851431 /* Project object */;
 }

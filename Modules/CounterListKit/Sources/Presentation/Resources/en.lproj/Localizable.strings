@@ -1,0 +1,14 @@
+"navigationBar.title" = "Counters";
+"searchBar.placeholder" = "Search";
+"button.item.selectAll" = "Select All";
+"toolbar.counterResume" = "%i items · Counted %i times";
+
+"button.title.createACounter" = "Create a counter";
+"button.title.retry" = " Retry ";
+
+"alert.button.retry" = "Retry";
+"alert.button.dismiss" = "Dismiss";
+"alert.button.delete" = "Delete %i counter";
+"alert.button.deletes" = "Delete %i counters";
+"alert.button.cancel" = "Cancel";
+
