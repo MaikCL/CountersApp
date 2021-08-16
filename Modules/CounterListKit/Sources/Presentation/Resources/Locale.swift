@@ -29,6 +29,9 @@ enum Locale: String {
     /// Delete %i counter
     case alertButtonDelete = "alert.button.delete"
     
+    /// Delete %i counters
+    case alertButtonDeletes = "alert.button.deletes"
+    
     /// Cancel
     case alertButtonCancel = "alert.button.cancel"
     
