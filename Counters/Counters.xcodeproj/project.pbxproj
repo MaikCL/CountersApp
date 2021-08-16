@@ -13,7 +13,6 @@
 		35868D2825E03F090028AF1D /* WelcomeViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35868D2725E03F090028AF1D /* WelcomeViewPresenter.swift */; };
 		35EAFB7925CC9E3B00DCFE10 /* Networking.m in Sources */ = {isa = PBXBuildFile; fileRef = 35EAFB7825CC9E3B00DCFE10 /* Networking.m */; };
 		AEA3A5B426B998C900660740 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA3A5B326B998C900660740 /* AppCoordinator.swift */; };
-		AEA3A5B726B999E400660740 /* Altair-MDK in Frameworks */ = {isa = PBXBuildFile; productRef = AEA3A5B626B999E400660740 /* Altair-MDK */; };
 		AEFAA90726C3240D00350A50 /* CounterKit in Frameworks */ = {isa = PBXBuildFile; productRef = AEFAA90626C3240D00350A50 /* CounterKit */; };
 		AEFAA90926C3240D00350A50 /* CounterListKit in Frameworks */ = {isa = PBXBuildFile; productRef = AEFAA90826C3240D00350A50 /* CounterListKit */; };
 		AEFAA90B26C3240D00350A50 /* NewCounterKit in Frameworks */ = {isa = PBXBuildFile; productRef = AEFAA90A26C3240D00350A50 /* NewCounterKit */; };
@@ -76,7 +75,6 @@
 			files = (
 				AEFAA90926C3240D00350A50 /* CounterListKit in Frameworks */,
 				AEFAA90726C3240D00350A50 /* CounterKit in Frameworks */,
-				AEA3A5B726B999E400660740 /* Altair-MDK in Frameworks */,
 				AEFAA90B26C3240D00350A50 /* NewCounterKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -271,7 +269,6 @@
 			);
 			name = Counters;
 			packageProductDependencies = (
-				AEA3A5B626B999E400660740 /* Altair-MDK */,
 				AEFAA90626C3240D00350A50 /* CounterKit */,
 				AEFAA90826C3240D00350A50 /* CounterListKit */,
 				AEFAA90A26C3240D00350A50 /* NewCounterKit */,
@@ -349,7 +346,6 @@
 			);
 			mainGroup = DECA255F25CC8D4200851431;
 			packageReferences = (
-				AEA3A5B526B999E400660740 /* XCRemoteSwiftPackageReference "AltairMDK-iOS" */,
 			);
 			productRefGroup = DECA256925CC8D4200851431 /* Products */;
 			projectDirPath = "";
@@ -737,23 +733,7 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCRemoteSwiftPackageReference section */
-		AEA3A5B526B999E400660740 /* XCRemoteSwiftPackageReference "AltairMDK-iOS" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "git@github.com:mzapatae/AltairMDK-iOS.git";
-			requirement = {
-				branch = "feature/required-extensions";
-				kind = branch;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
 /* Begin XCSwiftPackageProductDependency section */
-		AEA3A5B626B999E400660740 /* Altair-MDK */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = AEA3A5B526B999E400660740 /* XCRemoteSwiftPackageReference "AltairMDK-iOS" */;
-			productName = "Altair-MDK";
-		};
 		AEFAA90626C3240D00350A50 /* CounterKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = CounterKit;

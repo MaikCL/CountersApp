@@ -71,6 +71,7 @@ final class CounterListViewController: UIViewController {
             toolbarItems = setupToolbar()
             updateCounterResumeInToolbar(counters: counterItems)
         }
+        applySnapshot(items: counterItems, animate: true)
     }
     
 }

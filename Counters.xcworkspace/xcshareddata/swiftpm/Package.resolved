@@ -3,11 +3,11 @@
     "pins": [
       {
         "package": "Altair-MDK",
-        "repositoryURL": "git@github.com:mzapatae/AltairMDK-iOS.git",
+        "repositoryURL": "https://github.com/mzapatae/AltairMDK-iOS.git",
         "state": {
-          "branch": "feature/required-extensions",
-          "revision": "680f262a58a0e9cff87bcd6463774204b4086c42",
-          "version": null
+          "branch": null,
+          "revision": "03f002db592591df951d437813557d4b78006d25",
+          "version": "1.0.0"
         }
       },
       {
