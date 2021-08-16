@@ -6,7 +6,7 @@ public enum CounterAPI {
     #if targetEnvironment(simulator)
     private static let baseUrl = "http://127.0.0.1:3000/api/v1"
     #else
-    private static let baseUrl = "http://192.168.68.50:3000/api/v1"
+    private static let baseUrl = "http://192.168.68.54:3000/api/v1"
     #endif
 
     private static let defaultHeaders = [

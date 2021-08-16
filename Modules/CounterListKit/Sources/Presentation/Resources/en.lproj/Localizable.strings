@@ -9,5 +9,6 @@
 "alert.button.retry" = "Retry";
 "alert.button.dismiss" = "Dismiss";
 "alert.button.delete" = "Delete %i counter";
+"alert.button.deletes" = "Delete %i counters";
 "alert.button.cancel" = "Cancel";
 

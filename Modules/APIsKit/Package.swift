@@ -13,7 +13,7 @@ let package = Package(
             targets: ["APIsKit"]),
     ],
     dependencies: [
-        .package(name: "Altair-MDK", url: "https://github.com/mzapatae/AltairMDK-iOS.git", .branch("feature/required-extensions")),
+        .package(name: "Altair-MDK", url: "https://github.com/mzapatae/AltairMDK-iOS.git", from: "1.0.0"),
     ],
     targets: [
         .target(

@@ -195,8 +195,11 @@ extension CounterListViewController {
         var selectedIds = [String]()
         innerView.getSelectedItems()?.forEach { selectedIds.append(counterItems[$0.row].id) }
         guard !selectedIds.isEmpty else { return }
+        let title = selectedIds.count > 1 ?
+            Locale.alertButtonDeletes.localized(with: selectedIds.count) :
+            Locale.alertButtonDelete.localized(with: selectedIds.count)
         let cancelAction = UIAlertAction(title: Locale.alertButtonCancel.localized, style: .default, handler: nil)
-        let deleteAction = UIAlertAction(title: Locale.alertButtonDelete.localized(with: selectedIds.count), style: .destructive) { _ in
+        let deleteAction = UIAlertAction(title: title, style: .destructive) { _ in
             self.deleteCounters(ids: selectedIds)
         }
         let deleteAlert = UIAlertController(title: .none, message: .none, preferredStyle: .actionSheet)

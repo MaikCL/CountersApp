@@ -1,6 +1,6 @@
 import AltairMDKCommon
 
-public enum CounterException {
+public enum CounterException: Equatable {
     case noCountersYet
     case noSearchResults
     case cantLoadCounters
