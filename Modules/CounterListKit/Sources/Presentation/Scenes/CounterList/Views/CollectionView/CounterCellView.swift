@@ -39,7 +39,6 @@ class CounterCellView: UICollectionViewListCell {
     var isEditing: Bool = false {
         didSet {
             cellViewLeadingConstraint.constant = isEditing ? CellConstant.leadingEditing : CellConstant.leadingNormal
-            setNeedsLayout()
             layoutIfNeeded()
         }
     }
